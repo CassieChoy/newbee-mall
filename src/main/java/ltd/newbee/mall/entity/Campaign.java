@@ -15,7 +15,7 @@ import java.util.Date;
 public class Campaign {
     private long camId;
     
-    private String camKind;
+    private int camKind;
     
     private String createUser;
     
@@ -34,11 +34,11 @@ public class Campaign {
     private int isDeleted;
     
 
-	public String getCamKind() {
+	public int getCamKind() {
 		return camKind;
 	}
 
-	public void setCamKind(String camKind) {
+	public void setCamKind(int camKind) {
 		this.camKind = camKind;
 	}
 

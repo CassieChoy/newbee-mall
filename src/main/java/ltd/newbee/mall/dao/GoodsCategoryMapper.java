@@ -74,5 +74,7 @@ public interface GoodsCategoryMapper {
     int insertNewGoodsCampaign(GoodsCampaign goodsCampaign);
     
     int deleteGoodsCam(GoodsCampaign goodsCampaign);
+    
+    GoodsCampaign getGoodsCamById(Long goodsId);
 
 }

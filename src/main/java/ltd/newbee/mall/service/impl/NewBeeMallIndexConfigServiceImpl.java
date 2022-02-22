@@ -10,8 +10,10 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallIndexConfigGoodsVO;
+import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.IndexConfigMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.IndexConfig;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.service.NewBeeMallIndexConfigService;
@@ -35,6 +37,9 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
 
     @Autowired
     private NewBeeMallGoodsMapper goodsMapper;
+    
+    @Autowired
+    private GoodsCategoryMapper goodsCategoryMapper;
 
     @Override
     public PageResult getConfigsPage(PageQueryUtil pageUtil) {
@@ -93,9 +98,33 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
             List<Long> goodsIds = indexConfigs.stream().map(IndexConfig::getGoodsId).collect(Collectors.toList());
             List<NewBeeMallGoods> newBeeMallGoods = goodsMapper.selectByPrimaryKeys(goodsIds);
             newBeeMallIndexConfigGoodsVOS = BeanUtil.copyList(newBeeMallGoods, NewBeeMallIndexConfigGoodsVO.class);
+           
             for (NewBeeMallIndexConfigGoodsVO newBeeMallIndexConfigGoodsVO : newBeeMallIndexConfigGoodsVOS) {
                 String goodsName = newBeeMallIndexConfigGoodsVO.getGoodsName();
                 String goodsIntro = newBeeMallIndexConfigGoodsVO.getGoodsIntro();
+                Long goodsId = newBeeMallIndexConfigGoodsVO.getGoodsId();
+                int price = newBeeMallIndexConfigGoodsVO.getSellingPrice();
+                GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(goodsId);
+                if(goodsCam != null) {
+                	int camType = goodsCam.getCamKind();
+                	String cam = goodsCam.getCal1();
+                	Double camCount;
+                	int camPrice;
+                	if(camType == 3) {
+                		String[] pieces = cam.split("%");
+                		camCount = Double.parseDouble(pieces[0]) / 100;
+                		camPrice = (int)Math.ceil(price * camCount);
+                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
+                	}
+                	if(camType == 2) {
+                		camCount = Double.parseDouble(cam);
+                		camPrice = (int)(price - camCount);
+                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
+                	}    
+                	
+                }
+                
+                
                 // 字符串过长导致文字超出的问题
                 if (goodsName.length() > 30) {
                     goodsName = goodsName.substring(0, 30) + "...";

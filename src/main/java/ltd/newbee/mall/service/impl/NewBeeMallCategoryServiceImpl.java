@@ -265,4 +265,10 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 		
 		return goodsCategoryMapper.deleteGoodsCam(goodsCampaign);
 	}
+
+	@Override
+	public GoodsCampaign getGoodsCamById(Long goodsId) {
+		
+		return goodsCategoryMapper.getGoodsCamById(goodsId);
+	}
 }

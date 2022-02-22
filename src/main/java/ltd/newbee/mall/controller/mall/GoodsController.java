@@ -20,6 +20,7 @@ import ltd.newbee.mall.controller.vo.NewBeeMallOrderDetailVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.entity.Carousel;
+import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsImageEntity;
 import ltd.newbee.mall.entity.GoodsInfo;
 import ltd.newbee.mall.entity.GoodsQa;
@@ -186,6 +187,25 @@ public class GoodsController {
 		request.setAttribute("reviewRateAve", reviewRateAve);
 
 		NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
+		int price = goods.getOriginalPrice();
+		GoodsCampaign goodsCam = newBeeMallCategoryService.getGoodsCamById(goodsId);
+		if(goodsCam != null) {
+        	int camType = goodsCam.getCamKind();
+        	String cam = goodsCam.getCal1();
+        	Double camCount;
+        	int camPrice;
+        	if(camType == 3) {
+        		String[] pieces = cam.split("%");
+        		camCount = Double.parseDouble(pieces[0]) / 100;
+        		camPrice = (int)Math.ceil(price * camCount);
+        		goods.setSellingPrice(camPrice);
+        	}
+        	if(camType == 2) {
+        		camCount = Double.parseDouble(cam);
+        		camPrice = (int)(price - camCount);
+        		goods.setSellingPrice(camPrice);
+        	}    	
+        }
 		if (goods == null) {
 			NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
 		}

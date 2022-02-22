@@ -242,7 +242,7 @@ public class NewBeeMallGoodsCategoryController {
 		Long camId = Long.parseLong(params.get("camId").toString());
 		String camName = params.get("camName").toString();
 		Campaign camInfo = newBeeMallCategoryService.getCampaignInfo(camName);
-		String camKind = camInfo.getCamKind();
+		int camKind = camInfo.getCamKind();
 		int priority = camInfo.getPriority();
 		Date editDate = new Date();
 	
