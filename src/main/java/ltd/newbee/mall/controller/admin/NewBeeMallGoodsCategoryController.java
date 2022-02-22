@@ -334,7 +334,7 @@ public class NewBeeMallGoodsCategoryController {
     		}else {
     			errorflg = true;
     			break;
-    		}
+    		}          
     	}
         if (!errorflg) { 
         	return ResultGenerator.genSuccessResult("更新成功");
