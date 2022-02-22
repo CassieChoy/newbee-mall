@@ -212,7 +212,7 @@
   
   <resultMap id="CampaignResultMap" type="ltd.newbee.mall.entity.Campaign">
         <result column="cam_id" jdbcType="BIGINT" property="camId"/>
-        <result column="cam_kind" jdbcType="VARCHAR" property="camKind"/>
+        <result column="cam_kind" jdbcType="INTEGER" property="camKind"/>
         <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
         <result column="time_stamp" jdbcType="TIMESTAMP" property="timeStamp"/>
         <result column="priority" jdbcType="INTEGER" property="priority"/>
@@ -245,7 +245,7 @@
     <insert id="insertNewCampaign" parameterType="ltd.newbee.mall.entity.Campaign">
     insert into newbee_mall_db.cam_table (cam_id,cam_kind,create_user,time_stamp,priority,
     	cam_name,cal1,cal2,cal3)
-    values (#{camId,jdbcType=BIGINT}, #{camKind,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+    values (#{camId,jdbcType=BIGINT}, #{camKind,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, 
       #{timeStamp,jdbcType=TIMESTAMP}, #{priority,jdbcType=INTEGER}, #{camName,jdbcType=VARCHAR}, 
       #{cal1,jdbcType=VARCHAR}, #{cal2,jdbcType=VARCHAR}, #{cal3,jdbcType=VARCHAR})
    </insert>
@@ -274,7 +274,7 @@
    
    <update id="updateByCamId" parameterType="ltd.newbee.mall.entity.Campaign">
     update newbee_mall_db.cam_table
-    set cam_kind = #{camKind,jdbcType=VARCHAR},
+    set cam_kind = #{camKind,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=VARCHAR},
       time_stamp = #{timeStamp,jdbcType=TIMESTAMP},
       priority = #{priority,jdbcType=INTEGER},
@@ -302,7 +302,7 @@
         <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
         <result column="priority" jdbcType="INTEGER" property="priority"/>
-        <result column="cam_kind" jdbcType="VARCHAR" property="camKind"/>
+        <result column="cam_kind" jdbcType="INTEGER" property="camKind"/>
         <result column="cal1" jdbcType="VARCHAR" property="cal1"/>
         <result column="cam_name" jdbcType="VARCHAR" property="camName"/>
         <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
@@ -367,7 +367,7 @@
     </delete>
     
     <select id="getGoodsCamById" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsCampaign">
-          select * from goods_cam a left join cam_table b on a.cam_id = b.cam_id
+      select * from goods_cam a left join cam_table b on a.cam_id = b.cam_id
     <where>
       a.goods_id = #{goodsId,jdbcType=BIGINT}
     </where>

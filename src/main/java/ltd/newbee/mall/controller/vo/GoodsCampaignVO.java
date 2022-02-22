@@ -23,7 +23,7 @@ public class GoodsCampaignVO {
     
     private int priority;
     
-    private String camKind;
+    private int camKind;
     
     private String camName;
     
@@ -73,11 +73,11 @@ public class GoodsCampaignVO {
 		this.priority = priority;
 	}
 
-	public String getCamKind() {
+	public int getCamKind() {
 		return camKind;
 	}
 
-	public void setCamKind(String camKind) {
+	public void setCamKind(int camKind) {
 		this.camKind = camKind;
 	}
 

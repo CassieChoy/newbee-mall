@@ -105,16 +105,25 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
                 Long goodsId = newBeeMallIndexConfigGoodsVO.getGoodsId();
                 int price = newBeeMallIndexConfigGoodsVO.getSellingPrice();
                 GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(goodsId);
-                String camType = goodsCam.getCamKind();
-                Double cam = Double.parseDouble(goodsCam.getCal1());
-                int camPrice = 0;
-                if(camType =="割引") {
-                	camPrice = (int)Math.ceil(price * cam);
+                if(goodsCam != null) {
+                	int camType = goodsCam.getCamKind();
+                	String cam = goodsCam.getCal1();
+                	Double camCount;
+                	int camPrice;
+                	if(camType == 3) {
+                		String[] pieces = cam.split("%");
+                		camCount = Double.parseDouble(pieces[0]) / 100;
+                		camPrice = (int)Math.ceil(price * camCount);
+                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
+                	}
+                	if(camType == 2) {
+                		camCount = Double.parseDouble(cam);
+                		camPrice = (int)(price - camCount);
+                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
+                	}    
+                	
                 }
-                if(camType == "値引") {
-                	camPrice = (int)(price - cam);
-                }    
-                newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
+                
                 
                 // 字符串过长导致文字超出的问题
                 if (goodsName.length() > 30) {
