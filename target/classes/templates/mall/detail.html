@@ -53,6 +53,15 @@
     background-size: 92px 35px !important;
 }
 
+.campaign {
+	max-width: fit-content;
+    font-weight: 800;
+	color: white;
+    padding: 10px;
+	font-size: 2rem;
+    background-color: darkturquoise;
+}
+
 </style>
 </head>
 
@@ -125,6 +134,7 @@
 			<div class="right fr" style=" display:flex;flex-direction:column">
 				<div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
+				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
 				<div class="item_price mr40 ml20 mt10">
 					<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
 					<del>

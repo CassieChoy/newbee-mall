@@ -12,7 +12,9 @@ import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
+import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
@@ -31,6 +33,9 @@ public class ShoppingCartController {
 
     @Resource
     private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
+    
+    @Resource
+    private NewBeeMallCategoryService newBeeMallCategoryService;
 
     @GetMapping("/shop-cart")
     public String cartListPage(HttpServletRequest request,
@@ -47,6 +52,11 @@ public class ShoppingCartController {
             }
             //总价
             for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
+            	Long goodsId = newBeeMallShoppingCartItemVO.getGoodsId();
+            	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
+            	if(cam!= null) {
+            		newBeeMallShoppingCartItemVO.setCampaign(cam.getCamName());
+            	}
                 priceTotal += newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice();
             }
             if (priceTotal < 1) {
@@ -115,6 +125,11 @@ public class ShoppingCartController {
         } else {
             //总价
             for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
+            	Long goodsId = newBeeMallShoppingCartItemVO.getGoodsId();
+            	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
+            	if(cam!= null) {
+            		newBeeMallShoppingCartItemVO.setCampaign(cam.getCamName());
+            	}
                 priceTotal += newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice();
             }
             if (priceTotal < 1) {

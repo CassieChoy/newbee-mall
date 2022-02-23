@@ -11,8 +11,10 @@ package ltd.newbee.mall.service.impl;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
+import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
+import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
@@ -33,6 +35,9 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 
     @Autowired
     private NewBeeMallGoodsMapper newBeeMallGoodsMapper;
+    
+    @Autowired
+    private GoodsCategoryMapper goodsCategoryMapper;
 
     @Override
     public String saveNewBeeMallCartItem(NewBeeMallShoppingCartItem newBeeMallShoppingCartItem) {
@@ -123,16 +128,40 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
             for (NewBeeMallShoppingCartItem newBeeMallShoppingCartItem : newBeeMallShoppingCartItems) {
                 NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO = new NewBeeMallShoppingCartItemVO();
                 BeanUtil.copyProperties(newBeeMallShoppingCartItem, newBeeMallShoppingCartItemVO);
+                
+                
                 if (newBeeMallGoodsMap.containsKey(newBeeMallShoppingCartItem.getGoodsId())) {
                     NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(newBeeMallShoppingCartItem.getGoodsId());
                     newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
                     String goodsName = newBeeMallGoodsTemp.getGoodsName();
+                    int price = newBeeMallGoodsTemp.getSellingPrice();
+                    GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getGoodsId());
+                    if(goodsCam != null) {
+                    	int camType = goodsCam.getCamKind();
+                    	String cam = goodsCam.getCal1();
+                    	Double camCount;
+                    	int camPrice;
+                    	if(camType == 3) {
+                    		String[] pieces = cam.split("%");
+                    		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
+                    		camPrice = (int)Math.ceil(price * camCount);
+                    		newBeeMallGoodsTemp.setSellingPrice(camPrice);
+                    	}
+                    	if(camType == 2) {
+                    		camCount = Double.parseDouble(cam);
+                    		camPrice = (int)(price - camCount);
+                    		newBeeMallGoodsTemp.setSellingPrice(camPrice);
+                    	}    
+                    	
+                    }
                     // 字符串过长导致文字超出的问题
                     if (goodsName.length() > 28) {
                         goodsName = goodsName.substring(0, 28) + "...";
                     }
                     newBeeMallShoppingCartItemVO.setGoodsName(goodsName);
-                    newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+					
+					newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+					 
                     newBeeMallShoppingCartItemVOS.add(newBeeMallShoppingCartItemVO);
                 }
             }

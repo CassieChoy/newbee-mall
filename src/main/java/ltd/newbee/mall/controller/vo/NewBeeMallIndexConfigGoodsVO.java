@@ -26,8 +26,19 @@ public class NewBeeMallIndexConfigGoodsVO implements Serializable {
     private Integer sellingPrice;
 
     private String tag;
+    
+    private String campaign;
+    
 
-    public Long getGoodsId() {
+    public String getCampaign() {
+		return campaign;
+	}
+
+	public void setCampaign(String campaign) {
+		this.campaign = campaign;
+	}
+
+	public Long getGoodsId() {
         return goodsId;
     }
 

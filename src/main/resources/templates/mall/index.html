@@ -1,8 +1,16 @@
 <!-- Copyright (c) 2019-2020 十三 all rights reserved. -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+.campaign {
+    background-color: darkturquoise;
+}
+</style>
+</head>
 <head th:replace="mall/header::head-fragment('NewBee商城-首页','index')">
 </head>
+
 <body>
 <header th:replace="mall/header::header-fragment"></header>
 <content id="content">
@@ -106,6 +114,7 @@
                 <th:block th:each="newGoods : ${newGoodses}">
                     <li>
                         <a th:href="@{'/goods/detail/'+${newGoods.goodsId}}">
+                        	<div class="campaign" th:text="${newGoods.campaign}">NewBeeMall</div>
                             <img th:src="@{${newGoods.goodsCoverImg}}" th:alt="${newGoods.goodsName}">
                             <p class="name" th:text="${newGoods.goodsName}">NewBeeMall</p>
                             <p class="discount" th:text="${newGoods.goodsIntro}">NewBeeMall</p>
@@ -169,6 +178,7 @@
                 <th:block th:each="recommendGoods : ${recommendGoodses}">
                     <li>
                         <a th:href="@{'/goods/detail/'+${recommendGoods.goodsId}}">
+                        <div class="campaign" th:text="${recommendGoods.campaign}">NewBeeMall</div>
                             <div class="info discount" th:text="${recommendGoods.tag}">
                                 新品
                             </div>
