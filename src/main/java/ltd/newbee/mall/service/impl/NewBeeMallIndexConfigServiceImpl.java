@@ -112,7 +112,7 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
                 	int camPrice;
                 	if(camType == 3) {
                 		String[] pieces = cam.split("%");
-                		camCount = Double.parseDouble(pieces[0]) / 100;
+                		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
                 		camPrice = (int)Math.ceil(price * camCount);
                 		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
                 	}

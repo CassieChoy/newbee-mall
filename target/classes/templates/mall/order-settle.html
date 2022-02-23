@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="mall/header::head-fragment('NewBee商城-订单结算','order-detail')">
+<style>
+.campaign {
+    color: red !important;
+}
+</style>
 </head>
 <link th:href="@{/mall/css/bootstrap-modal.css}" rel="stylesheet">
 <body>
@@ -76,7 +81,10 @@
                                                        th:text="${item.goodsName}">newbee</a>
                                                 </p>
                                             </td>
-                                            <td class="col col-price"><p class="price"
+                                            
+                                            <td class="col col-price">
+                                            <p calss="campaign" th:text="${item.campaign}">newbee</p>
+                                            <p class="price"
                                                                          th:text="${item.sellingPrice+'元 x '+item.goodsCount}">
                                                 1299元 × 1</p></td>
                                             <td class="col col-actions">

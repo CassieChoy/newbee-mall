@@ -190,13 +190,14 @@ public class GoodsController {
 		int price = goods.getOriginalPrice();
 		GoodsCampaign goodsCam = newBeeMallCategoryService.getGoodsCamById(goodsId);
 		if(goodsCam != null) {
-        	int camType = goodsCam.getCamKind();
+			goods.setCampaign(goodsCam.getCamName());
+			int camType = goodsCam.getCamKind();
         	String cam = goodsCam.getCal1();
         	Double camCount;
         	int camPrice;
         	if(camType == 3) {
         		String[] pieces = cam.split("%");
-        		camCount = Double.parseDouble(pieces[0]) / 100;
+        		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
         		camPrice = (int)Math.ceil(price * camCount);
         		goods.setSellingPrice(camPrice);
         	}
