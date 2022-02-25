@@ -372,8 +372,19 @@
       a.goods_id = #{goodsId,jdbcType=BIGINT}
     </where>
     </select>
+    
     <select id="getGoodsId" resultType="Long">
     select goods_id from goods_cam
+    </select>
+    
+    <select id="getOrderCam" parameterType="Long" resultType="ltd.newbee.mall.entity.OrderCampaign">
+      select a.user_id,a.order_id,a.cam_id,a.end_date,b.cam_kind,b.cam_name,b.cal1,
+		c.total_price,c.pay_time,c.order_status from point_table a left join cam_table b on
+		a.cam_id = b.cam_id left join tb_newbee_mall_order c on a.user_id = c.user_id 
+		and a.order_id = c.order_id
+    <where>
+      a.user_id = #{userId,jdbcType=BIGINT}
+    </where>
     </select>
     
 </mapper>

@@ -13,6 +13,7 @@ import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
 import ltd.newbee.mall.entity.Campaign;
 import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -92,5 +93,7 @@ public interface NewBeeMallCategoryService {
     GoodsCampaign getGoodsCamById(Long goodsId);
     
     List<Long> getGoodsId();
+    
+    List<OrderCampaign> getOrderCam(Long userId);
     
 }
