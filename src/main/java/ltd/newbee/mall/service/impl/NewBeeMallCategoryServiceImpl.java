@@ -19,6 +19,7 @@ import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.entity.Campaign;
 import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsCategory;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
@@ -277,4 +278,12 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 		
 		return goodsCategoryMapper.getGoodsId();
 	}
+
+	@Override
+	public List<OrderCampaign> getOrderCam(Long userId) {
+		
+		return goodsCategoryMapper.getOrderCam(userId);
+	}
+
+	
 }

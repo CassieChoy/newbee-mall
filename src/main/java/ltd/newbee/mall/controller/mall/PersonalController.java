@@ -12,6 +12,8 @@ import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.entity.MallUser;
+import ltd.newbee.mall.entity.OrderCampaign;
+import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallUserService;
 import ltd.newbee.mall.util.MD5Util;
 import ltd.newbee.mall.util.Result;
@@ -19,6 +21,8 @@ import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +33,8 @@ public class PersonalController {
 
     @Resource
     private NewBeeMallUserService newBeeMallUserService;
+    
+    private NewBeeMallCategoryService newBeeMallCategoryService;
 
     @GetMapping("/personal")
     public String personalPage(HttpServletRequest request,
@@ -131,4 +137,21 @@ public class PersonalController {
             return result;
         }
     }
+    
+    @GetMapping("/point")
+    public String pointPage(HttpServletRequest request,
+                               HttpSession httpSession) {
+    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+    	List<OrderCampaign> orderCam = newBeeMallCategoryService.getOrderCam(user.getUserId());
+        request.setAttribute("path", "point");
+        return "mall/point";
+    }
+    
+    @GetMapping("/coupon")
+    public String couponPage(HttpServletRequest request,
+                               HttpSession httpSession) {
+        request.setAttribute("path", "coupon");
+        return "mall/coupon";
+    }
+    
 }
