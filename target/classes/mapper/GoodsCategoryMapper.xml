@@ -372,5 +372,8 @@
       a.goods_id = #{goodsId,jdbcType=BIGINT}
     </where>
     </select>
+    <select id="getGoodsId" resultType="Long">
+    select goods_id from goods_cam
+    </select>
     
 </mapper>
