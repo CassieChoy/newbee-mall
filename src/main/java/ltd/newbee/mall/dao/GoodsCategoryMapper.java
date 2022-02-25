@@ -76,5 +76,8 @@ public interface GoodsCategoryMapper {
     int deleteGoodsCam(GoodsCampaign goodsCampaign);
     
     GoodsCampaign getGoodsCamById(Long goodsId);
+    
+    List<Long> getGoodsId();
+    
 
 }
