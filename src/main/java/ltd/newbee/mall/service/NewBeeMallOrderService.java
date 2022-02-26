@@ -114,4 +114,8 @@ public interface NewBeeMallOrderService {
     String paySuccess(String orderNo, int payType);
 
     List<NewBeeMallOrderItemVO> getOrderItems(Long id);
+    
+    PageResult getOrderCamPage(PageQueryUtil pageUtil);
+    
+    PageResult getCouponPage(PageQueryUtil pageUtil);
 }

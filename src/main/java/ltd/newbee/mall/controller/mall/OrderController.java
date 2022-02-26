@@ -12,23 +12,36 @@ import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.NewBeeMallOrderStatusEnum;
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.controller.vo.GoodsCampaignVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallOrderDetailVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.controller.vo.OrderCampaignVO;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
+import ltd.newbee.mall.entity.OrderCampaign;
+import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
+import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
+import ltd.newbee.mall.util.PageResult;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +52,8 @@ public class OrderController {
     private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
     @Resource
     private NewBeeMallOrderService newBeeMallOrderService;
+    
+    private NewBeeMallCategoryService newBeeMallCategoryService;
 
     @GetMapping("/orders/{orderNo}")
     public String orderDetailPage(HttpServletRequest request, @PathVariable("orderNo") String orderNo, HttpSession httpSession) {
@@ -155,6 +170,53 @@ public class OrderController {
         } else {
             return ResultGenerator.genFailResult(payResult);
         }
+    }
+    
+    
+    @GetMapping("/point")
+    public String pointPage(@RequestParam Map<String, Object> params,HttpServletRequest request, HttpSession httpSession) throws ParseException {
+    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+    	params.put("userId", user.getUserId());
+        if (StringUtils.isEmpty(params.get("page"))) {
+            params.put("page", 1);
+        }
+        params.put("limit", Constants.ORDER_SEARCH_PAGE_LIMIT);
+        PageQueryUtil pageUtil = new PageQueryUtil(params);
+        PageResult orderCamsPage = newBeeMallOrderService.getOrderCamPage(pageUtil);
+        List<OrderCampaign> orderCamsList = (List<OrderCampaign>) orderCamsPage.getList();
+        List<OrderCampaignVO> orderCams = new ArrayList<OrderCampaignVO>();
+        int point;
+        int totalPoint = 0;
+        Date payTime;
+        String payTimeStr;
+        for(OrderCampaign orderCampaign : orderCamsList) {
+        	int price = orderCampaign.getTotalPrice();
+        	String orderNo = orderCampaign.getOrderNo();
+        	String cam = orderCampaign.getCal1();
+        	Double camCount;
+        	String[] pieces = cam.split("%");
+        	camCount = Double.parseDouble(pieces[0]) / 100;
+        	point = (int)Math.ceil(price * camCount);
+        	totalPoint = totalPoint + point;
+        	
+        	
+        	payTime = orderCampaign.getPayTime();
+        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        	payTimeStr = formatter.format(payTime);
+        	
+        	OrderCampaignVO orderCamVO = new OrderCampaignVO();
+        	
+        	orderCamVO.setPayTime(payTimeStr);
+        	orderCamVO.setPoint(point);
+        	orderCamVO.setTotalPoint(totalPoint);
+        	orderCamVO.setOrderNo(orderNo);
+        	orderCams.add(orderCamVO);
+        	
+        }
+        orderCamsPage.setList(orderCams);
+        request.setAttribute("orderCam", orderCamsPage);
+        request.setAttribute("path", "point");
+        return "mall/point";
     }
 
 }

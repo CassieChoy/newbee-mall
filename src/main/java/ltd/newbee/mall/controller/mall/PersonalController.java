@@ -34,7 +34,7 @@ public class PersonalController {
     @Resource
     private NewBeeMallUserService newBeeMallUserService;
     
-    private NewBeeMallCategoryService newBeeMallCategoryService;
+    
 
     @GetMapping("/personal")
     public String personalPage(HttpServletRequest request,
@@ -136,22 +136,6 @@ public class PersonalController {
             Result result = ResultGenerator.genSuccessResult();
             return result;
         }
-    }
-    
-    @GetMapping("/point")
-    public String pointPage(HttpServletRequest request,
-                               HttpSession httpSession) {
-    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-    	List<OrderCampaign> orderCam = newBeeMallCategoryService.getOrderCam(user.getUserId());
-        request.setAttribute("path", "point");
-        return "mall/point";
-    }
-    
-    @GetMapping("/coupon")
-    public String couponPage(HttpServletRequest request,
-                               HttpSession httpSession) {
-        request.setAttribute("path", "coupon");
-        return "mall/coupon";
     }
     
 }

@@ -9,6 +9,8 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.NewBeeMallOrder;
+import ltd.newbee.mall.entity.OrderCampaign;
+import ltd.newbee.mall.entity.userCoupon;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,4 +42,12 @@ public interface NewBeeMallOrderMapper {
     int closeOrder(@Param("orderIds") List<Long> orderIds, @Param("orderStatus") int orderStatus);
 
     int checkDone(@Param("orderIds") List<Long> asList);
+    
+    List<OrderCampaign> getOrderCamList(PageQueryUtil pageUtil);
+    
+    int getTotalOrdersCam(PageQueryUtil pageUtil);
+    
+    List<userCoupon> getCouponList(PageQueryUtil pageUtil);
+    
+    int getTotalCoupon(PageQueryUtil pageUtil);
 }
