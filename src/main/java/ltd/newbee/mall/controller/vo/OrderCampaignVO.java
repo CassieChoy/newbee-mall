@@ -6,13 +6,13 @@
  * Copyright (c) 2019-2020 十三 all rights reserved.
  * 版权所有，侵权必究！
  */
-package ltd.newbee.mall.entity;
+package ltd.newbee.mall.controller.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class OrderCampaign {
+public class OrderCampaignVO {
 	private long userId;
 	
 	private long orderId;
@@ -29,7 +29,7 @@ public class OrderCampaign {
 	
 	private int totalPrice;
 	
-	private Date payTime;
+	private String payTime;
 	
 	private String orderNo;
 	
@@ -38,14 +38,13 @@ public class OrderCampaign {
 	private int totalPoint;
 	
 	
-	
 
-	public int getTotalPoint() {
-		return totalPoint;
+	public String getOrderNo() {
+		return orderNo;
 	}
 
-	public void setTotalPoint(int totalPoint) {
-		this.totalPoint = totalPoint;
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
 	}
 
 	public int getPoint() {
@@ -56,12 +55,12 @@ public class OrderCampaign {
 		this.point = point;
 	}
 
-	public String getOrderNo() {
-		return orderNo;
+	public int getTotalPoint() {
+		return totalPoint;
 	}
 
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
 	}
 
 	public long getUserId() {
@@ -128,11 +127,11 @@ public class OrderCampaign {
 		this.totalPrice = totalPrice;
 	}
 
-	public Date getPayTime() {
+	public String getPayTime() {
 		return payTime;
 	}
 
-	public void setPayTime(Date payTime) {
+	public void setPayTime(String payTime) {
 		this.payTime = payTime;
 	}
 

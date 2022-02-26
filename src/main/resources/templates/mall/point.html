@@ -28,18 +28,23 @@
 			  <table class="table">
 			    <thead>
 			      <tr>
-			        <th>购物记录</th>
+			        <th>订单号</th>
+			        <th>购物时间</th>
 			        <th>本次获得积分</th>
+			        <th>当前积分</th>
 			      </tr>
 			    </thead>
 			    <tbody>
+			    <th:block th:each="item : ${orderCam.list}">
 			      <tr>
-			        <td>John</td>
-			        <td>Doe</td>
+			        <td th:text="${item.orderNo}">John</td>
+			        <td th:text="${item.payTime}">John</td>
+			        <td th:text="${item.point}">Doe</td>
+			        <td th:text="${item.totalPoint}">Doe</td>
 			      </tr>
+			    </th:block>
 			    </tbody>
 			  </table>
-			  <div class="totalPoint"></div>
 			</div>
 
         </div>

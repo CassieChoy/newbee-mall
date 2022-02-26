@@ -17,6 +17,7 @@ import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
 import ltd.newbee.mall.entity.NewBeeMallOrderItem;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.entity.StockNumDTO;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.util.BeanUtil;
@@ -403,4 +404,18 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
         }
         return null;
     }
+
+	@Override
+	public PageResult getOrderCamPage(PageQueryUtil pageUtil) {
+		List<OrderCampaign> orderCams = newBeeMallOrderMapper.getOrderCamList(pageUtil);
+        int total = newBeeMallOrderMapper.getTotalOrdersCam(pageUtil);
+        PageResult pageResult = new PageResult(orderCams, total, pageUtil.getLimit(), pageUtil.getPage());
+        return pageResult;
+	}
+
+	@Override
+	public PageResult getCouponPage(PageQueryUtil pageUtil) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
