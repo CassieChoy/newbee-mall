@@ -82,5 +82,7 @@ public interface GoodsCategoryMapper {
     
     List<OrderCampaign> getOrderCam(Long userId);
     
+    GoodsCampaign getGoodsCamByCamId (Long camId);
+    
 
 }

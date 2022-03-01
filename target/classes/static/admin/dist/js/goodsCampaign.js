@@ -56,13 +56,13 @@ function searchResult(){
             order: "order",
         },
         loadComplete: function() {
-	    $('#jqGrid').find('input[type="checkbox"]').hide();
+	    /*$('#jqGrid').find('input[type="checkbox"]').hide();*/
         var dataArr = $("#jqGrid").jqGrid('getRowData');
         var dataIDs = jQuery("#jqGrid").getDataIDs();
         for(var i = 0;i<dataArr.length;i++){
 			var camId = dataArr[i].camId;
 			if(camId!=0){
-				/*$("#jqGrid").jqGrid('setSelection',dataIDs[i],true);*/
+				$("#jqGrid").jqGrid('setSelection',dataIDs[i],true);
 				$("#"+dataArr[i].goodsId).find("#selections").val(dataArr[i].camId);
 			}
 			}      
@@ -135,6 +135,40 @@ function selectCam(){
 
     }
 
+function download(){
+	var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow");
+	var camIdArr = [];
+	for(var i = 0;i<selRowIds.length;i++){
+			var rowData = myGrid.jqGrid("getLocalRow", selRowIds[i]);
+			var camId = rowData[i].camId;
+			camIdArr.push(camId);
+		}
+	var data = camIdArr;
 	
+	$.ajax({
+            type: 'POST',//方法类型
+            url: '/admin/goodsCampaign/download',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (result) {
+                if (result.resultCode == 200) {
+					$(".btn-info").click();
+                    swal("更新成功", {
+                        icon: "success",
+                    });
+                } else {
+                    swal(result.message, {
+                        icon: "error",
+                    });
+                }
+                ;
+            },
+            error: function () {
+                swal("操作失败", {
+                    icon: "error",
+                });
+            }
+        });
+}
 
 

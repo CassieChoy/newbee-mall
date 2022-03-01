@@ -285,5 +285,11 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 		return goodsCategoryMapper.getOrderCam(userId);
 	}
 
+	@Override
+	public GoodsCampaign getGoodsCamByCamId(Long camId) {
+		
+		return goodsCategoryMapper.getGoodsCamByCamId(camId);
+	}
+
 	
 }

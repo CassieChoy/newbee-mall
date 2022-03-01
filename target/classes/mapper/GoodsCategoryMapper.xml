@@ -387,4 +387,13 @@
     </where>
     </select>
     
+    <select id="getGoodsCamByCamId" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsCampaign">
+        select c.goods_id,a.cam_id,a.start_date,a.end_date,b.cam_kind,b.priority,b.cam_name,b.cal1,a.is_deleted 
+			,c.goods_name from goods_cam a join cam_table b on a.cam_id = b.cam_id right join tb_newbee_mall_goods_info c
+			on a.goods_id = c.goods_id
+	  <where>
+      a.cam_id = #{camId,jdbcType=BIGINT}
+      </where>
+    </select>
+    
 </mapper>
