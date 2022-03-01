@@ -8,7 +8,11 @@
  */
 package ltd.newbee.mall.controller.admin;
 
-import java.lang.reflect.Array;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +22,7 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -29,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ltd.newbee.mall.common.NewBeeMallCategoryLevelEnum;
 import ltd.newbee.mall.common.ServiceResultEnum;
@@ -266,7 +269,7 @@ public class NewBeeMallGoodsCategoryController {
 		 
 		
 		}
-		}
+	}
 	
     @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
     @ResponseBody
@@ -353,5 +356,59 @@ public class NewBeeMallGoodsCategoryController {
         return ResultGenerator.genSuccessResult(goodsCampaignVOList); 
         
     }
+    
+    @RequestMapping(value = "/goodsCampaign/download", method = RequestMethod.POST)
+    @ResponseBody
+    public Result download(@RequestBody List<GoodsCampaign> cams,HttpServletResponse response) {
+    	for(int i = 0; i <cams.size(); i ++) {
+    		GoodsCampaign goodsCam = cams.get(i);
+    		long goodsId = goodsCam.getGoodsId();
+    	}
+        String[] userName = {"阿部", "鈴木", "伊藤", "田中", "太田", "佐々木", "上野", "馬場", "榎本", "和田"};
+        String[] userSex = {"男", "男", "女", "女", "男", "男", "男", "女", "男", "男"};
+        String[] userDepartment = {"営業部", "総務部", "人事部", "営業部", "開発部", "開発部", "人事部", "営業部", "開発部", "総務部"};
+        int[] userSalary = {280000, 320000, 250000, 330000, 210000, 250000, 320000, 280000, 250000, 210000};
+        // exportCsvクラスに渡す
+        exportCsv(userName, userSex, userDepartment, userSalary);
+    	return ResultGenerator.genSuccessResult();
+
+    }
+    
+public static void exportCsv(String[] userName, String[] userSex, String[] userDepartment, int[] userSalary){
+    try {
+        // 出力ファイルの作成
+        FileWriter fw = new FileWriter("Userdata.csv", false);
+        // PrintWriterクラスのオブジェクトを生成
+        PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+
+        // ヘッダーの指定
+        pw.print("社員番号");
+        pw.print(",");
+        pw.print("名前");
+        pw.print(",");
+        pw.print("性別");
+        pw.print(",");
+        pw.print("部署");
+        pw.print(",");
+        pw.print("給料");
+        pw.println();
+
+        // データを書き込む
+        for(int i = 0; i < userName.length; i++){
+            pw.print(userName[i]);
+            pw.print(",");
+            pw.print(userSex[i]);
+            pw.print(",");
+            pw.print(userDepartment[i]);
+            pw.print(",");
+            pw.print(userSalary[i]);
+            pw.println();
+        }
+
+        // ファイルを閉じる
+        pw.close();
+
+      }
+	}
 
 }

@@ -96,4 +96,6 @@ public interface NewBeeMallCategoryService {
     
     List<OrderCampaign> getOrderCam(Long userId);
     
+    GoodsCampaign getGoodsCamByCamId (Long camId);
+    
 }

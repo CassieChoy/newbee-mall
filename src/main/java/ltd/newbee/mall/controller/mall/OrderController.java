@@ -185,27 +185,24 @@ public class OrderController {
         PageResult orderCamsPage = newBeeMallOrderService.getOrderCamPage(pageUtil);
         List<OrderCampaign> orderCamsList = (List<OrderCampaign>) orderCamsPage.getList();
         List<OrderCampaignVO> orderCams = new ArrayList<OrderCampaignVO>();
-        int point;
-        int totalPoint = 0;
-        Date payTime;
-        String payTimeStr;
         for(OrderCampaign orderCampaign : orderCamsList) {
         	int price = orderCampaign.getTotalPrice();
         	String orderNo = orderCampaign.getOrderNo();
         	String cam = orderCampaign.getCal1();
+        	int point;
+            int totalPoint = 0;
         	Double camCount;
+        	Date payTime;
+            String payTimeStr;
         	String[] pieces = cam.split("%");
         	camCount = Double.parseDouble(pieces[0]) / 100;
         	point = (int)Math.ceil(price * camCount);
         	totalPoint = totalPoint + point;
-        	
-        	
         	payTime = orderCampaign.getPayTime();
         	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         	payTimeStr = formatter.format(payTime);
         	
         	OrderCampaignVO orderCamVO = new OrderCampaignVO();
-        	
         	orderCamVO.setPayTime(payTimeStr);
         	orderCamVO.setPoint(point);
         	orderCamVO.setTotalPoint(totalPoint);

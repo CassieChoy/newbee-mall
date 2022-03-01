@@ -64,6 +64,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Stream;
 
 @Controller
 public class GoodsController {
@@ -132,16 +133,15 @@ public class GoodsController {
 			innerList.add(goodsImageVOList.get(i));
 
 			if (i != 0 && (i+1) % 8 == 0) {
-				List innerListCopy = new ArrayList();
+				List<GoodsImageVO> innerListCopy = new ArrayList<GoodsImageVO>();
 				for (int j = 0; j < innerList.size(); j++) {
-					innerListCopy.add(innerList.get(j));
+				innerListCopy.add(innerList.get(j)); 
 				}
-
 				outerList.add(innerListCopy);
 				innerList.clear();
 			}
 			if (i == goodsImageVOList.size()-1 && (i +1)% 8 != 0) {
-				List innerListCopy2 = new ArrayList();
+				List<GoodsImageVO> innerListCopy2 = new ArrayList<GoodsImageVO>();
 				for (int j = 0; j < innerList.size(); j++) {
 					innerListCopy2.add(innerList.get(j));
 				}
