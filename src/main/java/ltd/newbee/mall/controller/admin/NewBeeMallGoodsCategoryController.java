@@ -9,7 +9,10 @@
 package ltd.newbee.mall.controller.admin;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -57,199 +60,196 @@ import ltd.newbee.mall.util.ResultGenerator;
 @RequestMapping("/admin")
 public class NewBeeMallGoodsCategoryController {
 
-    @Resource
-    private NewBeeMallCategoryService newBeeMallCategoryService;
+	@Resource
+	private NewBeeMallCategoryService newBeeMallCategoryService;
 
-    @GetMapping("/categories")
-    public String categoriesPage(HttpServletRequest request, @RequestParam("categoryLevel") Byte categoryLevel, @RequestParam("parentId") Long parentId, @RequestParam("backParentId") Long backParentId) {
-        if (categoryLevel == null || categoryLevel < 1 || categoryLevel > 3) {
-            return "error/error_5xx";
-        }
-        request.setAttribute("path", "newbee_mall_category");
-        request.setAttribute("parentId", parentId);
-        request.setAttribute("backParentId", backParentId);
-        request.setAttribute("categoryLevel", categoryLevel);
-        return "admin/newbee_mall_category";
-    }
+	@GetMapping("/categories")
+	public String categoriesPage(HttpServletRequest request, @RequestParam("categoryLevel") Byte categoryLevel,
+			@RequestParam("parentId") Long parentId, @RequestParam("backParentId") Long backParentId) {
+		if (categoryLevel == null || categoryLevel < 1 || categoryLevel > 3) {
+			return "error/error_5xx";
+		}
+		request.setAttribute("path", "newbee_mall_category");
+		request.setAttribute("parentId", parentId);
+		request.setAttribute("backParentId", backParentId);
+		request.setAttribute("categoryLevel", categoryLevel);
+		return "admin/newbee_mall_category";
+	}
 
-    /**
-     * 列表
-     */
-    @RequestMapping(value = "/categories/list", method = RequestMethod.GET)
-    @ResponseBody
-    public Result list(@RequestParam Map<String, Object> params) {
-        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit")) || StringUtils.isEmpty(params.get("categoryLevel")) || StringUtils.isEmpty(params.get("parentId"))) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getCategorisPage(pageUtil));
-    }
+	/**
+	 * 列表
+	 */
+	@RequestMapping(value = "/categories/list", method = RequestMethod.GET)
+	@ResponseBody
+	public Result list(@RequestParam Map<String, Object> params) {
+		if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))
+				|| StringUtils.isEmpty(params.get("categoryLevel")) || StringUtils.isEmpty(params.get("parentId"))) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		PageQueryUtil pageUtil = new PageQueryUtil(params);
+		return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getCategorisPage(pageUtil));
+	}
 
-    /**
-     * 列表
-     */
-    @RequestMapping(value = "/categories/listForSelect", method = RequestMethod.GET)
-    @ResponseBody
-    public Result listForSelect(@RequestParam("categoryId") Long categoryId) {
-        if (categoryId == null || categoryId < 1) {
-            return ResultGenerator.genFailResult("缺少参数！");
-        }
-        GoodsCategory category = newBeeMallCategoryService.getGoodsCategoryById(categoryId);
-        //既不是一级分类也不是二级分类则为不返回数据
-        if (category == null || category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel()) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        Map categoryResult = new HashMap(4);
-        if (category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_ONE.getLevel()) {
-            //如果是一级分类则返回当前一级分类下的所有二级分类，以及二级分类列表中第一条数据下的所有三级分类列表
-            //查询一级分类列表中第一个实体的所有二级分类
-            List<GoodsCategory> secondLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(categoryId), NewBeeMallCategoryLevelEnum.LEVEL_TWO.getLevel());
-            if (!CollectionUtils.isEmpty(secondLevelCategories)) {
-                //查询二级分类列表中第一个实体的所有三级分类
-                List<GoodsCategory> thirdLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(secondLevelCategories.get(0).getCategoryId()), NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel());
-                categoryResult.put("secondLevelCategories", secondLevelCategories);
-                categoryResult.put("thirdLevelCategories", thirdLevelCategories);
-            }
-        }
-        if (category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_TWO.getLevel()) {
-            //如果是二级分类则返回当前分类下的所有三级分类列表
-            List<GoodsCategory> thirdLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(Collections.singletonList(categoryId), NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel());
-            categoryResult.put("thirdLevelCategories", thirdLevelCategories);
-        }
-        return ResultGenerator.genSuccessResult(categoryResult);
-    }
+	/**
+	 * 列表
+	 */
+	@RequestMapping(value = "/categories/listForSelect", method = RequestMethod.GET)
+	@ResponseBody
+	public Result listForSelect(@RequestParam("categoryId") Long categoryId) {
+		if (categoryId == null || categoryId < 1) {
+			return ResultGenerator.genFailResult("缺少参数！");
+		}
+		GoodsCategory category = newBeeMallCategoryService.getGoodsCategoryById(categoryId);
+		// 既不是一级分类也不是二级分类则为不返回数据
+		if (category == null || category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel()) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		Map categoryResult = new HashMap(4);
+		if (category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_ONE.getLevel()) {
+			// 如果是一级分类则返回当前一级分类下的所有二级分类，以及二级分类列表中第一条数据下的所有三级分类列表
+			// 查询一级分类列表中第一个实体的所有二级分类
+			List<GoodsCategory> secondLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(
+					Collections.singletonList(categoryId), NewBeeMallCategoryLevelEnum.LEVEL_TWO.getLevel());
+			if (!CollectionUtils.isEmpty(secondLevelCategories)) {
+				// 查询二级分类列表中第一个实体的所有三级分类
+				List<GoodsCategory> thirdLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(
+						Collections.singletonList(secondLevelCategories.get(0).getCategoryId()),
+						NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel());
+				categoryResult.put("secondLevelCategories", secondLevelCategories);
+				categoryResult.put("thirdLevelCategories", thirdLevelCategories);
+			}
+		}
+		if (category.getCategoryLevel() == NewBeeMallCategoryLevelEnum.LEVEL_TWO.getLevel()) {
+			// 如果是二级分类则返回当前分类下的所有三级分类列表
+			List<GoodsCategory> thirdLevelCategories = newBeeMallCategoryService.selectByLevelAndParentIdsAndNumber(
+					Collections.singletonList(categoryId), NewBeeMallCategoryLevelEnum.LEVEL_THREE.getLevel());
+			categoryResult.put("thirdLevelCategories", thirdLevelCategories);
+		}
+		return ResultGenerator.genSuccessResult(categoryResult);
+	}
 
-    /**
-     * 添加
-     */
-    @RequestMapping(value = "/categories/save", method = RequestMethod.POST)
-    @ResponseBody
-    public Result save(@RequestBody GoodsCategory goodsCategory) {
-        if (Objects.isNull(goodsCategory.getCategoryLevel())
-                || StringUtils.isEmpty(goodsCategory.getCategoryName())
-                || Objects.isNull(goodsCategory.getParentId())
-                || Objects.isNull(goodsCategory.getCategoryRank())) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        String result = newBeeMallCategoryService.saveCategory(goodsCategory);
-        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult(result);
-        }
-    }
+	/**
+	 * 添加
+	 */
+	@RequestMapping(value = "/categories/save", method = RequestMethod.POST)
+	@ResponseBody
+	public Result save(@RequestBody GoodsCategory goodsCategory) {
+		if (Objects.isNull(goodsCategory.getCategoryLevel()) || StringUtils.isEmpty(goodsCategory.getCategoryName())
+				|| Objects.isNull(goodsCategory.getParentId()) || Objects.isNull(goodsCategory.getCategoryRank())) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		String result = newBeeMallCategoryService.saveCategory(goodsCategory);
+		if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult(result);
+		}
+	}
 
+	/**
+	 * 修改
+	 */
+	@RequestMapping(value = "/categories/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Result update(@RequestBody GoodsCategory goodsCategory) {
+		if (Objects.isNull(goodsCategory.getCategoryId()) || Objects.isNull(goodsCategory.getCategoryLevel())
+				|| StringUtils.isEmpty(goodsCategory.getCategoryName()) || Objects.isNull(goodsCategory.getParentId())
+				|| Objects.isNull(goodsCategory.getCategoryRank())) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		String result = newBeeMallCategoryService.updateGoodsCategory(goodsCategory);
+		if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult(result);
+		}
+	}
 
-    /**
-     * 修改
-     */
-    @RequestMapping(value = "/categories/update", method = RequestMethod.POST)
-    @ResponseBody
-    public Result update(@RequestBody GoodsCategory goodsCategory) {
-        if (Objects.isNull(goodsCategory.getCategoryId())
-                || Objects.isNull(goodsCategory.getCategoryLevel())
-                || StringUtils.isEmpty(goodsCategory.getCategoryName())
-                || Objects.isNull(goodsCategory.getParentId())
-                || Objects.isNull(goodsCategory.getCategoryRank())) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        String result = newBeeMallCategoryService.updateGoodsCategory(goodsCategory);
-        if (ServiceResultEnum.SUCCESS.getResult().equals(result)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult(result);
-        }
-    }
+	/**
+	 * 详情
+	 */
+	@GetMapping("/categories/info/{id}")
+	@ResponseBody
+	public Result info(@PathVariable("id") Long id) {
+		GoodsCategory goodsCategory = newBeeMallCategoryService.getGoodsCategoryById(id);
+		if (goodsCategory == null) {
+			return ResultGenerator.genFailResult("未查询到数据");
+		}
+		return ResultGenerator.genSuccessResult(goodsCategory);
+	}
 
-    /**
-     * 详情
-     */
-    @GetMapping("/categories/info/{id}")
-    @ResponseBody
-    public Result info(@PathVariable("id") Long id) {
-        GoodsCategory goodsCategory = newBeeMallCategoryService.getGoodsCategoryById(id);
-        if (goodsCategory == null) {
-            return ResultGenerator.genFailResult("未查询到数据");
-        }
-        return ResultGenerator.genSuccessResult(goodsCategory);
-    }
+	/**
+	 * 分类删除
+	 */
+	@RequestMapping(value = "/categories/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Result delete(@RequestBody Integer[] ids) {
+		if (ids.length < 1) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		if (newBeeMallCategoryService.deleteBatch(ids)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult("删除失败");
+		}
+	}
 
-    /**
-     * 分类删除
-     */
-    @RequestMapping(value = "/categories/delete", method = RequestMethod.POST)
-    @ResponseBody
-    public Result delete(@RequestBody Integer[] ids) {
-        if (ids.length < 1) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        if (newBeeMallCategoryService.deleteBatch(ids)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult("删除失败");
-        }
-    }
+	@GetMapping("/campaign")
+	public String campaignPage(HttpServletRequest request) {
 
-    @GetMapping("/campaign")
-    public String campaignPage(HttpServletRequest request) {
-        
-        request.setAttribute("path", "campaign");
-        return "admin/campaign";
-    }
-    
-    @RequestMapping(value = "/campaign/list", method = RequestMethod.GET)
-    @ResponseBody
-    public Result campaignList(@RequestParam Map<String, Object> params) {
-        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getCampaignPage(pageUtil));
-    }
-    
-    
+		request.setAttribute("path", "campaign");
+		return "admin/campaign";
+	}
+
+	@RequestMapping(value = "/campaign/list", method = RequestMethod.GET)
+	@ResponseBody
+	public Result campaignList(@RequestParam Map<String, Object> params) {
+		if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		PageQueryUtil pageUtil = new PageQueryUtil(params);
+		return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getCampaignPage(pageUtil));
+	}
+
 	@RequestMapping(value = "/campaign/save", method = RequestMethod.POST)
-    @ResponseBody
-    public Result insertCampaign(@RequestBody Campaign campaign,HttpServletRequest request) {
-		
-		String loginUserId =  request.getSession().getAttribute("loginUserId").toString();
-		 
+	@ResponseBody
+	public Result insertCampaign(@RequestBody Campaign campaign, HttpServletRequest request) {
+
+		String loginUserId = request.getSession().getAttribute("loginUserId").toString();
+
 		Long camId = newBeeMallCategoryService.getMaxCampaignId();
-		Long newCamId = camId+1;
+		Long newCamId = camId + 1;
 		Date insertDate = new Date();
 		String camName = campaign.getCamName();
 		Campaign camInfo = newBeeMallCategoryService.getCampaignInfo(camName);
-		
-		
-		campaign.setCreateUser(loginUserId); 
+
+		campaign.setCreateUser(loginUserId);
 		campaign.setCamId(newCamId);
 		campaign.setTimeStamp(insertDate);
 		campaign.setCamKind(camInfo.getCamKind());
 		campaign.setPriority(camInfo.getPriority());
-		
+
 		int row = newBeeMallCategoryService.insertNewCampaign(campaign);
-		if(row>0) {
-			 return ResultGenerator.genSuccessResult("添加成功");
-			 }
-		else {
-			 return ResultGenerator.genErrorResult(404,"添加失败");
-		 }
-		
+		if (row > 0) {
+			return ResultGenerator.genSuccessResult("添加成功");
+		} else {
+			return ResultGenerator.genErrorResult(404, "添加失败");
+		}
+
 	}
-	
+
 	@RequestMapping(value = "/campaign/edit", method = RequestMethod.POST)
-    @ResponseBody
-    public Result editCampaign(@RequestBody Map<String,Object>params,HttpServletRequest request) {
-		
-		String loginUserId =  request.getSession().getAttribute("loginUserId").toString();
+	@ResponseBody
+	public Result editCampaign(@RequestBody Map<String, Object> params, HttpServletRequest request) {
+
+		String loginUserId = request.getSession().getAttribute("loginUserId").toString();
 		Long camId = Long.parseLong(params.get("camId").toString());
 		String camName = params.get("camName").toString();
 		Campaign camInfo = newBeeMallCategoryService.getCampaignInfo(camName);
 		int camKind = camInfo.getCamKind();
 		int priority = camInfo.getPriority();
 		Date editDate = new Date();
-	
-		
+
 		Campaign newCam = newBeeMallCategoryService.getCampaignById(camId);
 		newCam.setCamId(camId);
 		newCam.setCal1(params.get("cal1").toString());
@@ -258,157 +258,166 @@ public class NewBeeMallGoodsCategoryController {
 		newCam.setTimeStamp(editDate);
 		newCam.setCamName(camName);
 		newCam.setCreateUser(loginUserId);
-		
+
 		int row = newBeeMallCategoryService.updateByCamId(newCam);
-		
-		if(row>0) {
-			 return ResultGenerator.genSuccessResult("修改成功");
-			 }
-		else {
-			 return ResultGenerator.genErrorResult(404,"修改失败");
-		 
-		
+
+		if (row > 0) {
+			return ResultGenerator.genSuccessResult("修改成功");
+		} else {
+			return ResultGenerator.genErrorResult(404, "修改失败");
+
 		}
 	}
-	
-    @RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
-    @ResponseBody
-    public Result deleteCampaign(@RequestBody Integer[] ids) {
-        if (ids.length < 1) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        if (newBeeMallCategoryService.deleteCampaign(ids)) { 
-        	return ResultGenerator.genSuccessResult();
-            
-        } else {
-        	return ResultGenerator.genFailResult("删除失败");
-        }
-    }
-    
-    @GetMapping("/goodsCampaign")
-    public String goodsCampaignPage(HttpServletRequest request) {
-    	List<GoodsCampaign>goodsCampaignList = newBeeMallCategoryService.getGoodsCampaignContent();
-    	List<GoodsCampaignVO> goodsCampaignVOList = BeanUtil.copyList(goodsCampaignList, GoodsCampaignVO.class);
-    	request.setAttribute("path", "goodsCampaign");
+
+	@RequestMapping(value = "/campaign/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Result deleteCampaign(@RequestBody Integer[] ids) {
+		if (ids.length < 1) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		if (newBeeMallCategoryService.deleteCampaign(ids)) {
+			return ResultGenerator.genSuccessResult();
+
+		} else {
+			return ResultGenerator.genFailResult("删除失败");
+		}
+	}
+
+	@GetMapping("/goodsCampaign")
+	public String goodsCampaignPage(HttpServletRequest request) {
+		List<GoodsCampaign> goodsCampaignList = newBeeMallCategoryService.getGoodsCampaignContent();
+		List<GoodsCampaignVO> goodsCampaignVOList = BeanUtil.copyList(goodsCampaignList, GoodsCampaignVO.class);
+		request.setAttribute("path", "goodsCampaign");
 		request.setAttribute("goodsCampaign", goodsCampaignVOList);
 		return "admin/goodsCampaign";
-    }
-    
-    @RequestMapping(value = "/goodsCampaign/list", method = RequestMethod.GET)
+	}
+
+	@RequestMapping(value = "/goodsCampaign/list", method = RequestMethod.GET)
+	@ResponseBody
+	public Result goodsCampaignList(@RequestParam Map<String, Object> params) {
+		if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
+			return ResultGenerator.genFailResult("参数异常！");
+		}
+		PageQueryUtil pageUtil = new PageQueryUtil(params);
+		return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getGoodsCampaignPage(pageUtil));
+	}
+
+	@RequestMapping(value = "/goodsCampaign/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Result updateGoodsCam(@RequestBody List<GoodsCampaign> cams) {
+		boolean errorflg = false;
+		for (int i = 0; i < cams.size(); i++) {
+			GoodsCampaign goodsCam = new GoodsCampaign();
+			goodsCam = cams.get(i);
+			Long newCamId = goodsCam.getCamId();
+			int flag = goodsCam.getFlag();
+			Long goodsId = goodsCam.getGoodsId();
+			Date starDate = new Date();
+			Date endDate = new Date();
+
+			goodsCam.setGoodsId(goodsId);
+			goodsCam.setCamId(newCamId);
+			goodsCam.setStartDate(starDate);
+			goodsCam.setEndDate(endDate);
+			int row = 0;
+			if (flag == 0) {
+				row = newBeeMallCategoryService.setNewGoodsCam(goodsCam);
+			}
+			if (flag == 1) {
+				row = newBeeMallCategoryService.insertNewGoodsCampaign(goodsCam);
+			}
+
+			if (flag == 2) {
+				row = newBeeMallCategoryService.deleteGoodsCam(goodsCam);
+			}
+
+			if (row >= 0) {
+				errorflg = false;
+			} else {
+				errorflg = true;
+				break;
+			}
+		}
+		if (!errorflg) {
+			return ResultGenerator.genSuccessResult("更新成功");
+
+		} else {
+			return ResultGenerator.genFailResult("更新失败");
+		}
+	}
+
+	@RequestMapping(value = "/goodsCampaign/campaignList", method = RequestMethod.POST)
+	@ResponseBody
+	public Result camList() {
+		List<GoodsCampaign> goodsCampaignList = newBeeMallCategoryService.getGoodsCampaignContent();
+		List<GoodsCampaignVO> goodsCampaignVOList = BeanUtil.copyList(goodsCampaignList, GoodsCampaignVO.class);
+
+		return ResultGenerator.genSuccessResult(goodsCampaignVOList);
+
+	}
+
+	@RequestMapping(value = "/goodsCampaign/download", method = RequestMethod.POST)
     @ResponseBody
-    public Result goodsCampaignList(@RequestParam Map<String, Object> params) {
-        if (StringUtils.isEmpty(params.get("page")) || StringUtils.isEmpty(params.get("limit"))) {
-            return ResultGenerator.genFailResult("参数异常！");
-        }
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        return ResultGenerator.genSuccessResult(newBeeMallCategoryService.getGoodsCampaignPage(pageUtil));
-    }
-    
-    @RequestMapping(value = "/goodsCampaign/update", method = RequestMethod.POST)
-    @ResponseBody
-    public Result updateGoodsCam(@RequestBody List<GoodsCampaign> cams) {
-    	boolean errorflg = false;
-    	for(int i = 0;i<cams.size();i++) {
-    		GoodsCampaign goodsCam = new GoodsCampaign();
-    		goodsCam = cams.get(i);
-    		Long newCamId = goodsCam.getCamId();
-    		int flag = goodsCam.getFlag();
-    		Long goodsId = goodsCam.getGoodsId();
-    		Date starDate = new Date();
-    		Date endDate = new Date();
-        
-    		goodsCam.setGoodsId(goodsId);
-    		goodsCam.setCamId(newCamId);
-    		goodsCam.setStartDate(starDate);
-    		goodsCam.setEndDate(endDate);
-    		int row = 0;
-    		if(flag == 0) {
-    			row = newBeeMallCategoryService.setNewGoodsCam(goodsCam);
-    		}
-    		if(flag == 1) {
-    			row = newBeeMallCategoryService.insertNewGoodsCampaign(goodsCam);
-    		}
-			
-			if(flag == 2) { 
-				row = newBeeMallCategoryService.deleteGoodsCam(goodsCam); }
-			 
-    		if(row>=0) {
-    			errorflg = false;
-    		}else {
-    			errorflg = true;
-    			break;
-    		}          
+    public Result download(@RequestBody List<String> goodsIds,HttpServletResponse response) throws IOException {
+  	  //カンマ
+  	  final String COMMA = ",";
+  	  //改行
+  	  final String NEW_LINE= "\r\n";
+  	 //リスト化を行う
+    	List<GoodsCampaign> goodsCamList = new ArrayList<GoodsCampaign>();
+    	for(int i = 0; i <goodsIds.size(); i ++) {
+    		long goodsId = Long.parseLong(goodsIds.get(i));
+    		GoodsCampaign download = newBeeMallCategoryService.getGoodsCamById(goodsId);
+    		goodsCamList.add(download);
     	}
-        if (!errorflg) { 
-        	return ResultGenerator.genSuccessResult("更新成功");
-            
-        } else {
-        	return ResultGenerator.genFailResult("更新失败"); 
-        }
-    }
-    
-    @RequestMapping(value = "/goodsCampaign/campaignList", method = RequestMethod.POST)
-    @ResponseBody
-    public Result camList() {
-    	List<GoodsCampaign>goodsCampaignList = newBeeMallCategoryService.getGoodsCampaignContent();
-    	List<GoodsCampaignVO> goodsCampaignVOList = BeanUtil.copyList(goodsCampaignList, GoodsCampaignVO.class);
+    		FileWriter fileWriter = null;
+
+            try {
+              fileWriter = new FileWriter("F:\\campaign.csv");
+    		
     	
-        return ResultGenerator.genSuccessResult(goodsCampaignVOList); 
-        
-    }
-    
-    @RequestMapping(value = "/goodsCampaign/download", method = RequestMethod.POST)
-    @ResponseBody
-    public Result download(@RequestBody List<GoodsCampaign> cams,HttpServletResponse response) {
-    	for(int i = 0; i <cams.size(); i ++) {
-    		GoodsCampaign goodsCam = cams.get(i);
-    		long goodsId = goodsCam.getGoodsId();
-    	}
-        String[] userName = {"阿部", "鈴木", "伊藤", "田中", "太田", "佐々木", "上野", "馬場", "榎本", "和田"};
-        String[] userSex = {"男", "男", "女", "女", "男", "男", "男", "女", "男", "男"};
-        String[] userDepartment = {"営業部", "総務部", "人事部", "営業部", "開発部", "開発部", "人事部", "営業部", "開発部", "総務部"};
-        int[] userSalary = {280000, 320000, 250000, 330000, 210000, 250000, 320000, 280000, 250000, 210000};
-        // exportCsvクラスに渡す
-        exportCsv(userName, userSex, userDepartment, userSalary);
-    	return ResultGenerator.genSuccessResult();
+            for (GoodsCampaign g : goodsCamList) {
 
-    }
-    
-public static void exportCsv(String[] userName, String[] userSex, String[] userDepartment, int[] userSalary){
-    try {
-        // 出力ファイルの作成
-        FileWriter fw = new FileWriter("Userdata.csv", false);
-        // PrintWriterクラスのオブジェクトを生成
-        PrintWriter pw = new PrintWriter(new BufferedWriter(fw));
+                fileWriter.append(String.valueOf(g.getGoodsId()));
+                fileWriter.append(COMMA);
+                fileWriter.append(g.getGoodsName());
+                fileWriter.append(COMMA);
+                fileWriter.append(String.valueOf(g.getCamId()));
+                fileWriter.append(COMMA);
+                fileWriter.append(g.getCamName());
+                fileWriter.append(COMMA);
+                fileWriter.append(g.getCal1());
+                fileWriter.append(COMMA);
+                fileWriter.append(String.valueOf(g.getStartDate()));
+                fileWriter.append(COMMA);
+                fileWriter.append(String.valueOf(g.getEndDate()));
+                fileWriter.append(NEW_LINE);
+              }
+            }
+            finally {
 
-        // ヘッダーの指定
-        pw.print("社員番号");
-        pw.print(",");
-        pw.print("名前");
-        pw.print(",");
-        pw.print("性別");
-        pw.print(",");
-        pw.print("部署");
-        pw.print(",");
-        pw.print("給料");
-        pw.println();
+                try {
+                  fileWriter.flush();
+                  fileWriter.close();
+                } catch (IOException e) {
+                  e.printStackTrace();
+                }
 
-        // データを書き込む
-        for(int i = 0; i < userName.length; i++){
-            pw.print(userName[i]);
-            pw.print(",");
-            pw.print(userSex[i]);
-            pw.print(",");
-            pw.print(userDepartment[i]);
-            pw.print(",");
-            pw.print(userSalary[i]);
-            pw.println();
+              }
+            
+            return ResultGenerator.genSuccessResult("F:\\campaign.csv");
         }
-
-        // ファイルを閉じる
-        pw.close();
-
-      }
+	
+	@RequestMapping(value = "/downloadFile", method = RequestMethod.GET)
+	public void getSteamingFile1(HttpServletResponse response) throws IOException {
+	response.setContentType("application/csv");
+	response.setHeader("Content-Disposition", "attachment; filename=\"campaign2.csv\"");
+	InputStream inputStream = new FileInputStream(new File("F:\\campaign.csv"));
+	   int nRead;
+	   while ((nRead = inputStream.read()) != -1) {
+	       response.getWriter().write(nRead);
+	   }
 	}
 
 }
+
