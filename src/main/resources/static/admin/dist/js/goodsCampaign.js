@@ -136,14 +136,9 @@ function selectCam(){
     }
 
 function download(){
-	var selRowIds = myGrid.jqGrid("getGridParam", "selarrrow");
-	var camIdArr = [];
-	for(var i = 0;i<selRowIds.length;i++){
-			var rowData = myGrid.jqGrid("getLocalRow", selRowIds[i]);
-			var camId = rowData[i].camId;
-			camIdArr.push(camId);
-		}
-	var data = camIdArr;
+	var selRowIds = $("#jqGrid").jqGrid("getGridParam", "selarrrow");
+	
+	var data = selRowIds;
 	
 	$.ajax({
             type: 'POST',//方法类型
@@ -152,7 +147,7 @@ function download(){
             data: JSON.stringify(data),
             success: function (result) {
                 if (result.resultCode == 200) {
-					$(".btn-info").click();
+					document.getElementById('my_iframe').src = 'http://localhost:28089/admin/downloadFile';
                     swal("更新成功", {
                         icon: "success",
                     });
@@ -170,5 +165,4 @@ function download(){
             }
         });
 }
-
 
