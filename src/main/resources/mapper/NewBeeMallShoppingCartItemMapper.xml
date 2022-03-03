@@ -141,4 +141,34 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where cart_item_id = #{cartItemId,jdbcType=BIGINT}
   </update>
+  
+  <select id="selectLikeByUserId" resultType="ltd.newbee.mall.entity.GoodsLike">
+    select a.like_id,a.user_id,a.goods_id,a.is_deleted,a.create_time,b.goods_name,b.goods_cover_img,
+	b.selling_price from like_table a left join tb_newbee_mall_goods_info b on a.goods_id = b.goods_id
+	where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and is_deleted = 0
+    limit #{number}
+  </select>
+  
+  <select id="getLikeCount" parameterType="Long" resultType="Int">
+    select count(*) from like_table
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  <insert id="insertGoodsLike" parameterType="ltd.newbee.mall.entity.GoodsLike">
+    insert into like_table (like_id, user_id, goods_id, 
+      is_deleted, create_time)
+    values (#{likeId,jdbcType=BIGINT},
+      #{userId,jdbcType=BIGINT},
+      #{goodsId,jdbcType=BIGINT},
+      #{isDeleted,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="getMaxLikeId" resultType="Long">
+  select max(like_id) from like_table
+  </select>
+  
+  <update id="deleteGoodsLike" parameterType="Long">
+    update like_table set is_deleted = 1
+    where like_id = #{likeId,jdbcType=BIGINT} and is_deleted = 0
+  </update>
 </mapper>

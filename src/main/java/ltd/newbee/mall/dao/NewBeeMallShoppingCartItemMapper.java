@@ -8,6 +8,7 @@
  */
 package ltd.newbee.mall.dao;
 
+import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,4 +34,14 @@ public interface NewBeeMallShoppingCartItemMapper {
     int updateByPrimaryKey(NewBeeMallShoppingCartItem record);
 
     int deleteBatch(List<Long> ids);
+    
+    List<GoodsLike> selectLikeByUserId(@Param("newBeeMallUserId") Long newBeeMallUserId, @Param("number") int number);
+    
+    int getLikeCount(Long userId);
+    
+    int insertGoodsLike(GoodsLike goodsLike);
+    
+    Long getMaxLikeId();
+    
+    int deleteGoodsLike(Long likeId);
 }
