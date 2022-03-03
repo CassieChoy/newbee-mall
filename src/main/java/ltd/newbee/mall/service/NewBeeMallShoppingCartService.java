@@ -8,7 +8,9 @@
  */
 package ltd.newbee.mall.service;
 
+import ltd.newbee.mall.controller.vo.GoodsLikeVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
+import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 
 import java.util.List;
@@ -56,4 +58,14 @@ public interface NewBeeMallShoppingCartService {
      * @return
      */
     List<NewBeeMallShoppingCartItemVO> getMyShoppingCartItems(Long newBeeMallUserId);
+    
+    List<GoodsLikeVO> getMyLikeItems(Long newBeeMallUserId);
+    
+    int getLikeCount(Long userId);
+    
+    int insertGoodsLike(GoodsLike goodsLike);
+    
+    Long getMaxLikeId();
+    
+    int deleteGoodsLike(Long likeId);
 }

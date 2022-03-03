@@ -10,11 +10,15 @@ package ltd.newbee.mall.controller.mall;
 
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.controller.vo.GoodsLikeVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.entity.GoodsCampaign;
+import ltd.newbee.mall.entity.GoodsLike;
+import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
+import ltd.newbee.mall.service.NewBeeMallGoodsService;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
@@ -26,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -37,6 +43,8 @@ public class ShoppingCartController {
     @Resource
     private NewBeeMallCategoryService newBeeMallCategoryService;
 
+    @Resource
+    private NewBeeMallGoodsService newBeeMallGoodsService;
     @GetMapping("/shop-cart")
     public String cartListPage(HttpServletRequest request,
                                HttpSession httpSession) {
@@ -139,5 +147,59 @@ public class ShoppingCartController {
         request.setAttribute("priceTotal", priceTotal);
         request.setAttribute("myShoppingCartItems", myShoppingCartItems);
         return "mall/order-settle";
+    }
+    
+    @GetMapping("/shop-like")
+    public String likeListPage(HttpServletRequest request,HttpSession httpSession) {
+        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+        int itemsTotal = 0;
+        List<GoodsLikeVO> myLikeItems = newBeeMallShoppingCartService.getMyLikeItems(user.getUserId());
+        if (!CollectionUtils.isEmpty(myLikeItems)) {
+            //购物项总数
+            itemsTotal = newBeeMallShoppingCartService.getLikeCount(user.getUserId());
+            if (itemsTotal < 1) {
+                return "error/error_5xx";
+            }
+        }
+        request.setAttribute("itemsTotal", itemsTotal);
+        request.setAttribute("myLikeItems", myLikeItems);
+        return "mall/like";
+    }
+    
+    @PostMapping("/shop-like")
+    @ResponseBody
+    public Result saveGoodsLike(@RequestBody GoodsLike goodsLike,HttpSession httpSession) {
+        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+        Long goodsId = goodsLike.getGoodsId();
+        Long likeId = newBeeMallShoppingCartService.getMaxLikeId();
+        Long newLikeId = likeId + 1;
+        Date createDate = new Date();
+        goodsLike.setUserId(user.getUserId());
+        goodsLike.setIsDeleted(0);
+        goodsLike.setLikeId(newLikeId);
+        goodsLike.setCreateTime(createDate);
+        
+        int row = newBeeMallShoppingCartService.insertGoodsLike(goodsLike);
+        //添加成功
+        if (row>0) {
+            return ResultGenerator.genSuccessResult("添加成功");
+        }
+        //添加失败
+        return ResultGenerator.genFailResult("添加失败");
+    }
+    
+    @PostMapping("/shop-like/delete")
+    @ResponseBody
+    public Result deleteGoodsLike(@RequestBody GoodsLike goodsLike,HttpSession httpSession) {
+        Long likeId = goodsLike.getLikeId();
+        
+        
+        int row = newBeeMallShoppingCartService.deleteGoodsLike(likeId);
+        //添加成功
+        if (row>0) {
+            return ResultGenerator.genSuccessResult("删除成功");
+        }
+        //添加失败
+        return ResultGenerator.genFailResult("删除失败");
     }
 }

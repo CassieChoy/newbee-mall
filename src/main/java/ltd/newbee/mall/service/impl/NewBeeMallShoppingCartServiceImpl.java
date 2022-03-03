@@ -10,11 +10,13 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.ServiceResultEnum;
+import ltd.newbee.mall.controller.vo.GoodsLikeVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
 import ltd.newbee.mall.entity.GoodsCampaign;
+import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
@@ -168,4 +170,64 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
         }
         return newBeeMallShoppingCartItemVOS;
     }
+
+	@Override
+	public List<GoodsLikeVO> getMyLikeItems(Long newBeeMallUserId) {
+		List<GoodsLikeVO> GoodsLikeVOS = new ArrayList<>();
+        List<GoodsLike> GoodsLikeItems = newBeeMallShoppingCartItemMapper.selectLikeByUserId(newBeeMallUserId, Constants.GOODS_LIKE_TOTAL_NUMBER);
+        if (!CollectionUtils.isEmpty(GoodsLikeItems)) {
+            //查询商品信息并做数据转换
+            List<Long> newBeeMallGoodsIds = GoodsLikeItems.stream().map(GoodsLike::getGoodsId).collect(Collectors.toList());
+            List<NewBeeMallGoods> newBeeMallGoods = newBeeMallGoodsMapper.selectByPrimaryKeys(newBeeMallGoodsIds);
+            Map<Long, NewBeeMallGoods> newBeeMallGoodsMap = new HashMap<>();
+            if (!CollectionUtils.isEmpty(newBeeMallGoods)) {
+                newBeeMallGoodsMap = newBeeMallGoods.stream().collect(Collectors.toMap(NewBeeMallGoods::getGoodsId, Function.identity(), (entity1, entity2) -> entity1));
+            }
+            for (GoodsLike goodsLikeItem : GoodsLikeItems) {
+            	GoodsLikeVO GoodsLikeVO = new GoodsLikeVO();
+                BeanUtil.copyProperties(goodsLikeItem, GoodsLikeVO);
+                
+                
+                if (newBeeMallGoodsMap.containsKey(goodsLikeItem.getGoodsId())) {
+                    NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(goodsLikeItem.getGoodsId());
+                    goodsLikeItem.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
+                    String goodsName = newBeeMallGoodsTemp.getGoodsName();
+                    // 字符串过长导致文字超出的问题
+                    if (goodsName.length() > 28) {
+                        goodsName = goodsName.substring(0, 28) + "...";
+                    }
+                    GoodsLikeVO.setGoodsName(goodsName);
+					
+                    GoodsLikeVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+					 
+                    GoodsLikeVOS.add(GoodsLikeVO);
+                }
+            }
+        }
+        return GoodsLikeVOS;
+	}
+
+	@Override
+	public int getLikeCount(Long userId) {
+		
+		return newBeeMallShoppingCartItemMapper.getLikeCount(userId);
+	}
+
+	@Override
+	public int insertGoodsLike(GoodsLike goodsLike) {
+		
+		return newBeeMallShoppingCartItemMapper.insertGoodsLike(goodsLike);
+	}
+
+	@Override
+	public Long getMaxLikeId() {
+		
+		return newBeeMallShoppingCartItemMapper.getMaxLikeId();
+	}
+
+	@Override
+	public int deleteGoodsLike(Long likeId) {
+		
+		return newBeeMallShoppingCartItemMapper.deleteGoodsLike(likeId);
+	}
 }

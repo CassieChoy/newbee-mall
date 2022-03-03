@@ -62,6 +62,12 @@
     background-color: darkturquoise;
 }
 
+button#goodsLike {
+    width: 40px;
+    background-color: darkturquoise;
+    color: white;
+}
+
 </style>
 </head>
 
@@ -133,8 +139,10 @@
 
 			<div class="right fr" style=" display:flex;flex-direction:column">
 				<div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
+				<button class="goodsLike" id="goodsLike" th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'">LIKE</button>
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
 				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
+				
 				<div class="item_price mr40 ml20 mt10">
 					<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
 					<del>
@@ -830,6 +838,7 @@
 	<script th:src="@{/admin/dist/js/qaPages.js}"></script>
 	<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
 	<script th:src="@{/admin/dist/js/reviewPages.js}"></script>
+	<script th:src="@{/admin/dist/js/campaign.js}"></script>
 	
 	
 	<script type="text/javascript">
