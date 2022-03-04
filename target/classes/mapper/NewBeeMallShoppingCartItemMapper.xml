@@ -152,6 +152,7 @@
   <select id="getLikeCount" parameterType="Long" resultType="Int">
     select count(*) from like_table
     where user_id = #{userId,jdbcType=BIGINT}
+    and is_deleted = 0
   </select>
   
   <insert id="insertGoodsLike" parameterType="ltd.newbee.mall.entity.GoodsLike">
