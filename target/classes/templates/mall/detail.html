@@ -139,7 +139,6 @@ button#goodsLike {
 
 			<div class="right fr" style=" display:flex;flex-direction:column">
 				<div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
-				<button class="goodsLike" id="goodsLike" th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'">LIKE</button>
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
 				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
 				
@@ -149,12 +148,60 @@ button#goodsLike {
 						<th:block th:text="${goodsDetail.originalPrice}+'.00 元'"></th:block>
 					</del>
 				</div>
+				<div class="option">
+					<div class="optionsForSize">
+						<h2 class="introForSize">Choose your size.</h2>
+						<fieldset class="sizes">
+							<div class="sizeOptions">
+								<div class="sizeOption">
+									<label>
+										<span>
+											<span class="size">iPhone 13 Pro</span>
+											<span class="price">$999</span>
+										</span>
+									</label>
+								</div>
+								<div class="sizeOption">
+									<label>
+										<span>
+											<span class="size">iPhone 13 Pro</span>
+											<span class="price">$999</span>
+										</span>
+									</label>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="optionsForColor">
+						<h2 class="introForColor">Choose your color.</h2>
+						<fieldset class="colors">
+							<div class="colorOptions">
+								<div class="colorOption">
+									<label>
+										<span class="img"></span>
+										<span class="color">White</span>
+									</label>
+								</div>
+							</div>
+							<div class="colorOptions">
+								<div class="colorOption">
+									<label>
+										<span class="img"></span>
+										<span class="color">Black</span>
+									</label>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
 
 				<div class="order">
 					<input class="car" type="button" th:onclick="'saveAndGoCart('+${goodsDetail.goodsId}+')'"
 						value="立即选购" />
 					<input class="car" type="button" th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
 						value="加入购物车" />
+					<input class="car" type="button" th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
+						value="LIKE" />
 				</div>
 				<div class="tb-extra ml20" id="J_tbExtra">
 					<dl>

@@ -116,7 +116,7 @@ public class GoodsController {
 			return "error/error_5xx";
 		}
 		// 获取商品信息
-		GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoByPK(10700l);
+		GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoByPK(goodsId);
 		GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
 		BeanUtil.copyProperties(goodsInfo, goodsInfoVO);
 		request.setAttribute("goodsInfo", goodsInfoVO);
