@@ -773,5 +773,34 @@
 			goods_id = #{goodsId,jdbcType=BIGINT}
 		</where>
 	</select>
+	
+	<select id="getGoodsInfo" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsInfoBySku">
+		SELECT * FROM sku_table
+		<where>
+			goods_id = #{goodsId,jdbcType=BIGINT}
+			and memory = '256G' and color='black'
+		</where>
+	</select>
+	
+	<select id="getColor" parameterType="Long" resultType="String">
+		select distinct(color) from sku_table
+		<where>
+			goods_id = #{goodsId,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getSize" parameterType="Long" resultType="String">
+		select distinct(size) from sku_table
+		<where>
+			goods_id = #{goodsId,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getMemory" parameterType="Long" resultType="String">
+		select distinct(memory) from sku_table
+		<where>
+			goods_id = #{goodsId,jdbcType=BIGINT}
+		</where>
+	</select>
 </mapper>
 

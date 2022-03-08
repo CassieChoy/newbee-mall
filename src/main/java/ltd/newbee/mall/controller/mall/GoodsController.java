@@ -12,6 +12,7 @@ import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
 import ltd.newbee.mall.controller.vo.GoodsImageVO;
+import ltd.newbee.mall.controller.vo.GoodsInfoBySkuVO;
 import ltd.newbee.mall.controller.vo.GoodsInfoVO;
 import ltd.newbee.mall.controller.vo.GoodsQaVO;
 import ltd.newbee.mall.controller.vo.GoodsReviewVO;
@@ -23,6 +24,7 @@ import ltd.newbee.mall.entity.Carousel;
 import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsImageEntity;
 import ltd.newbee.mall.entity.GoodsInfo;
+import ltd.newbee.mall.entity.GoodsInfoBySku;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.InsertGoodsQaLike;
@@ -120,6 +122,15 @@ public class GoodsController {
 		GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
 		BeanUtil.copyProperties(goodsInfo, goodsInfoVO);
 		request.setAttribute("goodsInfo", goodsInfoVO);
+		
+		List<String> colors = newBeeMallGoodsService.getColor(goodsId);
+		request.setAttribute("colors", colors);
+		
+		List<String> sizes = newBeeMallGoodsService.getSize(goodsId);
+		request.setAttribute("sizes", sizes);
+		
+		List<String> memories = newBeeMallGoodsService.getMemory(goodsId);
+		request.setAttribute("memories", memories);
 
 		// 获取商品图片
 
@@ -405,9 +416,12 @@ public class GoodsController {
 	            return ResultGenerator.genFailResult("文件上传失败");
 	        }
 	    }
-
 	
-    }
+
+		
+	
+	
+}
 
 
 
