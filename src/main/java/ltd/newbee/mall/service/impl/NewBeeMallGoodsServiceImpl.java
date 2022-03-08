@@ -17,7 +17,7 @@ import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.entity.GoodsCategory;
 import ltd.newbee.mall.entity.GoodsImageEntity;
 import ltd.newbee.mall.entity.GoodsInfo;
-
+import ltd.newbee.mall.entity.GoodsInfoBySku;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
 import ltd.newbee.mall.entity.InsertGoodsQaLike;
@@ -279,6 +279,30 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	public Long getMaxReviewId(Long goodsId) {
 		
 		return goodsMapper.getMaxReviewId(goodsId);
+	}
+
+	@Override
+	public List<GoodsInfoBySku> getGoodsInfo(long goodsId) {
+		
+		return goodsMapper.getGoodsInfo(goodsId);
+	}
+
+	@Override
+	public List<String> getColor(long goodsId) {
+		
+		return goodsMapper.getColor(goodsId);
+	}
+
+	@Override
+	public List<String> getMemory(long goodsId) {
+		
+		return goodsMapper.getMemory(goodsId);
+	}
+
+	@Override
+	public List<String> getSize(long goodsId) {
+		
+		return goodsMapper.getSize(goodsId);
 	}
 
 

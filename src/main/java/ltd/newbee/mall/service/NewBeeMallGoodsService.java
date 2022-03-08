@@ -10,6 +10,7 @@ package ltd.newbee.mall.service;
 
 import ltd.newbee.mall.entity.GoodsImageEntity;
 import ltd.newbee.mall.entity.GoodsInfo;
+import ltd.newbee.mall.entity.GoodsInfoBySku;
 import ltd.newbee.mall.entity.GoodsPageEntity;
 import ltd.newbee.mall.entity.GoodsQa;
 import ltd.newbee.mall.entity.GoodsReview;
@@ -131,5 +132,13 @@ public interface NewBeeMallGoodsService {
     int getReviewLikeUserId(Map<String,Object>params);
     
     Long getMaxReviewId(Long goodsId);
+    
+    List<GoodsInfoBySku> getGoodsInfo(long goodsId);
+    
+    List<String> getColor (long goodsId);
+    
+    List<String> getMemory (long goodsId);
+    
+    List<String> getSize (long goodsId);
 
 }

@@ -2379,7 +2379,7 @@ button[disabled], input[type="radio"][disabled], input[type="checkbox"][disabled
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
-    display: block;
+        display: inline-block;
 }
 
 body {

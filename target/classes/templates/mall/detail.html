@@ -6,11 +6,11 @@
 
 <head>
 	<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
- 	<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 	<link rel="stylesheet" th:href="@{/mall/styles/all_response.css}">
- 	<link rel="stylesheet" th:href="@{/admin/plugins/bootstrap/css/bootstrap.css}"/>
- 	
- 	<!--<link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">-->
+	<link rel="stylesheet" th:href="@{/admin/plugins/bootstrap/css/bootstrap.css}" />
+
+	<!--<link rel="stylesheet" th:href="@{/admin/dist/css/adminlte.min.css}">-->
 
 
 	<link rel="stylesheet" th:href="@{/mall/styles/fr011.css}">
@@ -23,52 +23,89 @@
 
 	<link rel='stylesheet' href='http://fonts.googleapis.com/icon?family=Material+Icons'>
 	<style>
-.checked {
-  color: orange;
-}
+		.checked {
+			color: orange;
+		}
 
-.results {
-  font-size: 0;
-  padding-bottom: 16px;
-}
-.results-content {
-    font-size: 13px;
-    display: inline-block;
-    margin-left: 20px;
-    vertical-align: top;
-    background: url(https://i.stack.imgur.com/rwkqF.png) 0 0 repeat-x;
-    width: 92px;
-    height: 17.5px;
-    background-size: 92px 35px;
-}
-.results .results-content span.stars span {
-    background: url(https://i.stack.imgur.com/rwkqF.png) 0 -17.5px repeat-x;
-    display: inline-block;
-    height: 17.5px;
-    width: 92px;
-    background-size: 92px 35px;
-}
+		.results {
+			font-size: 0;
+			padding-bottom: 16px;
+		}
 
-.results-content {
-    background-size: 92px 35px !important;
-}
+		.results-content {
+			font-size: 13px;
+			display: inline-block;
+			margin-left: 20px;
+			vertical-align: top;
+			background: url(https://i.stack.imgur.com/rwkqF.png) 0 0 repeat-x;
+			width: 92px;
+			height: 17.5px;
+			background-size: 92px 35px;
+		}
 
-.campaign {
-	max-width: fit-content;
-    font-weight: 800;
-	color: white;
-    padding: 10px;
-	font-size: 2rem;
-    background-color: darkturquoise;
-}
+		.results .results-content span.stars span {
+			background: url(https://i.stack.imgur.com/rwkqF.png) 0 -17.5px repeat-x;
+			display: inline-block;
+			height: 17.5px;
+			width: 92px;
+			background-size: 92px 35px;
+		}
 
-button#goodsLike {
-    width: 40px;
-    background-color: darkturquoise;
-    color: white;
-}
+		.results-content {
+			background-size: 92px 35px !important;
+		}
 
-</style>
+		.campaign {
+			max-width: fit-content;
+			font-weight: 800;
+			color: white;
+			padding: 10px;
+			font-size: 2rem;
+			background-color: darkturquoise;
+		}
+
+		button#goodsLike {
+			width: 40px;
+			background-color: darkturquoise;
+			color: white;
+		}
+
+		.option {
+			padding: 23px 0 0;
+		}
+
+		fieldset {
+			width: auto;
+			min-width: 0;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			display: block;
+			margin-inline-start: 2px;
+			margin-inline-end: 2px;
+			padding-block-start: 0.35em;
+			padding-inline-start: 0.75em;
+			padding-inline-end: 0.75em;
+			padding-block-end: 0.625em;
+			min-inline-size: min-content;
+		}
+
+		.colorSizeMemory {
+			font-size: 2rem;
+			font-weight: 600;
+			display: flex;
+			padding-right: 2rem;
+		}
+
+		.goodsOption {
+			display: flex;
+			margin: 4rem;
+		}
+
+		.order {
+			display: flex;
+		}
+	</style>
 </head>
 
 <head th:replace="mall/header::head-fragment('NewBee商城-商品详情','detail')">
@@ -90,7 +127,7 @@ button#goodsLike {
 		</div>
 
 		<div class="intro mt20 w clearfix">
-			<div class="left fl p-gallery-static" style="position: relative;">
+			<div class="left fl p-gallery-static">
 				<div class="swiper-container fl">
 					<img th:src="@{${goodsDetail.goodsCoverImg}}">
 				</div>
@@ -100,8 +137,7 @@ button#goodsLike {
 						<div class="swiper-wrapper js-gallery-thumbnails">
 							<th:block th:each="goodsImage,iter : ${outerList}">
 								<div class="swiper-slide"
-									th:classappend="${iter.index == 0} ? 'swiper-slide-active' : 'swiper-slide-next'"
-									style="width: 380px;" >
+									th:classappend="${iter.index == 0} ? 'swiper-slide-active' : 'swiper-slide-next'">
 									<th:block th:each="element,iter: ${goodsImage}">
 										<div class="p-gallery_thumbs_item"
 											th:classappend="${iter.index == 0} ? 'p-gallery_thumbs_item-active' : ''"
@@ -123,11 +159,11 @@ button#goodsLike {
 							<i class="g-i g-i-arrow-l" aria-hidden="true"></i>
 						</div>
 						<div class="p-gallery_pagination swiper-pagination-clickable swiper-pagination-bullets">
-						<th:block th:each="element,iter: ${outerList}">
-							<span class="swiper-pagination-bullet" id="page1"
-							th:classappend="${iter.index == 0} ? 'swiper-pagination-bullet-active' : ''"
-								th:onclick="'common('+${iter.index}+')'"></span>
-						</th:block>
+							<th:block th:each="element,iter: ${outerList}">
+								<span class="swiper-pagination-bullet" id="page1"
+									th:classappend="${iter.index == 0} ? 'swiper-pagination-bullet-active' : ''"
+									th:onclick="'common('+${iter.index}+')'"></span>
+							</th:block>
 						</div>
 						<div class="p-gallery_btn p-gallery_next" id="right" onclick="showImages('right')">
 							<i class="g-i g-i-arrow-r" aria-hidden="true"></i>
@@ -137,72 +173,51 @@ button#goodsLike {
 				</div>
 			</div>
 
-			<div class="right fr" style=" display:flex;flex-direction:column">
+			<div class="right fr">
 				<div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
 				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
-				
+
 				<div class="item_price mr40 ml20 mt10">
 					<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
 					<del>
 						<th:block th:text="${goodsDetail.originalPrice}+'.00 元'"></th:block>
 					</del>
 				</div>
-				<div class="option">
-					<div class="optionsForSize">
-						<h2 class="introForSize">Choose your size.</h2>
-						<fieldset class="sizes">
-							<div class="sizeOptions">
-								<div class="sizeOption">
-									<label>
-										<span>
-											<span class="size">iPhone 13 Pro</span>
-											<span class="price">$999</span>
-										</span>
-									</label>
+				<div class="optionForMobile">
+					<div class="options">
+						<ul>
+							<li class="option">
+								<div class="goodsOption">
+									<div class="colorSizeMemory">
+										<p class="color">red</p>
+										<p class="size">7.0inch</p>
+										<p class="memory">256G</p>
+
+									</div>
+									<div class="order">
+										<!--<input class="car" type="button"
+											th:onclick="'saveAndGoCart('+${goodsDetail.goodsId}+')'" value="立即选购" />-->
+										<input class="car" type="button"
+											th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" value="加入购物车" />
+										<input class="car" type="button"
+											th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'" value="LIKE" />
+									</div>
+
 								</div>
-								<div class="sizeOption">
-									<label>
-										<span>
-											<span class="size">iPhone 13 Pro</span>
-											<span class="price">$999</span>
-										</span>
-									</label>
-								</div>
-							</div>
-						</fieldset>
-					</div>
-					<div class="optionsForColor">
-						<h2 class="introForColor">Choose your color.</h2>
-						<fieldset class="colors">
-							<div class="colorOptions">
-								<div class="colorOption">
-									<label>
-										<span class="img"></span>
-										<span class="color">White</span>
-									</label>
-								</div>
-							</div>
-							<div class="colorOptions">
-								<div class="colorOption">
-									<label>
-										<span class="img"></span>
-										<span class="color">Black</span>
-									</label>
-								</div>
-							</div>
-						</fieldset>
+							</li>
+						</ul>
 					</div>
 				</div>
 
-				<div class="order">
+				<!--<div class="order">
 					<input class="car" type="button" th:onclick="'saveAndGoCart('+${goodsDetail.goodsId}+')'"
 						value="立即选购" />
 					<input class="car" type="button" th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
 						value="加入购物车" />
 					<input class="car" type="button" th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
 						value="LIKE" />
-				</div>
+				</div>-->
 				<div class="tb-extra ml20" id="J_tbExtra">
 					<dl>
 						<dt>承诺</dt>
@@ -217,7 +232,7 @@ button#goodsLike {
 					</dl>
 					<dl>
 						<dt>支持</dt>
-						<dd>折旧变现，买新更省钱。<a style="float:none;text-decoration: underline;" href="##">详情</a></dd>
+						<dd>折旧变现，买新更省钱。<ahref="##">详情</a></dd>
 					</dl>
 
 				</div>
@@ -292,134 +307,128 @@ button#goodsLike {
 							data-item-group-id="5651205s" data-needs-login="1" data-login-url="" data-user-id=""
 							data-default-sort-key="created_at"><img
 								data-src="https://tag.voice.zetacx.net/__zv_action_log.gif?user_id=adb98bf3-1a17-444e-b509-b7c7786af2c1&amp;session_key=2a1ba346-6ad7-4f0e-ad32-0a7b4771325f&amp;at=2022-01-27T07:17:06.533Z&amp;path=https%3A%2F%2Fwww.nitori-net.jp%2Fec%2Fproduct%2F5651205s%2F&amp;merchant=21f1714d-68e4-49b8-bc66-fed761ce701a&amp;needs_login=1&amp;user=&amp;page=1&amp;order_by=desc&amp;item_group_id=5651205s&amp;sort=created_at"
-								id="zv-helpful-log-gif" style="display: none;"><img
+								id="zv-helpful-log-gif"><img
 								data-src="https://tag.voice.zetacx.net/__zv_action_log.gif?user_id=adb98bf3-1a17-444e-b509-b7c7786af2c1&amp;session_key=2a1ba346-6ad7-4f0e-ad32-0a7b4771325f&amp;at=2022-01-27T07:17:06.533Z&amp;path=https%3A%2F%2Fwww.nitori-net.jp%2Fec%2Fproduct%2F5651205s%2F&amp;merchant=21f1714d-68e4-49b8-bc66-fed761ce701a&amp;needs_login=1&amp;user=&amp;page=1&amp;order_by=desc&amp;item_group_id=5651205s&amp;sort=created_at"
-								id="zv-viewing-log-gif" style="display: none;"
+								id="zv-viewing-log-gif"
 								src="https://tag.voice.zetacx.net/__zv_action_log.gif?user_id=adb98bf3-1a17-444e-b509-b7c7786af2c1&amp;session_key=2a1ba346-6ad7-4f0e-ad32-0a7b4771325f&amp;at=2022-01-27T07:17:06.533Z&amp;path=https%3A%2F%2Fwww.nitori-net.jp%2Fec%2Fproduct%2F5651205s%2F&amp;merchant=21f1714d-68e4-49b8-bc66-fed761ce701a&amp;needs_login=1&amp;user=&amp;page=1&amp;order_by=desc&amp;item_group_id=5651205s&amp;sort=created_at&amp;type=detail_view&amp;view_at=2022-01-27T11:02:38.089Z&amp;view_count=29"><img
 								data-src="https://tag.voice.zetacx.net/__zv_action_log.gif?user_id=adb98bf3-1a17-444e-b509-b7c7786af2c1&amp;session_key=2a1ba346-6ad7-4f0e-ad32-0a7b4771325f&amp;at=2022-01-27T07:17:06.533Z&amp;path=https%3A%2F%2Fwww.nitori-net.jp%2Fec%2Fproduct%2F5651205s%2F&amp;merchant=21f1714d-68e4-49b8-bc66-fed761ce701a&amp;needs_login=1&amp;user=&amp;page=1&amp;order_by=desc&amp;item_group_id=5651205s&amp;sort=created_at"
-								id="zv-action-log-gif" style="display: none;"
+								id="zv-action-log-gif"
 								src="https://tag.voice.zetacx.net/__zv_action_log.gif?user_id=adb98bf3-1a17-444e-b509-b7c7786af2c1&amp;session_key=2a1ba346-6ad7-4f0e-ad32-0a7b4771325f&amp;at=2022-01-27T07:17:06.533Z&amp;path=https%3A%2F%2Fwww.nitori-net.jp%2Fec%2Fproduct%2F5651205s%2F&amp;merchant=21f1714d-68e4-49b8-bc66-fed761ce701a&amp;needs_login=1&amp;user=&amp;page=1&amp;order_by=desc&amp;item_group_id=5651205s&amp;sort=created_at&amp;type=detail">
 							<p class="zv-heading">カスタマーQ&amp;A</p>
-							
+
 							<div class="zv-cqa hiddenQaDiv">
-							            <input type="hidden" class="hiddenQaId">
-										<div class="zv-cqa-question">
-											<span class="zv-space">Q. </span>
-											<span class="zv-cqa-q-text"></span>
-										</div>
-										<div class="zv-cqa-q-info">
-											<span class="zv-cqa-q-reviewer">投稿者&nbsp; </span>
-											<span class="zv-cqa-q-created-at"></span>
-										</div>
-										<div class="zv-cqa-answers">
+								<input type="hidden" class="hiddenQaId">
+								<div class="zv-cqa-question">
+									<span class="zv-space">Q. </span>
+									<span class="zv-cqa-q-text"></span>
+								</div>
+								<div class="zv-cqa-q-info">
+									<span class="zv-cqa-q-reviewer">投稿者&nbsp; </span>
+									<span class="zv-cqa-q-created-at"></span>
+								</div>
+								<div class="zv-cqa-answers">
 
-											<div class="zv-cqa-answer zv-cqa-answer-first">
-												<span class="zv-space">A. </span>
-												<div class="zv-cqa-a-content">
-													<div class="zv-cqa-a-text">
+									<div class="zv-cqa-answer zv-cqa-answer-first">
+										<span class="zv-space">A. </span>
+										<div class="zv-cqa-a-content">
+											<div class="zv-cqa-a-text">
 
-														<p class="zv-p"></p>
-													</div>
+												<p class="zv-p"></p>
+											</div>
 
-													<div class="zv-cqa-a-info">
-														<span class="zv-space"></span>
-														<span class="zv-cqa-a-reviewer">回答者&nbsp; Nitori-QA-001</span>
-														<span class="zv-cqa-a-created-at"></span>
-													</div>
-													<div class="zv-helpful-form" data-answer-id="206077">
-														<span class="zv-space"></span>
-														<span class="zv-error-message"
-															id="ZVLoginErrorHelpful-206077">「参考になった/参考にならなかった」を投稿するにはログインが必要です。</span>
-														<span class="zv-helpful-col">
-															<span
-																class="zv-helpful zv-helpful-wrapper zv-helpful-wrapper-yes-206077"
-																data-count="206077" data-clickable=""
-																data-answer-id="206077">
-																<i class="zv-helpful zv-helpful-yes-i"></i>
-																<span
-																	class="zv-helpful zv-helpful-yes zv-helpful-yes-206077"
-																	data-count="206077"
-																	id="ZVHelpfulYes-206077">参考になった</span>
-																<span
-																	class="zv-helpful zv-helpful-num zv-helpful-yes-num zv-helpful-yes-num-206077"
-																	data-count="206077" id="ZVHelpfulYesNum-206077"></span>
-															</span>
-														</span>
-														<span class="zv-helpful-col">
-															<span
-																class="zv-helpful zv-helpful-wrapper zv-helpful-wrapper-no-206077"
-																data-count="206077" data-clickable=""
-																data-answer-id="206077">
-																<i class="zv-helpful  zv-helpful-no-i"></i>
-																<span
-																	class="zv-helpful zv-helpful-no zv-helpful-no-206077"
-																	data-count="206077"
-																	id="ZVHelpfulNo-206077">参考にならなかった</span>
-																<span
-																	class="zv-helpful zv-helpful-num zv-helpful-no-num zv-helpful-no-num-206077"
-																	data-count="206077"
-																	id="ZVHelpfulNoNum-206077">(0人)</span>
-															</span>
-														</span>
-														<span class="zv-separator">|</span>
-														<div class="zv-popupModal1">
-															<input type="radio" name="modalPop" id="pop11206077">
-															<label for="pop11206077">違反を報告</label>
-															<input type="radio" name="modalPop" id="pop12206077">
-															<label for="pop12206077">CLOSE</label>
-															<input type="radio" name="modalPop" id="pop13206077">
-															<label for="pop13206077">×</label>
-															<div class="zv-modalPopup2">
-																<div class="zv-modalPopup3">
-																	<h2 class="zv-modalTitle">違反を報告</h2>
-																	<div class="zv-modalMain">
-																		<p>このコンテンツは不適切であり、削除する必要があると思われる場合は、下のボタンをクリックしてお知らせください。
-																		</p>
-																		<div class="zv-report zv-btn"
-																			data-post-type="answer"
-																			data-target-id="206077">
-																			違反を報告する</div>
-																	</div>
-																</div>
+											<div class="zv-cqa-a-info">
+												<span class="zv-space"></span>
+												<span class="zv-cqa-a-reviewer">回答者&nbsp; Nitori-QA-001</span>
+												<span class="zv-cqa-a-created-at"></span>
+											</div>
+											<div class="zv-helpful-form" data-answer-id="206077">
+												<span class="zv-space"></span>
+												<span class="zv-error-message"
+													id="ZVLoginErrorHelpful-206077">「参考になった/参考にならなかった」を投稿するにはログインが必要です。</span>
+												<span class="zv-helpful-col">
+													<span
+														class="zv-helpful zv-helpful-wrapper zv-helpful-wrapper-yes-206077"
+														data-count="206077" data-clickable="" data-answer-id="206077">
+														<i class="zv-helpful zv-helpful-yes-i"></i>
+														<span class="zv-helpful zv-helpful-yes zv-helpful-yes-206077"
+															data-count="206077" id="ZVHelpfulYes-206077">参考になった</span>
+														<span
+															class="zv-helpful zv-helpful-num zv-helpful-yes-num zv-helpful-yes-num-206077"
+															data-count="206077" id="ZVHelpfulYesNum-206077"></span>
+													</span>
+												</span>
+												<span class="zv-helpful-col">
+													<span
+														class="zv-helpful zv-helpful-wrapper zv-helpful-wrapper-no-206077"
+														data-count="206077" data-clickable="" data-answer-id="206077">
+														<i class="zv-helpful  zv-helpful-no-i"></i>
+														<span class="zv-helpful zv-helpful-no zv-helpful-no-206077"
+															data-count="206077" id="ZVHelpfulNo-206077">参考にならなかった</span>
+														<span
+															class="zv-helpful zv-helpful-num zv-helpful-no-num zv-helpful-no-num-206077"
+															data-count="206077" id="ZVHelpfulNoNum-206077">(0人)</span>
+													</span>
+												</span>
+												<span class="zv-separator">|</span>
+												<div class="zv-popupModal1">
+													<input type="radio" name="modalPop" id="pop11206077">
+													<label for="pop11206077">違反を報告</label>
+													<input type="radio" name="modalPop" id="pop12206077">
+													<label for="pop12206077">CLOSE</label>
+													<input type="radio" name="modalPop" id="pop13206077">
+													<label for="pop13206077">×</label>
+													<div class="zv-modalPopup2">
+														<div class="zv-modalPopup3">
+															<h2 class="zv-modalTitle">違反を報告</h2>
+															<div class="zv-modalMain">
+																<p>このコンテンツは不適切であり、削除する必要があると思われる場合は、下のボタンをクリックしてお知らせください。
+																</p>
+																<div class="zv-report zv-btn" data-post-type="answer"
+																	data-target-id="206077">
+																	違反を報告する</div>
 															</div>
 														</div>
 													</div>
-													<div class="zv-cqa-comment">
-														<div class="zv-cqa-comment-actions">
-															<p class="zv-error-message" id="ZVLoginErrorComment-206077">
-																コメントを記入するにはログインが必要です。</p>
+												</div>
+											</div>
+											<div class="zv-cqa-comment">
+												<div class="zv-cqa-comment-actions">
+													<p class="zv-error-message" id="ZVLoginErrorComment-206077">
+														コメントを記入するにはログインが必要です。</p>
 
 
-														</div>
-														<div class="zv-cqa-comment-list-body zv-hide">
-
-														</div>
-													</div>
+												</div>
+												<div class="zv-cqa-comment-list-body zv-hide">
 
 												</div>
 											</div>
 
-
 										</div>
 									</div>
-							
+
+
+								</div>
+							</div>
+
 							<div id="ZVCQuestionsArea">
 
 								<div class="zv-cqa-step">
 									<div class="zv-cqa-step-link">
 										<span th:text="全+${goodsQaCount}+件"></span>
-										
+
 										<span class="zv-cqa-previous zv-cqa-page-btn" onclick="loadQaPages(-1)">
-										<i class="zv-cqa-arrow zv-cqa-arrow-left" data-page="1"></i></span>
+											<i class="zv-cqa-arrow zv-cqa-arrow-left" data-page="1"></i></span>
 
-										<span >ページ<span class="currentPageNo">1</span><span >/</span><span id="totalPage" th:text="${totalPage}"></span></span>
+										<span>ページ<span class="currentPageNo">1</span><span>/</span><span id="totalPage"
+												th:text="${totalPage}"></span></span>
 
-										<span class="zv-cqa-next zv-cqa-page-btn"  onclick="loadQaPages(1)">
-										<i class="zv-cqa-arrow zv-cqa-arrow-right" data-page="2">&gt;</i></span>
+										<span class="zv-cqa-next zv-cqa-page-btn" onclick="loadQaPages(1)">
+											<i class="zv-cqa-arrow zv-cqa-arrow-right" data-page="2">&gt;</i></span>
 
 									</div>
 									<div class="zv-select-wrap">
-										<select id="zv-cqa-select-sort" class="zv-select" name="sort" onchange="loadQaPages(0)">
+										<select id="zv-cqa-select-sort" class="zv-select" name="sort"
+											onchange="loadQaPages(0)">
 											<option value="like">トップ評価</option>
 											<option value="new" selected="">新しい順</option>
 										</select>
@@ -465,8 +474,8 @@ button#goodsLike {
 																<i class="zv-helpful zv-helpful-yes-i"></i>
 																<span
 																	class="zv-helpful zv-helpful-yes zv-helpful-yes-206077"
-																	data-count="206077"
-																	id="ZVHelpfulYes-206077" th:onclick="'helpNumClickFunc('+${element.goodsId}+','+${element.qaId}+')'">参考になった</span>
+																	data-count="206077" id="ZVHelpfulYes-206077"
+																	th:onclick="'helpNumClickFunc('+${element.goodsId}+','+${element.qaId}+')'">参考になった</span>
 																<span
 																	class="zv-helpful zv-helpful-num zv-helpful-yes-num zv-helpful-yes-num-206077"
 																	data-count="206077" id="ZVHelpfulYesNum-206077"
@@ -536,13 +545,14 @@ button#goodsLike {
 
 								<div class="zv-cqa-step" id="detailFooter">
 									<div class="zv-cqa-step-link">
-									<span th:text="全+${goodsQaCount}+件"></span>
-										
-										<span class="zv-cqa-previous zv-cqa-page-btn" onclick="loadQaPages(-1)">
-										<i class="zv-cqa-arrow zv-cqa-arrow-left" data-page="1"></i></span>
-										
+										<span th:text="全+${goodsQaCount}+件"></span>
 
-										<span >ページ<span class="currentPageNo">1</span><span >/</span><span id="totalPage" th:text="${totalPage}"></span></span>
+										<span class="zv-cqa-previous zv-cqa-page-btn" onclick="loadQaPages(-1)">
+											<i class="zv-cqa-arrow zv-cqa-arrow-left" data-page="1"></i></span>
+
+
+										<span>ページ<span class="currentPageNo">1</span><span>/</span><span id="totalPage"
+												th:text="${totalPage}"></span></span>
 
 										<span class="zv-cqa-next zv-cqa-page-btn" onclick="loadQaPages(1)"><i
 												class="zv-cqa-arrow zv-cqa-arrow-right" data-page="2">&gt;</i></span>
@@ -623,7 +633,8 @@ button#goodsLike {
 									<p class="zv-error-message" id="ZVLoginErrorQuestion">質問を投稿するにはログインが必要です。</p>
 									<p class="zv-error-message" id="ZVEmptyErrorQuestion">質問を入力してください。</p>
 									<p class="zv-error-message" id="ZVSpamErrorQuestion">しばらく時間をおいて投稿してください。</p>
-									<button type="button" id="ZVPostQuestionButton" class="zv-btn" onclick="qaClick()">質問を投稿</button>
+									<button type="button" id="ZVPostQuestionButton" class="zv-btn"
+										onclick="qaClick()">質問を投稿</button>
 								</div>
 							</div>
 
@@ -647,11 +658,11 @@ button#goodsLike {
 											class="p-reviw-graph-area-score p-reviw-graph-area-average p-reviw-graph-area-average-sm">
 											<span class="g-digit p-reviw-graph-area-g-score" id="scores">4.8</span>
 										</div>
-											<div class="results">
-											  <div class="results-content">
-											    <span class="stars">4.8</span> 
-											  </div>
+										<div class="results">
+											<div class="results-content">
+												<span class="stars">4.8</span>
 											</div>
+										</div>
 										<!--<div class="p-reviw-graph-area-left-row p-reviw-graph-area-left-row-score">
 											<div class="g-score p-reviw-graph-area-g-score"><span
 													data-score="4.2" class="scores"></span>
@@ -665,12 +676,12 @@ button#goodsLike {
 									<div class="p-reviw-graph-area-right">
 										<div class="g-lg-flow-sm p-reviw-graph-area-row-sm">
 											<div class="g-score p-reviw-graph-area-score"><span data-score="5.0"><span
-											class="g-clip">5</span></span></div>
-											
+														class="g-clip">5</span></span></div>
+
 											<div class="a-meter g-mater-visble" id="js-mater5" data-rate="5">
-												<div class="a-meter-bar" style="width: 48%;"></div>
+												<div class="a-meter-bar"></div>
 											</div>
-											
+
 											<a class="g-link g-link-visble" id="js-rate5" data-rate="5"
 												title="レビューの48％に星5つが付いています。" data-clickable="">100人</a>
 										</div>
@@ -678,7 +689,7 @@ button#goodsLike {
 											<div class="g-score p-reviw-graph-area-score"><span data-score="4.0"><span
 														class="g-clip">4</span></span></div>
 											<div class="a-meter g-mater-visble" id="js-mater4" data-rate="4">
-												<div class="a-meter-bar" style="width: 32%;"></div>
+												<div class="a-meter-bar"></div>
 											</div>
 											<a class="g-link g-link-visble" id="js-rate4" data-rate="4"
 												title="レビューの32％に星4つが付いています。" data-clickable="">67人</a>
@@ -687,7 +698,7 @@ button#goodsLike {
 											<div class="g-score p-reviw-graph-area-score"><span data-score="3.0"><span
 														class="g-clip">3</span></span></div>
 											<div class="a-meter g-mater-visble" id="js-mater3" data-rate="3">
-												<div class="a-meter-bar" style="width: 12%;"></div>
+												<div class="a-meter-bar"></div>
 											</div>
 											<a class="g-link g-link-visble" id="js-rate3" data-rate="3"
 												title="レビューの12％に星3つが付いています。" data-clickable="">26人</a>
@@ -696,7 +707,7 @@ button#goodsLike {
 											<div class="g-score p-reviw-graph-area-score"><span data-score="2.0"><span
 														class="g-clip">2</span></span></div>
 											<div class="a-meter g-mater-visble" id="js-mater2" data-rate="2">
-												<div class="a-meter-bar" style="width: 4%;"></div>
+												<div class="a-meter-bar"></div>
 											</div>
 											<a class="g-link g-link-visble" id="js-rate2" data-rate="2"
 												title="レビューの4％に星2つが付いています。" data-clickable="">9人</a>
@@ -705,7 +716,7 @@ button#goodsLike {
 											<div class="g-score p-reviw-graph-area-score"><span data-score="1.0"><span
 														class="g-clip">1</span></span></div>
 											<div class="a-meter g-mater-visble" id="js-mater1" data-rate="1">
-												<div class="a-meter-bar" style="width: 1%;"></div>
+												<div class="a-meter-bar"></div>
 											</div>
 											<a class="g-link g-link-visble" id="js-rate1" data-rate="1"
 												title="レビューの1％に星1つが付いています。" data-clickable="">3人</a>
@@ -715,157 +726,170 @@ button#goodsLike {
 								<p class="p-reviw-graph-area-foot">205評価 203商品レビュー</p>
 								<input type="hidden" id="numberOfReviews" value="205">
 
-								<div id="n-review-btn" class="n-review-btn"><button 
-										class="g-btn g-btn-w-sm" onclick="showReviewModal()"><span>商品レビューを書く</span><i class="g-i g-i-arrow-r"
+								<div id="n-review-btn" class="n-review-btn"><button class="g-btn g-btn-w-sm"
+										onclick="showReviewModal()"><span>商品レビューを書く</span><i class="g-i g-i-arrow-r"
 											aria-hidden="true"></i></button></div>
-											
-									
-											            <!-- 模态框（Modal） -->
-            <div class="modal fade" id="orderInfoModal" tabindex="-1" role="dialog"
-                 aria-labelledby="orderInfoModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                    aria-hidden="true">&times;</span></button>
-                            <h6 class="modal-title" id="orderInfoModalLabel">Modal</h6>
-                        </div>
-                        <div class="modal-body">
-                            <form id="##">
-                                <div class="form-group">
-                                    <div class="alert alert-danger" id="edit-error-msg" style="display: none;">
-                                        错误信息展示栏。
-                                    </div>
-                                </div>
-                                <input type="hidden" id="orderId">
-                                <div class="form-group">
-                                    <label for="totalPrice" class="control-label">レビュータイトル:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                    <input type="text" class="form-control" id="totalPrice" name="totalPrice"
-                                            required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="reviewContent"
-                                           class="control-label">レビュー:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                                    <textarea id="reviewContent" name="reviewContent" rows="4" cols="50" value="##"></textarea>
-                                </div>
-                                
-                                
-                               <div>
-                                <span class="fa fa-star star1" onclick="starRating(event)"></span>
-								<span class="fa fa-star star2" onclick="starRating(event)"></span>
-								<span class="fa fa-star star3" onclick="starRating(event)"></span>
-								<span class="fa fa-star star4" onclick="starRating(event)"></span>
-								<span class="fa fa-star star5" onclick="starRating(event)"></span>
-                               </div>
-                            </form>
-                            
-                            <div class="col-sm-4">
-                                        <img id="carouselImg" src="/admin/dist/img/img-upload.png" style="height: 64px;width: 64px;">
-                               </div>
-                               <div class="form-group">
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-info" style="margin-bottom: 5px;"
-                                                id="uploadCarouselImage" onclick="uploadReviewImage()">
-                                            <i class="fa fa-picture-o"></i>&nbsp;上传图片
-                                        </button>
-                                    </div>
-                              </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-primary" id="saveButton" >确认</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal -->
-									
-											
-											
-											
-								<div id="js-reviewList">
-								
-								<li class="g-reviewList_item hiddenReviewLi">
-								<input type="hidden" class="hiddenReviewId">
-											<p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
-											<div class="g-lg-flow-sm">
-												<p class="g-score">
-													<span data-score="5.0">
-														<span class="g-clip">text.product.review.Rating</span>
-													</span>
-												</p>
-												<p class="g-reviewList_user">
-													<b id="reviewUserId"></b>さん
-													 
-													<p id="reviewDate"></pid="reviewDate">
-												</p>
-											</div>
-											<p class="g-reviewList_info">購入商品:シングル脚付きヘッドレスすのこベッド(SRN WH)</p>
-											<p class="g-reviewList_h"></p>
-											<p id="review"></p>
-											<ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
-												<li><img class="g-fw p-review-gallery_photo"
-														alt="0" aria-expanded="false"
-														aria-controls="p-reviewGallerySwipModal">
-												</li>
-											</ul>
-											<p class="g-reviewList_like"><a class="g-link reviewLike0" id="js-hitLike"
-													data-count="0" data="5e5ceda77d16da0032000120" data-clickable=""><i
-														class="g-s g-s-like-g"
-														aria-hidden="true"></i><span>参考になった（3290人）</span></a></p>
-								</li>
 
-								
-									<ul class="g-reviewList">
-									<th:block th:each="element: ${goodsReview}">
-										<li class="g-reviewList_item">
-											<p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
-											<div class="g-lg-flow-sm">
-												<p class="g-score">
-													<span data-score="5.0">
-														<span class="g-clip">text.product.review.Rating</span>
-													</span>
-												</p>
-												<p class="g-reviewList_user">
-													<b id="reviewUserId" th:text="${element.userId}"></b>さん
-													 
-													<p id="reviewDate" th:text="${element.reviewDate}"></p>
-												</p>
+
+								<!-- 模态框（Modal） -->
+								<div class="modal fade" id="orderInfoModal" tabindex="-1" role="dialog"
+									aria-labelledby="orderInfoModalLabel">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal"
+													aria-label="Close"><span aria-hidden="true">&times;</span></button>
+												<h6 class="modal-title" id="orderInfoModalLabel">Modal</h6>
 											</div>
-											<p class="g-reviewList_info">購入商品:シングル脚付きヘッドレスすのこベッド(SRN WH)</p>
-											<p class="g-reviewList_h" th:text="${element.reviewTitle}"></p>
-											<p id="review" th:text="${element.review}"></p>
-											<ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
-												<li><img class="g-fw p-review-gallery_photo"
-														img th:src="${element.image}"
-														alt="0" aria-expanded="false"
-														aria-controls="p-reviewGallerySwipModal">
-												</li>
-											</ul>
-											<p class="g-reviewList_like"><a class="g-link reviewLike0" id="js-hitLike"
-													data-count="0" data="5e5ceda77d16da0032000120" data-clickable="" th:onclick="'reviewLikeNum('+${element.goodsId}+','+${element.reviewId}+')'"><i
-														class="g-s g-s-like-g"
-														aria-hidden="true"></i><span>参考になった</span></a></p>
-										</li>
-									</th:block>
+											<div class="modal-body">
+												<form id="##">
+													<div class="form-group">
+														<div class="alert alert-danger" id="edit-error-msg">
+															错误信息展示栏。
+														</div>
+													</div>
+													<input type="hidden" id="orderId">
+													<div class="form-group">
+														<label for="totalPrice"
+															class="control-label">レビュータイトル:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+														<input type="text" class="form-control" id="totalPrice"
+															name="totalPrice" required="true">
+													</div>
+													<div class="form-group">
+														<label for="reviewContent"
+															class="control-label">レビュー:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+														<textarea id="reviewContent" name="reviewContent" rows="4"
+															cols="50" value="##"></textarea>
+													</div>
+
+
+													<div>
+														<span class="fa fa-star star1"
+															onclick="starRating(event)"></span>
+														<span class="fa fa-star star2"
+															onclick="starRating(event)"></span>
+														<span class="fa fa-star star3"
+															onclick="starRating(event)"></span>
+														<span class="fa fa-star star4"
+															onclick="starRating(event)"></span>
+														<span class="fa fa-star star5"
+															onclick="starRating(event)"></span>
+													</div>
+												</form>
+
+												<div class="col-sm-4">
+													<img id="carouselImg" src="/admin/dist/img/img-upload.png">
+												</div>
+												<div class="form-group">
+													<div class="col-sm-4">
+														<button class="btn btn-info" id="uploadCarouselImage"
+															onclick="uploadReviewImage()">
+															<i class="fa fa-picture-o"></i>&nbsp;上传图片
+														</button>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">取消</button>
+												<button type="button" class="btn btn-primary"
+													id="saveButton">确认</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /.modal -->
+
+
+
+
+								<div id="js-reviewList">
+
+									<li class="g-reviewList_item hiddenReviewLi">
+										<input type="hidden" class="hiddenReviewId">
+										<p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
+										<div class="g-lg-flow-sm">
+											<p class="g-score">
+												<span data-score="5.0">
+													<span class="g-clip">text.product.review.Rating</span>
+												</span>
+											</p>
+											<p class="g-reviewList_user">
+												<b id="reviewUserId"></b>さん
+												 
+											<p id="reviewDate">
+												</pid="reviewDate">
+											</p>
+										</div>
+										<p class="g-reviewList_info">購入商品:シングル脚付きヘッドレスすのこベッド(SRN WH)</p>
+										<p class="g-reviewList_h"></p>
+										<p id="review"></p>
+										<ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
+											<li><img class="g-fw p-review-gallery_photo" alt="0" aria-expanded="false"
+													aria-controls="p-reviewGallerySwipModal">
+											</li>
+										</ul>
+										<p class="g-reviewList_like"><a class="g-link reviewLike0" id="js-hitLike"
+												data-count="0" data="5e5ceda77d16da0032000120" data-clickable=""><i
+													class="g-s g-s-like-g"
+													aria-hidden="true"></i><span>参考になった（3290人）</span></a></p>
+									</li>
+
+
+									<ul class="g-reviewList">
+										<th:block th:each="element: ${goodsReview}">
+											<li class="g-reviewList_item">
+												<p class="g-label-brand g-reviewList_label">ピックアップレビュー</p>
+												<div class="g-lg-flow-sm">
+													<p class="g-score">
+														<span data-score="5.0">
+															<span class="g-clip">text.product.review.Rating</span>
+														</span>
+													</p>
+													<p class="g-reviewList_user">
+														<b id="reviewUserId" th:text="${element.userId}"></b>さん
+														 
+													<p id="reviewDate" th:text="${element.reviewDate}"></p>
+													</p>
+												</div>
+												<p class="g-reviewList_info">購入商品:シングル脚付きヘッドレスすのこベッド(SRN WH)</p>
+												<p class="g-reviewList_h" th:text="${element.reviewTitle}"></p>
+												<p id="review" th:text="${element.review}"></p>
+												<ul class="g-sm-flow-sm g-lg-flow g-reviewList_pics">
+													<li><img class="g-fw p-review-gallery_photo" img
+															th:src="${element.image}" alt="0" aria-expanded="false"
+															aria-controls="p-reviewGallerySwipModal">
+													</li>
+												</ul>
+												<p class="g-reviewList_like"><a class="g-link reviewLike0"
+														id="js-hitLike" data-count="0" data="5e5ceda77d16da0032000120"
+														data-clickable=""
+														th:onclick="'reviewLikeNum('+${element.goodsId}+','+${element.reviewId}+')'"><i
+															class="g-s g-s-like-g"
+															aria-hidden="true"></i><span>参考になった</span></a></p>
+											</li>
+										</th:block>
 									</ul>
-									
-									<div id="p-reviewMore" >
-									<ul class="g-reviewList reviewMoreLi">
-									<li id="hiddenReviewLi"></li></ul></div>
+
+									<div id="p-reviewMore">
+										<ul class="g-reviewList reviewMoreLi">
+											<li id="hiddenReviewLi"></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="g-foot-v g-foot-sm" id="js-review-more" aria-hidden="false">
 							<p class="g-align-tc">
-								<a class="g-link displaymorereview" id="displayMoreReview" href="#p-reviewMore" role="button"
-									aria-expanded="false" aria-controls="p-reviewMore" data-label="閉じる"
+								<a class="g-link displaymorereview" id="displayMoreReview" href="#p-reviewMore"
+									role="button" aria-expanded="false" aria-controls="p-reviewMore" data-label="閉じる"
 									data-accordion="{&quot;scroll&quot;:false}" onclick="showReview()">
 									<i class="g-i g-i-arrow-d"></i>
-									<span id="showMore">レビューをもっと見る（3/<span id="js-reviews-more" th:text="${goodsReviewCount}"></span>）</span></a>
+									<span id="showMore">レビューをもっと見る（3/<span id="js-reviews-more"
+											th:text="${goodsReviewCount}"></span>）</span></a>
 							</p>
 
-					   </div>
+						</div>
 					</section>
 				</section>
 
@@ -886,8 +910,8 @@ button#goodsLike {
 	<script th:src="@{/admin/plugins/ajaxupload/ajaxupload.js}"></script>
 	<script th:src="@{/admin/dist/js/reviewPages.js}"></script>
 	<script th:src="@{/admin/dist/js/campaign.js}"></script>
-	
-	
+
+
 	<script type="text/javascript">
 		/**
 		 * 添加到购物车
