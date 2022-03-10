@@ -22,90 +22,7 @@
 
 
 	<link rel='stylesheet' href='http://fonts.googleapis.com/icon?family=Material+Icons'>
-	<style>
-		.checked {
-			color: orange;
-		}
 
-		.results {
-			font-size: 0;
-			padding-bottom: 16px;
-		}
-
-		.results-content {
-			font-size: 13px;
-			display: inline-block;
-			margin-left: 20px;
-			vertical-align: top;
-			background: url(https://i.stack.imgur.com/rwkqF.png) 0 0 repeat-x;
-			width: 92px;
-			height: 17.5px;
-			background-size: 92px 35px;
-		}
-
-		.results .results-content span.stars span {
-			background: url(https://i.stack.imgur.com/rwkqF.png) 0 -17.5px repeat-x;
-			display: inline-block;
-			height: 17.5px;
-			width: 92px;
-			background-size: 92px 35px;
-		}
-
-		.results-content {
-			background-size: 92px 35px !important;
-		}
-
-		.campaign {
-			max-width: fit-content;
-			font-weight: 800;
-			color: white;
-			padding: 10px;
-			font-size: 2rem;
-			background-color: darkturquoise;
-		}
-
-		button#goodsLike {
-			width: 40px;
-			background-color: darkturquoise;
-			color: white;
-		}
-
-		.option {
-			padding: 23px 0 0;
-		}
-
-		fieldset {
-			width: auto;
-			min-width: 0;
-			padding: 0;
-			margin: 0;
-			border: 0;
-			display: block;
-			margin-inline-start: 2px;
-			margin-inline-end: 2px;
-			padding-block-start: 0.35em;
-			padding-inline-start: 0.75em;
-			padding-inline-end: 0.75em;
-			padding-block-end: 0.625em;
-			min-inline-size: min-content;
-		}
-
-		.colorSizeMemory {
-			font-size: 2rem;
-			font-weight: 600;
-			display: flex;
-			padding-right: 2rem;
-		}
-
-		.goodsOption {
-			display: flex;
-			margin: 4rem;
-		}
-
-		.order {
-			display: flex;
-		}
-	</style>
 </head>
 
 <head th:replace="mall/header::head-fragment('NewBee商城-商品详情','detail')">
@@ -184,29 +101,70 @@
 						<th:block th:text="${goodsDetail.originalPrice}+'.00 元'"></th:block>
 					</del>
 				</div>
-				<div class="optionForMobile">
-					<div class="options">
-						<ul>
-							<li class="option">
-								<div class="goodsOption">
-									<div class="colorSizeMemory">
-										<p class="color">red</p>
-										<p class="size">7.0inch</p>
-										<p class="memory">256G</p>
-
+				<div class="cartBlock clearfix">
+					<div class="blockMain">
+						<th:block th:each="item : ${colors}">
+							<dl class="p-goods-information-action ">
+								<dt class="p-goods-information-action__term">
+									<div class="img p-goods-add-cart-thumbnail">
+										<div class="p-goods-add-cart-thumbnail__image">
+											<div class="o-responsive-thumbnail">
+												<img class="o-responsive-thumbnail__image" th:src="${item.image}">
+											</div>
+										</div>
 									</div>
-									<div class="order">
-										<!--<input class="car" type="button"
-											th:onclick="'saveAndGoCart('+${goodsDetail.goodsId}+')'" value="立即选购" />-->
-										<input class="car" type="button"
-											th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" value="加入购物车" />
-										<input class="car" type="button"
-											th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'" value="LIKE" />
-									</div>
-
-								</div>
-							</li>
-						</ul>
+									<span class="txt p-goods-add-cart__color" th:text="${item.color}">Black</span>
+								</dt>
+								<th:block th:each="element : ${goodsInfoSkuVO}">
+								<dd class="p-goods-information-action__description">
+									<ul class="p-goods-add-cart-list">
+										<li class="p-goods-add-cart-list__item">
+											<div class="cartbox p-goods-add-cart">
+												<div class="stock p-goods-add-cart__meta">
+													<p class="p-goods-add-cart-stock">
+														<span th:text="${element.memory}">256G</span>
+														<span>在庫あり</span>
+													</p>
+													<p class="zozosize">
+														<span class="p-goods-information-gender-icon --women">
+															<span class="c-icon--women"></span>
+														</span>
+														<span class="sizeZ">
+															<span th:text="${element.size}">7.0inch</span>
+														</span>
+													</p>
+												</div>
+												<div class="cart p-goods-add-cart__action">
+													<form action="/_cart/default.html" method="post"
+														data-ads-inner-tracking="goodscartputclick"
+														data-goods-skus="action-cart">
+														<input type="hidden" name="c" value="put">
+														<input type="hidden" name="sid" value="81292886">
+														<input type="hidden" name="rid" value="1006">
+														<input type="hidden" name="p_seckey"
+															value="af7460634c1ffa8ad989bd9f3edd911f">
+														<input class="car" type="button"
+															th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
+															value="加入购物车" />
+													</form>
+												</div>
+												<div class="bkmk p-goods-add-cart__favorite">
+													<form action="#" onsubmit="return false;"
+														data-goods-skus="action-favorite">
+														<input class="car" type="button"
+															th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
+															value="LIKE" />
+														<input type="hidden" name="gid" value="60856695">
+														<input type="hidden" name="did" value="101055958">
+														<input type="hidden" name="zsids" value="2">
+													</form>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</dd>
+							</dl>
+						</th:block>
 					</div>
 				</div>
 

@@ -778,12 +778,11 @@
 		SELECT * FROM sku_table
 		<where>
 			goods_id = #{goodsId,jdbcType=BIGINT}
-			and memory = '256G' and color='black'
 		</where>
 	</select>
 	
-	<select id="getColor" parameterType="Long" resultType="String">
-		select distinct(color) from sku_table
+	<select id="getColor" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsInfoBySku">
+		select distinct(color),image from sku_table
 		<where>
 			goods_id = #{goodsId,jdbcType=BIGINT}
 		</where>
