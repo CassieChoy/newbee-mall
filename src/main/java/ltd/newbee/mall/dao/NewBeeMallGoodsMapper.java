@@ -110,7 +110,7 @@ public interface NewBeeMallGoodsMapper {
     
     List<String> getSize (long goodsId);
     
-    List<String> getColor (long goodsId);
+    List<GoodsInfoBySku> getColor (long goodsId);
     
     List<String> getMemory (long goodsId);
 

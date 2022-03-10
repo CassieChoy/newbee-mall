@@ -288,7 +288,7 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 	}
 
 	@Override
-	public List<String> getColor(long goodsId) {
+	public List<GoodsInfoBySku> getColor(long goodsId) {
 		
 		return goodsMapper.getColor(goodsId);
 	}

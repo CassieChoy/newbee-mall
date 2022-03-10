@@ -123,14 +123,29 @@ public class GoodsController {
 		BeanUtil.copyProperties(goodsInfo, goodsInfoVO);
 		request.setAttribute("goodsInfo", goodsInfoVO);
 		
-		List<String> colors = newBeeMallGoodsService.getColor(goodsId);
+		List<GoodsInfoBySku> goodsInfoBySku = newBeeMallGoodsService.getGoodsInfo(goodsId);
+		List<GoodsInfoBySku> colors = newBeeMallGoodsService.getColor(goodsId);
+		List<GoodsInfoBySkuVO> goodsInfoSkuVO = BeanUtil.copyList(goodsInfoBySku, GoodsInfoBySkuVO.class);
+		List<GoodsInfoBySkuVO> tempList = new ArrayList<GoodsInfoBySkuVO>();
+		List<GoodsInfoBySkuVO> tempListCopy = new ArrayList<GoodsInfoBySkuVO>();
+		
+		for(GoodsInfoBySku color : colors) {
+			for(GoodsInfoBySkuVO goodsInfoBySkuVO : goodsInfoSkuVO) {
+				String colorInVO = goodsInfoBySkuVO.getColor();
+				String colorInSku =color.getColor();
+				if(colorInSku.equals(colorInVO)) {
+					tempList.add(goodsInfoBySkuVO);
+				}
+			}
+			
+			
+		}
+		request.setAttribute("goodsInfoSkuVO", tempList);
 		request.setAttribute("colors", colors);
+
 		
-		List<String> sizes = newBeeMallGoodsService.getSize(goodsId);
-		request.setAttribute("sizes", sizes);
 		
-		List<String> memories = newBeeMallGoodsService.getMemory(goodsId);
-		request.setAttribute("memories", memories);
+		
 
 		// 获取商品图片
 
