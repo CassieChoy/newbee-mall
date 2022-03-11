@@ -305,6 +305,12 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 		return goodsMapper.getSize(goodsId);
 	}
 
+	@Override
+	public GoodsInfo getGoodsInfoBySku(String skuId) {
+		
+		return goodsMapper.getGoodsInfoBySku(skuId);
+	}
+
 
 
 

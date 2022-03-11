@@ -118,10 +118,12 @@ public class GoodsController {
 			return "error/error_5xx";
 		}
 		// 获取商品信息
-		GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoByPK(goodsId);
-		GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
-		BeanUtil.copyProperties(goodsInfo, goodsInfoVO);
-		request.setAttribute("goodsInfo", goodsInfoVO);
+		/*
+		 * GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoByPK(goodsId);
+		 * GoodsInfoVO goodsInfoVO = new GoodsInfoVO();
+		 * BeanUtil.copyProperties(goodsInfo, goodsInfoVO);
+		 * request.setAttribute("goodsInfo", goodsInfoVO);
+		 */
 		
 		List<GoodsInfoBySku> goodsInfoBySku = newBeeMallGoodsService.getGoodsInfo(goodsId);
 		List<GoodsInfoBySku> colors = newBeeMallGoodsService.getColor(goodsId);
@@ -188,7 +190,7 @@ public class GoodsController {
 		List<GoodsQa> goodsQaList = newBeeMallGoodsService.getGoodsQa(goodsQa);
 		List<GoodsQaVO> goodsQaVOList = BeanUtil.copyList(goodsQaList, GoodsQaVO.class);
 		request.setAttribute("goodsQa", goodsQaVOList);
-		/* request.setAttribute("totalPage", 5); */
+		
 		
 		//获取QA总数
 		Long goodsQaCount = newBeeMallGoodsService.getGoodsQaCount(goodsId);
@@ -435,7 +437,13 @@ public class GoodsController {
 
 		
 	
-	
+	@RequestMapping(value = "/goods/goodsInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Result goodsInfo(@RequestBody GoodsInfoBySku goodsInfoBySku) {
+		String skuId = goodsInfoBySku.getSkuId();
+		GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoBySku(skuId);
+		return ResultGenerator.genSuccessResult(goodsInfo);
+	}
 }
 
 

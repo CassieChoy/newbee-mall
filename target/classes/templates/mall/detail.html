@@ -95,12 +95,12 @@
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
 				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
 
-				<div class="item_price mr40 ml20 mt10">
+				<!--<div class="item_price mr40 ml20 mt10">
 					<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
 					<del>
 						<th:block th:text="${goodsDetail.originalPrice}+'.00 元'"></th:block>
 					</del>
-				</div>
+				</div>-->
 				<div class="cartBlock clearfix">
 					<div class="blockMain">
 						<th:block th:each="item : ${colors}">
@@ -115,54 +115,62 @@
 									</div>
 									<span class="txt p-goods-add-cart__color" th:text="${item.color}">Black</span>
 								</dt>
-								<th:block th:each="element : ${goodsInfoSkuVO}">
-								<dd class="p-goods-information-action__description">
-									<ul class="p-goods-add-cart-list">
-										<li class="p-goods-add-cart-list__item">
-											<div class="cartbox p-goods-add-cart">
-												<div class="stock p-goods-add-cart__meta">
-													<p class="p-goods-add-cart-stock">
-														<span th:text="${element.memory}">256G</span>
-														<span>在庫あり</span>
-													</p>
-													<p class="zozosize">
-														<span class="p-goods-information-gender-icon --women">
-															<span class="c-icon--women"></span>
-														</span>
-														<span class="sizeZ">
-															<span th:text="${element.size}">7.0inch</span>
-														</span>
-													</p>
+								<th:block th:each="element : ${goodsInfoSkuVO}" th:if="${item.color == element.color}">
+									<dd class="p-goods-information-action__description" >
+									<input type="hidden" id="goodsSku" th:value="${element.skuId}">
+										<ul class="p-goods-add-cart-list">
+											<li class="p-goods-add-cart-list__item">
+												<div class="cartbox p-goods-add-cart">
+													<div class="stock p-goods-add-cart__meta" th:onclick="goodsInfo()">
+														<p class="p-goods-add-cart-stock">
+															<span th:text="${element.memory}">256G</span>
+															<span>在庫あり</span>
+														</p>
+														<p class="zozosize">
+															<span class="p-goods-information-gender-icon --women">
+																<span class="c-icon--women"></span>
+															</span>
+															<span class="sizeZ">
+																<span th:text="${element.size}">7.0inch</span>
+															</span>
+														</p>
+													</div>
+													<div class="cart p-goods-add-cart__action">
+														<form action="/_cart/default.html" method="post"
+															data-ads-inner-tracking="goodscartputclick"
+															data-goods-skus="action-cart">
+															<input type="hidden" name="c" value="put">
+															<input type="hidden" name="sid" value="81292886">
+															<input type="hidden" name="rid" value="1006">
+															<input type="hidden" name="p_seckey"
+																value="af7460634c1ffa8ad989bd9f3edd911f">
+															<input class="car" type="button"
+																th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
+																value="加入购物车" />
+														</form>
+													</div>
+													<div class="bkmk p-goods-add-cart__favorite">
+														<form action="#" onsubmit="return false;"
+															data-goods-skus="action-favorite">
+															<input class="car" type="button"
+																th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
+																value="LIKE" />
+															<input type="hidden" name="gid" value="60856695">
+															<input type="hidden" name="did" value="101055958">
+															<input type="hidden" name="zsids" value="2">
+														</form>
+													</div>
+													<div class="item_price mr40 ml20 mt10">
+														<span class="price">
+																<span th:text="${element.price}+'.00 元'">7.0inch</span>
+															</span>
+														
+													</div>
 												</div>
-												<div class="cart p-goods-add-cart__action">
-													<form action="/_cart/default.html" method="post"
-														data-ads-inner-tracking="goodscartputclick"
-														data-goods-skus="action-cart">
-														<input type="hidden" name="c" value="put">
-														<input type="hidden" name="sid" value="81292886">
-														<input type="hidden" name="rid" value="1006">
-														<input type="hidden" name="p_seckey"
-															value="af7460634c1ffa8ad989bd9f3edd911f">
-														<input class="car" type="button"
-															th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
-															value="加入购物车" />
-													</form>
-												</div>
-												<div class="bkmk p-goods-add-cart__favorite">
-													<form action="#" onsubmit="return false;"
-														data-goods-skus="action-favorite">
-														<input class="car" type="button"
-															th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
-															value="LIKE" />
-														<input type="hidden" name="gid" value="60856695">
-														<input type="hidden" name="did" value="101055958">
-														<input type="hidden" name="zsids" value="2">
-													</form>
-												</div>
-											</div>
-										</li>
-									</ul>
-								</dd>
+											</li>
+										</ul>
+									</dd>
+									</th:block>
 							</dl>
 						</th:block>
 					</div>
@@ -218,35 +226,35 @@
 								<tbody>
 									<tr>
 										<th>商品コード</th>
-										<td th:text="${goodsInfo.id}"></td>
+										<td id="goodsCode"></td>
 									</tr>
 									<tr>
 										<th>カラー</th>
-										<td th:text="${goodsInfo.name}"></td>
+										<td id="goodsColor"></td>
 									</tr>
 									<tr>
 										<th>サイズ</th>
-										<td th:text="${goodsInfo.size}"></td>
+										<td id="goodsSize"></td>
 									</tr>
 									<tr>
 										<th>素材</th>
-										<td th:text="${goodsInfo.pa}"></td>
+										<td id="goodsMeterial"></td>
 									</tr>
 									<tr>
 										<th>重量</th>
-										<td th:text="${goodsInfo.weight}"></td>
+										<td id="goodsWeight"></td>
 									</tr>
 									<tr>
 										<th>保証年数</th>
-										<td th:text="${goodsInfo.housyou}"></td>
+										<td id="goodsPromise"></td>
 									</tr>
 									<tr>
 										<th>組立時間</th>
-										<td th:text="${goodsInfo.time}"></td>
+										<td id="goodsTime"></td>
 									</tr>
 									<tr>
 										<th>梱包サイズ</th>
-										<td th:text="${goodsInfo.sizeOfPackage}"></td>
+										<td id="goodsPackageSize"></td>
 									</tr>
 								</tbody>
 							</table>

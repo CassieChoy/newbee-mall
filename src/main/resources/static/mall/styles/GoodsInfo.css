@@ -3,6 +3,10 @@
     touch-action: none;
 }
 
+.item_price.mr40.ml20.mt10 {
+    display: contents;
+}
+
 dl.p-goods-information-action {
     display: block;
 }
