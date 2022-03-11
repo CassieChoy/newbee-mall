@@ -434,9 +434,6 @@ public class GoodsController {
 	        }
 	    }
 	
-
-		
-	
 	@RequestMapping(value = "/goods/goodsInfo", method = RequestMethod.POST)
     @ResponseBody
     public Result goodsInfo(@RequestBody GoodsInfoBySku goodsInfoBySku) {
