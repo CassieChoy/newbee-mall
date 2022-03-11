@@ -116,12 +116,13 @@
 									<span class="txt p-goods-add-cart__color" th:text="${item.color}">Black</span>
 								</dt>
 								<th:block th:each="element : ${goodsInfoSkuVO}" th:if="${item.color == element.color}">
-									<dd class="p-goods-information-action__description" >
-									<input type="hidden" id="goodsSku" th:value="${element.skuId}">
+									<dd class="p-goods-information-action__description" id="goodsDescription" >
 										<ul class="p-goods-add-cart-list">
 											<li class="p-goods-add-cart-list__item">
-												<div class="cartbox p-goods-add-cart">
-													<div class="stock p-goods-add-cart__meta" th:onclick="goodsInfo()">
+											<input type="hidden" id="goodsSku" th:value="${element.skuId}">
+												<div class="cartbox p-goods-add-cart" id="p-goods-add-cart">
+													<div class="stock p-goods-add-cart__meta" id="p-goods-add-cart__meta" th:onclick="goodsInfo(this)">
+													<input type="hidden" id="goodsSku" th:value="${element.skuId}">
 														<p class="p-goods-add-cart-stock">
 															<span th:text="${element.memory}">256G</span>
 															<span>在庫あり</span>
@@ -145,7 +146,7 @@
 															<input type="hidden" name="p_seckey"
 																value="af7460634c1ffa8ad989bd9f3edd911f">
 															<input class="car" type="button"
-																th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'"
+																th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" 
 																value="加入购物车" />
 														</form>
 													</div>

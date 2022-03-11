@@ -225,38 +225,3 @@ function deleteItem(id) {
 	});
 }
 
-function goodsInfo() {
-	var skuId = $("#goodsSku").val();
-	var data = {
-		"skuId": skuId
-	};
-	$.ajax({
-		type: 'POST',//方法类型
-		url: '/goods/goodsInfo',
-		contentType: 'application/json',
-		data: JSON.stringify(data),
-
-		success: function(result) {
-			
-			if (result.resultCode == 200) {
-				var goodsInfo = result.data;
-				$("#goodsCode").text(goodsInfo.id);
-				$("#goodsColor").text(goodsInfo.name);
-				$("#goodsSize").text(goodsInfo.size);
-				$("#goodsMeterial").text(goodsInfo.pa);
-				$("#goodsWeight").text(goodsInfo.weight);
-				$("#goodsPromise").text(goodsInfo.housyou);
-				$("#goodsTime").text(goodsInfo.time);
-				$("#goodsPackageSize").text(goodsInfo.sizeOfPackage);
-
-			}
-
-			else {
-				swal(result.message, {
-					icon: "error",
-				});
-			}
-		}
-	});
-
-}
