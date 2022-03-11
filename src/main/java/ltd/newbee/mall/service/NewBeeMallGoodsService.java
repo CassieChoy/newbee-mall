@@ -140,5 +140,6 @@ public interface NewBeeMallGoodsService {
     List<String> getMemory (long goodsId);
     
     List<String> getSize (long goodsId);
-
+    
+    GoodsInfo getGoodsInfoBySku (String skuId);
 }

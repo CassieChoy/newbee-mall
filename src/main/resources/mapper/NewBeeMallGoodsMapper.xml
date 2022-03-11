@@ -801,5 +801,12 @@
 			goods_id = #{goodsId,jdbcType=BIGINT}
 		</where>
 	</select>
+	
+	<select id="getGoodsInfoBySku" parameterType="String" resultType="ltd.newbee.mall.entity.GoodsInfo">
+		select * FROM goodsinfo
+		<where>
+			sku_id = #{skuId,jdbcType=VARCHAR}
+		</where>
+	</select>
 </mapper>
 

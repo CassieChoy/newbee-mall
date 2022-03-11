@@ -18,8 +18,20 @@ public class GoodsInfo{
     private String time;
 
     private String sizeOfPackage;
+    
+    private String skuId;
+    
+    
 
     
+	public String getSkuId() {
+		return skuId;
+	}
+
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
+
 	@Override
 	public String toString() {
 		return "GoodsInfo [getId()=" + getId() + ", getName()=" + getName() + ", getSize()=" + getSize() + ", getPa()="
