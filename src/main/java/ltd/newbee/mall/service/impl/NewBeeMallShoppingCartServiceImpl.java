@@ -136,26 +136,19 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                     NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(newBeeMallShoppingCartItem.getGoodsId());
                     newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
                     String goodsName = newBeeMallGoodsTemp.getGoodsName();
-                    int price = newBeeMallGoodsTemp.getSellingPrice();
-                    GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getGoodsId());
-                    if(goodsCam != null) {
-                    	int camType = goodsCam.getCamKind();
-                    	String cam = goodsCam.getCal1();
-                    	Double camCount;
-                    	int camPrice;
-                    	if(camType == 3) {
-                    		String[] pieces = cam.split("%");
-                    		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
-                    		camPrice = (int)Math.ceil(price * camCount);
-                    		newBeeMallGoodsTemp.setSellingPrice(camPrice);
-                    	}
-                    	if(camType == 2) {
-                    		camCount = Double.parseDouble(cam);
-                    		camPrice = (int)(price - camCount);
-                    		newBeeMallGoodsTemp.setSellingPrice(camPrice);
-                    	}    
-                    	
-                    }
+					/*
+					 * int price = newBeeMallGoodsTemp.getSellingPrice(); GoodsCampaign goodsCam =
+					 * goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getGoodsId());
+					 * if(goodsCam != null) { int camType = goodsCam.getCamKind(); String cam =
+					 * goodsCam.getCal1(); Double camCount; int camPrice; if(camType == 3) {
+					 * String[] pieces = cam.split("%"); camCount =
+					 * 1.0-Double.parseDouble(pieces[0]) / 100; camPrice = (int)Math.ceil(price *
+					 * camCount); newBeeMallGoodsTemp.setSellingPrice(camPrice); } if(camType == 2)
+					 * { camCount = Double.parseDouble(cam); camPrice = (int)(price - camCount);
+					 * newBeeMallGoodsTemp.setSellingPrice(camPrice); }
+					 * 
+					 * }
+					 */
                     // 字符串过长导致文字超出的问题
                     if (goodsName.length() > 28) {
                         goodsName = goodsName.substring(0, 28) + "...";

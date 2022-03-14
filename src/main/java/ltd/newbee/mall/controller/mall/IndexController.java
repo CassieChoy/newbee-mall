@@ -47,27 +47,20 @@ public class IndexController {
         List<NewBeeMallIndexConfigGoodsVO> hotGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_HOT.getType(), Constants.INDEX_GOODS_HOT_NUMBER);
         List<NewBeeMallIndexConfigGoodsVO> newGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_NEW.getType(), Constants.INDEX_GOODS_NEW_NUMBER);
         List<NewBeeMallIndexConfigGoodsVO> recommendGoodses = newBeeMallIndexConfigService.getConfigGoodsesForIndex(IndexConfigTypeEnum.INDEX_GOODS_RECOMMOND.getType(), Constants.INDEX_GOODS_RECOMMOND_NUMBER);
-        for (NewBeeMallIndexConfigGoodsVO hotGoods : hotGoodses) {
-        	Long goodsId = hotGoods.getGoodsId();
-        	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
-        	if(cam!= null) {
-        		hotGoods.setCampaign(cam.getCamName());
-        	}
-        }
-        for (NewBeeMallIndexConfigGoodsVO newGoods : newGoodses) {
-        	Long goodsId = newGoods.getGoodsId();
-        	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
-        	if(cam!= null) {
-        		newGoods.setCampaign(cam.getCamName());
-        	}
-        }
-        for (NewBeeMallIndexConfigGoodsVO recommendGoods : recommendGoodses) {
-        	Long goodsId = recommendGoods.getGoodsId();
-        	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
-        	if(cam!= null) {
-        		recommendGoods.setCampaign(cam.getCamName());
-        	}
-        }
+		/*
+		 * for (NewBeeMallIndexConfigGoodsVO hotGoods : hotGoodses) { Long goodsId =
+		 * hotGoods.getGoodsId(); GoodsCampaign cam =
+		 * newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId); if(cam!= null)
+		 * { hotGoods.setCampaign(cam.getCamName()); } } for
+		 * (NewBeeMallIndexConfigGoodsVO newGoods : newGoodses) { Long goodsId =
+		 * newGoods.getGoodsId(); GoodsCampaign cam =
+		 * newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId); if(cam!= null)
+		 * { newGoods.setCampaign(cam.getCamName()); } } for
+		 * (NewBeeMallIndexConfigGoodsVO recommendGoods : recommendGoodses) { Long
+		 * goodsId = recommendGoods.getGoodsId(); GoodsCampaign cam =
+		 * newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId); if(cam!= null)
+		 * { recommendGoods.setCampaign(cam.getCamName()); } }
+		 */
         	
         request.setAttribute("categories", categories);//分类数据
         request.setAttribute("carousels", carousels);//轮播图

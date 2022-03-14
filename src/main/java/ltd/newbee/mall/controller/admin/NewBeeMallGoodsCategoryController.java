@@ -311,11 +311,11 @@ public class NewBeeMallGoodsCategoryController {
 			goodsCam = cams.get(i);
 			Long newCamId = goodsCam.getCamId();
 			int flag = goodsCam.getFlag();
-			Long goodsId = goodsCam.getGoodsId();
+			String skuId = goodsCam.getSkuId();
 			Date starDate = new Date();
 			Date endDate = new Date();
 
-			goodsCam.setGoodsId(goodsId);
+			goodsCam.setSkuId(skuId);
 			goodsCam.setCamId(newCamId);
 			goodsCam.setStartDate(starDate);
 			goodsCam.setEndDate(endDate);
@@ -356,57 +356,40 @@ public class NewBeeMallGoodsCategoryController {
 
 	}
 
-	@RequestMapping(value = "/goodsCampaign/download", method = RequestMethod.POST)
-    @ResponseBody
-    public Result download(@RequestBody List<String> goodsIds,HttpServletResponse response) throws IOException {
-  	  //カンマ
-  	  final String COMMA = ",";
-  	  //改行
-  	  final String NEW_LINE= "\r\n";
-  	 //リスト化を行う
-    	List<GoodsCampaign> goodsCamList = new ArrayList<GoodsCampaign>();
-    	for(int i = 0; i <goodsIds.size(); i ++) {
-    		long goodsId = Long.parseLong(goodsIds.get(i));
-    		GoodsCampaign download = newBeeMallCategoryService.getGoodsCamById(goodsId);
-    		goodsCamList.add(download);
-    	}
-    		FileWriter fileWriter = null;
-
-            try {
-              fileWriter = new FileWriter("F:\\campaign.csv");
-    		
-    	
-            for (GoodsCampaign g : goodsCamList) {
-
-                fileWriter.append(String.valueOf(g.getGoodsId()));
-                fileWriter.append(COMMA);
-                fileWriter.append(g.getGoodsName());
-                fileWriter.append(COMMA);
-                fileWriter.append(String.valueOf(g.getCamId()));
-                fileWriter.append(COMMA);
-                fileWriter.append(g.getCamName());
-                fileWriter.append(COMMA);
-                fileWriter.append(g.getCal1());
-                fileWriter.append(COMMA);
-                fileWriter.append(String.valueOf(g.getStartDate()));
-                fileWriter.append(COMMA);
-                fileWriter.append(String.valueOf(g.getEndDate()));
-                fileWriter.append(NEW_LINE);
-              }
-            }
-            finally {
-
-                try {
-                  fileWriter.flush();
-                  fileWriter.close();
-                } catch (IOException e) {
-                  e.printStackTrace();
-                }
-
-              }
-            
-            return ResultGenerator.genSuccessResult("F:\\campaign.csv");
-        }
+	/*
+	 * @RequestMapping(value = "/goodsCampaign/download", method =
+	 * RequestMethod.POST)
+	 * 
+	 * @ResponseBody public Result download(@RequestBody List<String>
+	 * goodsIds,HttpServletResponse response) throws IOException { //カンマ final
+	 * String COMMA = ","; //改行 final String NEW_LINE= "\r\n"; //リスト化を行う
+	 * List<GoodsCampaign> goodsCamList = new ArrayList<GoodsCampaign>(); for(int i
+	 * = 0; i <goodsIds.size(); i ++) { long goodsId =
+	 * Long.parseLong(goodsIds.get(i)); GoodsCampaign download =
+	 * newBeeMallCategoryService.getGoodsCamById(goodsId);
+	 * goodsCamList.add(download); } FileWriter fileWriter = null;
+	 * 
+	 * try { fileWriter = new FileWriter("F:\\campaign.csv");
+	 * 
+	 * 
+	 * for (GoodsCampaign g : goodsCamList) {
+	 * 
+	 * fileWriter.append(String.valueOf(g.getGoodsId())); fileWriter.append(COMMA);
+	 * fileWriter.append(g.getGoodsName()); fileWriter.append(COMMA);
+	 * fileWriter.append(String.valueOf(g.getCamId())); fileWriter.append(COMMA);
+	 * fileWriter.append(g.getCamName()); fileWriter.append(COMMA);
+	 * fileWriter.append(g.getCal1()); fileWriter.append(COMMA);
+	 * fileWriter.append(String.valueOf(g.getStartDate()));
+	 * fileWriter.append(COMMA); fileWriter.append(String.valueOf(g.getEndDate()));
+	 * fileWriter.append(NEW_LINE); } } finally {
+	 * 
+	 * try { fileWriter.flush(); fileWriter.close(); } catch (IOException e) {
+	 * e.printStackTrace(); }
+	 * 
+	 * }
+	 * 
+	 * return ResultGenerator.genSuccessResult("F:\\campaign.csv"); }
+	 */
 	
 	@RequestMapping(value = "/downloadFile", method = RequestMethod.GET)
 	public void getSteamingFile1(HttpServletResponse response) throws IOException {

@@ -21,9 +21,40 @@ public class GoodsInfo{
     
     private String skuId;
     
+    private int price;
+    
+    private int sellingPrice;
+    
+    private String campaign;
+    
+    
     
 
     
+	public String getCampaign() {
+		return campaign;
+	}
+
+	public void setCampaign(String campaign) {
+		this.campaign = campaign;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public int getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
+
 	public String getSkuId() {
 		return skuId;
 	}

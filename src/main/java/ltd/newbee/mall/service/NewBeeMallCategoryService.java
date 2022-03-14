@@ -90,7 +90,7 @@ public interface NewBeeMallCategoryService {
     
     int deleteGoodsCam(GoodsCampaign goodsCampaign);
     
-    GoodsCampaign getGoodsCamById(Long goodsId);
+    GoodsCampaign getGoodsCamById(String skuId);
     
     List<Long> getGoodsId();
     

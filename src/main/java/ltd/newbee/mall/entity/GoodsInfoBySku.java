@@ -26,6 +26,27 @@ public class GoodsInfoBySku {
 	private int price;
 
 	private String size;
+	
+	private int sellingPrice;
+	
+	private String campaign;
+	
+
+	public String getCampaign() {
+		return campaign;
+	}
+
+	public void setCampaign(String campaign) {
+		this.campaign = campaign;
+	}
+
+	public int getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
 
 	public String getSize() {
 		return size;

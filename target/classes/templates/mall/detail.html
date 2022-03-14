@@ -46,7 +46,7 @@
 		<div class="intro mt20 w clearfix">
 			<div class="left fl p-gallery-static">
 				<div class="swiper-container fl">
-					<img th:src="@{${goodsDetail.goodsCoverImg}}">
+					<img id="goodsCoverImg" th:src="@{${goodsDetail.goodsCoverImg}}">
 				</div>
 
 				<div class="p-gallery_thumbs">
@@ -59,8 +59,8 @@
 										<div class="p-gallery_thumbs_item"
 											th:classappend="${iter.index == 0} ? 'p-gallery_thumbs_item-active' : ''"
 											role="button" tabindex="0" data-index="0"
-											th:style="'background-image:url(' + ${element.imageUrl} + ');'"
-											th:onclick="'selectImage('+${iter.index}+')'">
+											th:style="'background-image:url(' + ${element.image} + ');'"
+											th:onclick="goodsImages(this)">
 										</div>
 									</th:block>
 								</div>
@@ -93,7 +93,7 @@
 			<div class="right fr">
 				<div class="h3 ml20 mt20" th:text="${goodsDetail.goodsName}">NewBeeMall</div>
 				<div class="sub_title mr40 ml20 mt10" th:text="${goodsDetail.goodsIntro}">NewBeeMall</div>
-				<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>
+				<!--<div class="campaign" th:text="${goodsDetail.campaign}">NewBeeMall</div>-->
 
 				<!--<div class="item_price mr40 ml20 mt10">
 					<th:block th:text="${goodsDetail.sellingPrice}+'.00 元'"></th:block>
@@ -109,11 +109,11 @@
 									<div class="img p-goods-add-cart-thumbnail">
 										<div class="p-goods-add-cart-thumbnail__image">
 											<div class="o-responsive-thumbnail">
-												<img class="o-responsive-thumbnail__image" th:src="${item.image}">
+												<img class="o-responsive-thumbnail__image" id="goodsImage" th:src="${item.image}" th:onclick="goodsImage(this)">
 											</div>
 										</div>
 									</div>
-									<span class="txt p-goods-add-cart__color" th:text="${item.color}">Black</span>
+									<span class="txt p-goods-add-cart__color"  th:text="${item.color}">Black</span>
 								</dt>
 								<th:block th:each="element : ${goodsInfoSkuVO}" th:if="${item.color == element.color}">
 									<dd class="p-goods-information-action__description" id="goodsDescription" >
@@ -163,7 +163,9 @@
 													</div>
 													<div class="item_price mr40 ml20 mt10">
 														<span class="price">
-																<span th:text="${element.price}+'.00 元'">7.0inch</span>
+																<span th:text="${element.sellingPrice}+'.00 元'">7.0inch</span>
+																<span id="originalPrice" th:text="${element.price}+'.00 元'">7.0inch</span>
+																<span id="goodsCampaign" th:text="${element.campaign}">7.0inch</span>
 															</span>
 														
 													</div>
