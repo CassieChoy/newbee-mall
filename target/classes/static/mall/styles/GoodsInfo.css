@@ -3,6 +3,12 @@
     touch-action: none;
 }
 
+span#originalPrice {
+    color: darkgray;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
 .item_price.mr40.ml20.mt10 {
     display: contents;
 }

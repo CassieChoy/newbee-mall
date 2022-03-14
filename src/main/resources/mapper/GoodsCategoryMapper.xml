@@ -307,12 +307,14 @@
         <result column="cam_name" jdbcType="VARCHAR" property="camName"/>
         <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
         <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+        <result column="sku_id" jdbcType="VARCHAR" property="skuId"/>
     </resultMap>
     
     <select id="findCampaignList" parameterType="Map" resultMap="GoodsCampaignResultMap">
-    select c.goods_id,a.cam_id,a.start_date,a.end_date,b.cam_kind,b.priority,b.cam_name,b.cal1,a.is_deleted 
-			,c.goods_name from goods_cam a join cam_table b on a.cam_id = b.cam_id right join tb_newbee_mall_goods_info c
-			on a.goods_id = c.goods_id
+    select d.goods_id,a.cam_id,a.start_date,a.end_date,b.cam_kind,b.priority,b.cam_name,b.cal1,a.is_deleted 
+			,c.goods_name,d.sku_id from goods_cam a join cam_table b on a.cam_id = b.cam_id right join
+            sku_table d on d.sku_id=a.sku_id join tb_newbee_mall_goods_info c
+			on d.goods_id = c.goods_id
     <where>
     	<!-- a.is_deleted = 0 -->
     <if test="keyword!=null and keyword!=''">
@@ -325,8 +327,9 @@
     </select>
     
     <select id="getTotalGoodsCampaign" parameterType="Map" resultType="int">
-        select count(*) from goods_cam a join cam_table b on a.cam_id = b.cam_id right join tb_newbee_mall_goods_info c
-			on a.goods_id = c.goods_id
+        select count(*) from goods_cam a join cam_table b on a.cam_id = b.cam_id right join
+            sku_table d on d.sku_id=a.sku_id join tb_newbee_mall_goods_info c
+			on d.goods_id = c.goods_id
     </select>
     
     <select id="getGoodsCampaignContent" resultType="ltd.newbee.mall.entity.GoodsCampaign">
@@ -339,38 +342,40 @@
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP}
     <where>
-      goods_id = #{goodsId,jdbcType=BIGINT}
+      sku_id = #{skuId,jdbcType=VARCHAR}
     </where>
     </update>
   
     <select id="getGoodsCampaignByGoodsId" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsCampaign">
-        select c.goods_id,a.cam_id,a.start_date,a.end_date,b.cam_kind,b.priority,b.cam_name,b.cal1,a.is_deleted 
-			,c.goods_name from goods_cam a join cam_table b on a.cam_id = b.cam_id right join tb_newbee_mall_goods_info c
-			on a.goods_id = c.goods_id
+        select d.goods_id,a.cam_id,a.start_date,a.end_date,b.cam_kind,b.priority,b.cam_name,b.cal1,a.is_deleted 
+			,c.goods_name,d.sku_id from goods_cam a join cam_table b on a.cam_id = b.cam_id right join
+            sku_table d on d.sku_id=a.sku_id join tb_newbee_mall_goods_info c
+			on d.goods_id = c.goods_id
 	  <where>
-      a.goods_id = #{goodsId,jdbcType=BIGINT}
+      a.sku_id = #{skuId,jdbcType=VARCHAR}
       </where>
     </select>
     
     <insert id="insertNewGoodsCampaign" parameterType="ltd.newbee.mall.entity.GoodsCampaign">
-    insert into newbee_mall_db.goods_cam (goods_id,cam_id,start_date,end_date)
-    values (#{goodsId,jdbcType=BIGINT}, #{camId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP}, 
+    insert into newbee_mall_db.goods_cam (sku_id,cam_id,start_date,end_date)
+    values (#{skuId,jdbcType=VARCHAR}, #{camId,jdbcType=BIGINT}, #{startDate,jdbcType=TIMESTAMP}, 
       #{endDate,jdbcType=TIMESTAMP})
    </insert>
    
     <delete id="deleteGoodsCam" parameterType="ltd.newbee.mall.entity.GoodsCampaign">
     delete from goods_cam
     <where>
-      goods_id = #{goodsId,jdbcType=BIGINT}
+      sku_id = #{skuId,jdbcType=VARCHAR}
       and cam_id = #{camId,jdbcType=BIGINT}
     </where>
     </delete>
     
     <select id="getGoodsCamById" parameterType="Long" resultType="ltd.newbee.mall.entity.GoodsCampaign">
-      select * from goods_cam a join cam_table b on a.cam_id = b.cam_id right join tb_newbee_mall_goods_info c
-			on a.goods_id = c.goods_id
+      select * from goods_cam a join cam_table b on a.cam_id = b.cam_id right join
+            sku_table d on d.sku_id=a.sku_id join tb_newbee_mall_goods_info c
+			on d.goods_id = c.goods_id
     <where>
-      a.goods_id = #{goodsId,jdbcType=BIGINT}
+      a.sku_id = #{skuId,jdbcType=VARCHAR}
     </where>
     </select>
     

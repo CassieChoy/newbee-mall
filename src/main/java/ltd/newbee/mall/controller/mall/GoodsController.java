@@ -135,6 +135,27 @@ public class GoodsController {
 			for(GoodsInfoBySkuVO goodsInfoBySkuVO : goodsInfoSkuVO) {
 				String colorInVO = goodsInfoBySkuVO.getColor();
 				String colorInSku =color.getColor();
+				int price = goodsInfoBySkuVO.getPrice();
+				String skuId = goodsInfoBySkuVO.getSkuId();
+				GoodsCampaign goodsCam = newBeeMallCategoryService.getGoodsCamById(skuId);
+				if(goodsCam != null) {
+					goodsInfoBySkuVO.setCampaign(goodsCam.getCamName());
+					int camType = goodsCam.getCamKind();
+		        	String cam = goodsCam.getCal1();
+		        	Double camCount;
+		        	int camPrice;
+		        	if(camType == 3) {
+		        		String[] pieces = cam.split("%");
+		        		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
+		        		camPrice = (int)Math.ceil(price * camCount);
+		        		goodsInfoBySkuVO.setSellingPrice(camPrice);
+		        	}
+		        	if(camType == 2) {
+		        		camCount = Double.parseDouble(cam);
+		        		camPrice = (int)(price - camCount);
+		        		goodsInfoBySkuVO.setSellingPrice(camPrice);
+		        	}    	
+		        }
 				if(colorInSku.equals(colorInVO)) {
 					tempList.add(goodsInfoBySkuVO);
 				}
@@ -151,7 +172,7 @@ public class GoodsController {
 
 		// 获取商品图片
 
-		List<GoodsImageEntity> goodsImageList = newBeeMallGoodsService.getGoodsImageByPk(10700l);
+		List<GoodsImageEntity> goodsImageList = newBeeMallGoodsService.getGoodsImageByPk(goodsId);
 		List<GoodsImageVO> goodsImageVOList = BeanUtil.copyList(goodsImageList, GoodsImageVO.class);
 
 		List<List<GoodsImageVO>> outerList = new ArrayList<List<GoodsImageVO>>();
@@ -215,26 +236,17 @@ public class GoodsController {
 		request.setAttribute("reviewRateAve", reviewRateAve);
 
 		NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
-		int price = goods.getOriginalPrice();
-		GoodsCampaign goodsCam = newBeeMallCategoryService.getGoodsCamById(goodsId);
-		if(goodsCam != null) {
-			goods.setCampaign(goodsCam.getCamName());
-			int camType = goodsCam.getCamKind();
-        	String cam = goodsCam.getCal1();
-        	Double camCount;
-        	int camPrice;
-        	if(camType == 3) {
-        		String[] pieces = cam.split("%");
-        		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
-        		camPrice = (int)Math.ceil(price * camCount);
-        		goods.setSellingPrice(camPrice);
-        	}
-        	if(camType == 2) {
-        		camCount = Double.parseDouble(cam);
-        		camPrice = (int)(price - camCount);
-        		goods.setSellingPrice(camPrice);
-        	}    	
-        }
+		/*
+		 * int price = goods.getOriginalPrice(); GoodsCampaign goodsCam =
+		 * newBeeMallCategoryService.getGoodsCamById(goodsId); if(goodsCam != null) {
+		 * goods.setCampaign(goodsCam.getCamName()); int camType =
+		 * goodsCam.getCamKind(); String cam = goodsCam.getCal1(); Double camCount; int
+		 * camPrice; if(camType == 3) { String[] pieces = cam.split("%"); camCount =
+		 * 1.0-Double.parseDouble(pieces[0]) / 100; camPrice = (int)Math.ceil(price *
+		 * camCount); goods.setSellingPrice(camPrice); } if(camType == 2) { camCount =
+		 * Double.parseDouble(cam); camPrice = (int)(price - camCount);
+		 * goods.setSellingPrice(camPrice); } }
+		 */
 		if (goods == null) {
 			NewBeeMallException.fail(ServiceResultEnum.GOODS_NOT_EXIST.getResult());
 		}
@@ -438,8 +450,23 @@ public class GoodsController {
     @ResponseBody
     public Result goodsInfo(@RequestBody GoodsInfoBySku goodsInfoBySku) {
 		String skuId = goodsInfoBySku.getSkuId();
+		
 		GoodsInfo goodsInfo = newBeeMallGoodsService.getGoodsInfoBySku(skuId);
 		return ResultGenerator.genSuccessResult(goodsInfo);
+	}
+	
+	@RequestMapping(value = "/goods/goodsImage", method = RequestMethod.POST)
+    @ResponseBody
+    public Result goodsImage(@RequestBody GoodsInfoBySku goodsInfoBySku) {
+		String image = goodsInfoBySku.getImage();
+		return ResultGenerator.genSuccessResult(image);
+	}
+	
+	@RequestMapping(value = "/goods/goodsCoverImage", method = RequestMethod.POST)
+    @ResponseBody
+    public Result goodsCoverImage(@RequestBody GoodsInfoBySku goodsInfoBySku) {
+		String image = goodsInfoBySku.getImage();
+		return ResultGenerator.genSuccessResult(image);
 	}
 }
 

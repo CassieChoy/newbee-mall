@@ -102,27 +102,20 @@ public class NewBeeMallIndexConfigServiceImpl implements NewBeeMallIndexConfigSe
             for (NewBeeMallIndexConfigGoodsVO newBeeMallIndexConfigGoodsVO : newBeeMallIndexConfigGoodsVOS) {
                 String goodsName = newBeeMallIndexConfigGoodsVO.getGoodsName();
                 String goodsIntro = newBeeMallIndexConfigGoodsVO.getGoodsIntro();
-                Long goodsId = newBeeMallIndexConfigGoodsVO.getGoodsId();
-                int price = newBeeMallIndexConfigGoodsVO.getSellingPrice();
-                GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(goodsId);
-                if(goodsCam != null) {
-                	int camType = goodsCam.getCamKind();
-                	String cam = goodsCam.getCal1();
-                	Double camCount;
-                	int camPrice;
-                	if(camType == 3) {
-                		String[] pieces = cam.split("%");
-                		camCount = 1.0-Double.parseDouble(pieces[0]) / 100;
-                		camPrice = (int)Math.ceil(price * camCount);
-                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
-                	}
-                	if(camType == 2) {
-                		camCount = Double.parseDouble(cam);
-                		camPrice = (int)(price - camCount);
-                		newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice);
-                	}    
-                	
-                }
+                Long skuId = newBeeMallIndexConfigGoodsVO.getGoodsId();
+				/*
+				 * int price = newBeeMallIndexConfigGoodsVO.getSellingPrice(); GoodsCampaign
+				 * goodsCam = goodsCategoryMapper.getGoodsCamById(goodsId); if(goodsCam != null)
+				 * { int camType = goodsCam.getCamKind(); String cam = goodsCam.getCal1();
+				 * Double camCount; int camPrice; if(camType == 3) { String[] pieces =
+				 * cam.split("%"); camCount = 1.0-Double.parseDouble(pieces[0]) / 100; camPrice
+				 * = (int)Math.ceil(price * camCount);
+				 * newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice); } if(camType == 2) {
+				 * camCount = Double.parseDouble(cam); camPrice = (int)(price - camCount);
+				 * newBeeMallIndexConfigGoodsVO.setSellingPrice(camPrice); }
+				 * 
+				 * }
+				 */
                 
                 
                 // 字符串过长导致文字超出的问题

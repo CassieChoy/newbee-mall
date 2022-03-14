@@ -34,6 +34,37 @@ public class GoodsCampaign {
     private String cal1;
     
     private int isDeleted;
+    
+    private String skuId;
+    
+    private int price;
+    
+    private int sellingPrice;
+    
+
+	public int getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getSkuId() {
+		return skuId;
+	}
+
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
 
 	public int getFlag() {
 		return flag;

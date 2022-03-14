@@ -29,7 +29,8 @@ function searchResult(){
         url: '/admin/goodsCampaign/list?keyword=' + keyword,
         datatype: "json",
         colModel: [
-            {label: '商品单号', name: 'goodsId', index: 'goodsId', width: 120,key: true},
+            {label: '商品单号', name: 'goodsId', index: 'goodsId', width: 120},
+            {label: '商品sku', name: 'skuId', index: 'skuId', width: 120,key: true},
             {label: '商品名称', name: 'goodsName', index: 'goodsName', width: 120},
             {label: 'campaignId', name: 'camId', index: 'camId', width: 120},
             {label: '当前促销', name: 'cal1', index: 'cal1', width: 120, formatter: customSelectboxRenderer}
@@ -56,14 +57,13 @@ function searchResult(){
             order: "order",
         },
         loadComplete: function() {
-	    /*$('#jqGrid').find('input[type="checkbox"]').hide();*/
         var dataArr = $("#jqGrid").jqGrid('getRowData');
         var dataIDs = jQuery("#jqGrid").getDataIDs();
         for(var i = 0;i<dataArr.length;i++){
 			var camId = dataArr[i].camId;
 			if(camId!=0){
 				$("#jqGrid").jqGrid('setSelection',dataIDs[i],true);
-				$("#"+dataArr[i].goodsId).find("#selections").val(dataArr[i].camId);
+				$("#"+dataArr[i].skuId).find("#selections").val(dataArr[i].camId);
 			}
 			}      
         },
@@ -82,8 +82,8 @@ function selectCam(){
 	for(var i = 0;i<dataArr.length;i++){
 		    flag = null;
 			var camId = dataArr[i].camId;
-			var selectedVal = $("#"+dataArr[i].goodsId).find("#selections").val();
-			var goodsId = dataIDs[i];
+			var selectedVal = $("#"+dataArr[i].skuId).find("#selections").val();
+			var skuId = dataIDs[i];
 			if (camId !=0&&camId!=selectedVal&&selectedVal!=0) {
 				flag = 0;
 				camId = selectedVal;
@@ -100,7 +100,7 @@ function selectCam(){
 			data.push({
 			"flag":flag,
 			"camId":camId,
-			"goodsId":goodsId
+			"skuId":skuId
 	        })
 	        
 			}

@@ -478,9 +478,7 @@
 
 	<select id="getGoodsImageByPk" parameterType="Long"
 		resultType="ltd.newbee.mall.entity.GoodsImageEntity">
-		select goods_id,image_url
-
-		FROM goods_image where
+		SELECT * FROM sku_table where
 		goods_id=#{goodsId,jdbcType=BIGINT}
 
 	</select>
@@ -803,9 +801,9 @@
 	</select>
 	
 	<select id="getGoodsInfoBySku" parameterType="String" resultType="ltd.newbee.mall.entity.GoodsInfo">
-		select * FROM goodsinfo
+		select * from goodsinfo a join sku_table b on a.sku_id = b.sku_id 
 		<where>
-			sku_id = #{skuId,jdbcType=VARCHAR}
+			b.sku_id = #{skuId,jdbcType=VARCHAR}
 		</where>
 	</select>
 </mapper>

@@ -262,3 +262,62 @@ function goodsInfo(_this) {
 
 }
 
+function goodsImage(_this) {
+	var image = $(_this).attr('src');
+	
+	var data = {
+		"image": image
+	};
+	$.ajax({
+		type: 'POST',//方法类型
+		url: '/goods/goodsImage',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+
+		success: function(result) {
+
+			if (result.resultCode == 200) {
+				var goodsImage = result.message;
+				$('#goodsCoverImg').attr("src",goodsImage);
+			}
+
+			else {
+				swal(result.message, {
+					icon: "error",
+				});
+			}
+		}
+	});
+
+}
+
+function goodsImages(_this) {
+	var image = $(_this).css("background-image");
+	image =  image.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+	
+	var data = {
+		"image": image
+	};
+	$.ajax({
+		type: 'POST',//方法类型
+		url: '/goods/goodsCoverImage',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+
+		success: function(result) {
+
+			if (result.resultCode == 200) {
+				var goodsImage = result.message;
+				$('#goodsCoverImg').attr("src",goodsImage);
+			}
+
+			else {
+				swal(result.message, {
+					icon: "error",
+				});
+			}
+		}
+	});
+
+}
+
