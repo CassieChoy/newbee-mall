@@ -43,7 +43,7 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 
     @Override
     public String saveNewBeeMallCartItem(NewBeeMallShoppingCartItem newBeeMallShoppingCartItem) {
-        NewBeeMallShoppingCartItem temp = newBeeMallShoppingCartItemMapper.selectByUserIdAndGoodsId(newBeeMallShoppingCartItem.getUserId(), newBeeMallShoppingCartItem.getGoodsId());
+        NewBeeMallShoppingCartItem temp = newBeeMallShoppingCartItemMapper.selectByUserIdAndGoodsId(newBeeMallShoppingCartItem.getUserId(), newBeeMallShoppingCartItem.getSkuId());
         if (temp != null) {
             //已存在则修改该记录
             temp.setGoodsCount(newBeeMallShoppingCartItem.getGoodsCount());

@@ -60,7 +60,7 @@
 											th:classappend="${iter.index == 0} ? 'p-gallery_thumbs_item-active' : ''"
 											role="button" tabindex="0" data-index="0"
 											th:style="'background-image:url(' + ${element.image} + ');'"
-											th:onclick="goodsImages(this)">
+											th:onclick="'selectImage('+${iter.index}+','+this+')'">
 										</div>
 									</th:block>
 								</div>
@@ -145,6 +145,7 @@
 															<input type="hidden" name="rid" value="1006">
 															<input type="hidden" name="p_seckey"
 																value="af7460634c1ffa8ad989bd9f3edd911f">
+															<input type="hidden" id="goodsSku" th:value="${element.skuId}">
 															<input class="car" type="button"
 																th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" 
 																value="加入购物车" />
@@ -888,7 +889,9 @@
 		function saveToCart(id) {
 			debugger;
 			var goodsCount = 1;
+			var skuId = $(this).find("#goodsSku").val();
 			var data = {
+				"skuId":skuId,
 				"goodsId": id,
 				"goodsCount": goodsCount
 			};
