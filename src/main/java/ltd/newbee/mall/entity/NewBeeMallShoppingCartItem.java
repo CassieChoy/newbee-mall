@@ -24,8 +24,20 @@ public class NewBeeMallShoppingCartItem {
     private Date createTime;
 
     private Date updateTime;
+    
+    private String skuId;
+    
+    
 
-    public Long getCartItemId() {
+    public String getSkuId() {
+		return skuId;
+	}
+
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
+
+	public Long getCartItemId() {
         return cartItemId;
     }
 
@@ -97,4 +109,5 @@ public class NewBeeMallShoppingCartItem {
         sb.append("]");
         return sb.toString();
     }
-}
+
+	}

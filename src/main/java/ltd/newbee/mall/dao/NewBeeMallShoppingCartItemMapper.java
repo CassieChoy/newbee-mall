@@ -23,7 +23,7 @@ public interface NewBeeMallShoppingCartItemMapper {
 
     NewBeeMallShoppingCartItem selectByPrimaryKey(Long cartItemId);
 
-    NewBeeMallShoppingCartItem selectByUserIdAndGoodsId(@Param("newBeeMallUserId") Long newBeeMallUserId, @Param("goodsId") Long goodsId);
+    NewBeeMallShoppingCartItem selectByUserIdAndGoodsId(@Param("newBeeMallUserId") Long newBeeMallUserId, @Param("goodsId") String skuId);
 
     List<NewBeeMallShoppingCartItem> selectByUserId(@Param("newBeeMallUserId") Long newBeeMallUserId, @Param("number") int number);
 

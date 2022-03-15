@@ -9,9 +9,10 @@
         <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="sku_id" jdbcType="VARCHAR" property="skuId"/>
     </resultMap>
     <sql id="Base_Column_List">
-    cart_item_id, user_id, goods_id, goods_count, is_deleted, create_time, update_time
+    cart_item_id, user_id, goods_id, goods_count, is_deleted, create_time, update_time, sku_id
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -23,7 +24,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_shopping_cart_item
-        where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and goods_id=#{goodsId,jdbcType=BIGINT} and is_deleted = 0
+        where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and sku_id=#{skuId,jdbcType=BIGINT} and is_deleted = 0
         limit 1
     </select>
     <select id="selectByUserId" resultMap="BaseResultMap">
@@ -61,6 +62,9 @@
     <insert id="insertSelective" parameterType="ltd.newbee.mall.entity.NewBeeMallShoppingCartItem">
         insert into tb_newbee_mall_shopping_cart_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
+        	<if test="skuId != null">
+                sku_id,
+            </if>
             <if test="cartItemId != null">
                 cart_item_id,
             </if>
@@ -84,6 +88,9 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+        	<if test="skuId != null">
+                #{skuId,jdbcType=VARCHAR},
+            </if>
             <if test="cartItemId != null">
                 #{cartItemId,jdbcType=BIGINT},
             </if>
@@ -110,6 +117,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="ltd.newbee.mall.entity.NewBeeMallShoppingCartItem">
         update tb_newbee_mall_shopping_cart_item
         <set>
+        	<if test="skuId != null">
+                sku_id = #{skuId,jdbcType=BIGINT},
+            </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
             </if>

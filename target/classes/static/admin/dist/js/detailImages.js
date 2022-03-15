@@ -55,9 +55,38 @@ function common(index){
 			
 }
 
-function selectImage(index){
+function selectImage(index,_this){
 	var images = document.getElementsByClassName("p-gallery_thumbs_item");
 	var bt = document.getElementsByClassName("p-gallery_btn");
+	var image = $(_this).css("background-image");
+	image =  image.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+	
+	var data = {
+		"image": image
+	};
+	
+	$.ajax({
+		type: 'POST',//方法类型
+		url: '/goods/goodsCoverImage',
+		contentType: 'application/json',
+		data: JSON.stringify(data),
+
+		success: function(result) {
+
+			if (result.resultCode == 200) {
+				var goodsImage = result.message;
+				$('#goodsCoverImg').attr("src",goodsImage);
+				
+				
+			}
+
+			else {
+				swal(result.message, {
+					icon: "error",
+				});
+			}
+		}
+	});
 
 			for(var i= 0;i<index;i++){
 				images[i].className ="p-gallery_thumbs_item";
