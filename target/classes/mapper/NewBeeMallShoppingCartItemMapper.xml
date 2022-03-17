@@ -24,7 +24,7 @@
         select
         <include refid="Base_Column_List"/>
         from tb_newbee_mall_shopping_cart_item
-        where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and sku_id=#{skuId,jdbcType=BIGINT} and is_deleted = 0
+        where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and sku_id=#{skuId,jdbcType=VARCHAR} and is_deleted = 0
         limit 1
     </select>
     <select id="selectByUserId" resultMap="BaseResultMap">
@@ -153,8 +153,9 @@
   </update>
   
   <select id="selectLikeByUserId" resultType="ltd.newbee.mall.entity.GoodsLike">
-    select a.like_id,a.user_id,a.goods_id,a.is_deleted,a.create_time,b.goods_name,b.goods_cover_img,
-	b.selling_price from like_table a left join tb_newbee_mall_goods_info b on a.goods_id = b.goods_id
+    select a.sku_id,a.like_id,a.user_id,a.goods_id,a.is_deleted,a.create_time,b.goods_name,b.goods_cover_img,
+	c.color,c.memory,c.image,c.price,c.size from like_table a left join tb_newbee_mall_goods_info b on a.goods_id = b.goods_id join 
+    sku_table c on a.sku_id=c.sku_id
 	where user_id = #{newBeeMallUserId,jdbcType=BIGINT} and is_deleted = 0
     limit #{number}
   </select>
@@ -166,10 +167,11 @@
   </select>
   
   <insert id="insertGoodsLike" parameterType="ltd.newbee.mall.entity.GoodsLike">
-    insert into like_table (like_id, user_id, goods_id, 
+    insert into like_table (sku_id,like_id, user_id, goods_id, 
       is_deleted, create_time)
-    values (#{likeId,jdbcType=BIGINT},
-      #{userId,jdbcType=BIGINT},
+    values (#{skuId,jdbcType=VARCHAR},
+      #{likeId,jdbcType=BIGINT},
+      #{userId,jdbcType=BIGINT}, 
       #{goodsId,jdbcType=BIGINT},
       #{isDeleted,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP})
@@ -182,4 +184,17 @@
     update like_table set is_deleted = 1
     where like_id = #{likeId,jdbcType=BIGINT} and is_deleted = 0
   </update>
+  
+    <select id="getCartBySku" parameterType="String" resultType="ltd.newbee.mall.entity.CartBySku">
+   select a.*,b.cart_item_id,b.user_id,b.goods_count,b.is_deleted,
+		c.goods_name from sku_table a join tb_newbee_mall_shopping_cart_item b on a.sku_id=b.sku_id 
+		join tb_newbee_mall_goods_info c on a.goods_id=c.goods_id
+		where a.sku_id=#{skuId,jdbcType=VARCHAR} 
+  </select>
+   <select id="getLikeBySku" parameterType="String" resultType="ltd.newbee.mall.entity.GoodsLike">
+   select a.*,b.like_id,b.user_id,b.is_deleted,
+		c.goods_name from sku_table a join like_table b on a.sku_id=b.sku_id 
+		join tb_newbee_mall_goods_info c on a.goods_id=c.goods_id
+		where a.sku_id=#{skuId,jdbcType=VARCHAR} 
+  </select>
 </mapper>

@@ -250,9 +250,9 @@ public class NewBeeMallCategoryServiceImpl implements NewBeeMallCategoryService 
 	}
 
 	@Override
-	public GoodsCampaign getGoodsCampaignByGoodsId(Long goodsId) {
+	public GoodsCampaign getGoodsCampaignByGoodsId(String skuId) {
 		
-		return goodsCategoryMapper.getGoodsCampaignByGoodsId(goodsId);
+		return goodsCategoryMapper.getGoodsCampaignByGoodsId(skuId);
 	}
 
 	@Override

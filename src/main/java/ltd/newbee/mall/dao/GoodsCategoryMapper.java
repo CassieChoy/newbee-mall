@@ -70,7 +70,7 @@ public interface GoodsCategoryMapper {
     
     int setNewGoodsCam(GoodsCampaign goodsCampaign);
     
-    GoodsCampaign getGoodsCampaignByGoodsId(Long goodsId);
+    GoodsCampaign getGoodsCampaignByGoodsId(String skuId);
     
     int insertNewGoodsCampaign(GoodsCampaign goodsCampaign);
     

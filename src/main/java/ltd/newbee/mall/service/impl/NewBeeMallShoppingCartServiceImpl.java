@@ -15,6 +15,7 @@ import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
 import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
+import ltd.newbee.mall.entity.CartBySku;
 import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
@@ -133,29 +134,42 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                 
                 
                 if (newBeeMallGoodsMap.containsKey(newBeeMallShoppingCartItem.getGoodsId())) {
-                    NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(newBeeMallShoppingCartItem.getGoodsId());
-                    newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
+                	String skuId = newBeeMallShoppingCartItem.getSkuId();
+                    CartBySku newBeeMallGoodsTemp = newBeeMallShoppingCartItemMapper.getCartBySku(skuId);
+                    newBeeMallShoppingCartItemVO.setGoodsCoverImg(newBeeMallGoodsTemp.getImage());
+                    newBeeMallShoppingCartItemVO.setColor(newBeeMallGoodsTemp.getColor());
+                    newBeeMallShoppingCartItemVO.setMemory(newBeeMallGoodsTemp.getMemory());
+                    newBeeMallShoppingCartItemVO.setSize(newBeeMallGoodsTemp.getSize());
                     String goodsName = newBeeMallGoodsTemp.getGoodsName();
-					/*
-					 * int price = newBeeMallGoodsTemp.getSellingPrice(); GoodsCampaign goodsCam =
-					 * goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getGoodsId());
-					 * if(goodsCam != null) { int camType = goodsCam.getCamKind(); String cam =
-					 * goodsCam.getCal1(); Double camCount; int camPrice; if(camType == 3) {
-					 * String[] pieces = cam.split("%"); camCount =
-					 * 1.0-Double.parseDouble(pieces[0]) / 100; camPrice = (int)Math.ceil(price *
-					 * camCount); newBeeMallGoodsTemp.setSellingPrice(camPrice); } if(camType == 2)
-					 * { camCount = Double.parseDouble(cam); camPrice = (int)(price - camCount);
-					 * newBeeMallGoodsTemp.setSellingPrice(camPrice); }
-					 * 
-					 * }
-					 */
+					
+					  int price = newBeeMallGoodsTemp.getPrice();
+					  GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getSkuId());
+					  if(goodsCam != null) { 
+						  int camType = goodsCam.getCamKind(); 
+						  String cam = goodsCam.getCal1();
+						  Double camCount; 
+						  int camPrice; 
+						  if(camType == 3) {
+							  String[] pieces = cam.split("%"); 
+							  camCount = 1.0-Double.parseDouble(pieces[0]) / 100; 
+							  camPrice = (int)Math.ceil(price * camCount); 
+							  newBeeMallGoodsTemp.setPrice(camPrice);; 
+						  	  } 
+						  if(camType == 2) {
+							  camCount = Double.parseDouble(cam); 
+							  camPrice = (int)(price - camCount);
+							  newBeeMallGoodsTemp.setPrice(camPrice);
+							  }
+					  
+					  }
+					 
                     // 字符串过长导致文字超出的问题
                     if (goodsName.length() > 28) {
                         goodsName = goodsName.substring(0, 28) + "...";
                     }
                     newBeeMallShoppingCartItemVO.setGoodsName(goodsName);
 					
-					newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+					newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getPrice());
 					 
                     newBeeMallShoppingCartItemVOS.add(newBeeMallShoppingCartItemVO);
                 }
@@ -182,16 +196,40 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                 
                 
                 if (newBeeMallGoodsMap.containsKey(goodsLikeItem.getGoodsId())) {
-                    NewBeeMallGoods newBeeMallGoodsTemp = newBeeMallGoodsMap.get(goodsLikeItem.getGoodsId());
-                    goodsLikeItem.setGoodsCoverImg(newBeeMallGoodsTemp.getGoodsCoverImg());
+                	GoodsLike newBeeMallGoodsTemp = newBeeMallShoppingCartItemMapper.getLikeBySku(goodsLikeItem.getSkuId());
+                	GoodsLikeVO.setImage(newBeeMallGoodsTemp.getImage());
+                	GoodsLikeVO.setColor(newBeeMallGoodsTemp.getColor());
+                	GoodsLikeVO.setMemory(newBeeMallGoodsTemp.getMemory());
+                	GoodsLikeVO.setSize(newBeeMallGoodsTemp.getSize());
                     String goodsName = newBeeMallGoodsTemp.getGoodsName();
+ 					
+ 					  int price = newBeeMallGoodsTemp.getPrice();
+ 					  GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(goodsLikeItem.getSkuId());
+ 					  if(goodsCam != null) { 
+ 						  int camType = goodsCam.getCamKind(); 
+ 						  String cam = goodsCam.getCal1();
+ 						  Double camCount; 
+ 						  int camPrice; 
+ 						  if(camType == 3) {
+ 							  String[] pieces = cam.split("%"); 
+ 							  camCount = 1.0-Double.parseDouble(pieces[0]) / 100; 
+ 							  camPrice = (int)Math.ceil(price * camCount); 
+ 							  newBeeMallGoodsTemp.setPrice(camPrice);; 
+ 						  	  } 
+ 						  if(camType == 2) {
+ 							  camCount = Double.parseDouble(cam); 
+ 							  camPrice = (int)(price - camCount);
+ 							  newBeeMallGoodsTemp.setPrice(camPrice);
+ 							  }
+ 					  
+ 					  }
                     // 字符串过长导致文字超出的问题
                     if (goodsName.length() > 28) {
                         goodsName = goodsName.substring(0, 28) + "...";
                     }
                     GoodsLikeVO.setGoodsName(goodsName);
 					
-                    GoodsLikeVO.setSellingPrice(newBeeMallGoodsTemp.getSellingPrice());
+                    GoodsLikeVO.setPrice(newBeeMallGoodsTemp.getPrice());
 					 
                     GoodsLikeVOS.add(GoodsLikeVO);
                 }
