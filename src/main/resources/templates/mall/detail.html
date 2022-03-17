@@ -145,17 +145,17 @@
 															<input type="hidden" name="rid" value="1006">
 															<input type="hidden" name="p_seckey"
 																value="af7460634c1ffa8ad989bd9f3edd911f">
-															<input type="hidden" id="goodsSku" th:value="${element.skuId}">
-															<input class="car" type="button"
-																th:onclick="'saveToCart('+${goodsDetail.goodsId}+')'" 
+															
+															<input class="car" type="button" th:name="${element.skuId}"
+																th:onclick="'saveToCart('+${goodsDetail.goodsId}+','+this+')'" 
 																value="加入购物车" />
 														</form>
 													</div>
 													<div class="bkmk p-goods-add-cart__favorite">
 														<form action="#" onsubmit="return false;"
 															data-goods-skus="action-favorite">
-															<input class="car" type="button"
-																th:onclick="'saveToLike('+${goodsDetail.goodsId}+')'"
+															<input class="car" type="button" th:name="${element.skuId}"
+																th:onclick="'saveToLike('+${goodsDetail.goodsId}+','+this+')'"
 																value="LIKE" />
 															<input type="hidden" name="gid" value="60856695">
 															<input type="hidden" name="did" value="101055958">
@@ -886,10 +886,10 @@
 		/**
 		 * 添加到购物车
 		 */
-		function saveToCart(id) {
+		function saveToCart(id,_this) {
 			debugger;
 			var goodsCount = 1;
-			var skuId = $(this).find("#goodsSku").val();
+			var skuId = $(_this).attr('name');
 			var data = {
 				"skuId":skuId,
 				"goodsId": id,

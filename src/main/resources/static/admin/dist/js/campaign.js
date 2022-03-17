@@ -153,10 +153,12 @@ function deleteCampaign() {
 		;
 }
 
-function saveToLike(id) {
+function saveToLike(id,_this) {
 	var goodsId = id;
+	var skuId = $(_this).attr('name');
 	var data = {
-		"goodsId": goodsId
+		"goodsId": goodsId,
+		"skuId":skuId
 	};
 	$.ajax({
 		type: 'POST',

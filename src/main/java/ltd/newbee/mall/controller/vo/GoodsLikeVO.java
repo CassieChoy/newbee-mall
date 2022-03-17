@@ -13,52 +13,38 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class GoodsLikeVO {
-    private Long goodsId;
+private String skuId;
+	
+	private Long likeId;
+	
+	private Long userId;
+	
+	private Long goodsId;
+	
+	private int isDeleted;
+	
+	private Date createTime;
+	
+	private String goodsName;
+	
+	private String goodsCoverImg;
+	
+	private String color;
+	
+	private String memory;
+	
+	private String image;
+	
+	private int price;
+	
+	private String size;
 
-    private String goodsName;
-
-    private String goodsCoverImg;
-
-    private Integer sellingPrice;
-
-    private Long likeId;
-    
-    private Long userId;
-    
-    private int isDeleted;
-    
-    private Date createTime;
-
-	public Long getGoodsId() {
-		return goodsId;
+	public String getSkuId() {
+		return skuId;
 	}
 
-	public void setGoodsId(Long goodsId) {
-		this.goodsId = goodsId;
-	}
-
-	public String getGoodsName() {
-		return goodsName;
-	}
-
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-
-	public String getGoodsCoverImg() {
-		return goodsCoverImg;
-	}
-
-	public void setGoodsCoverImg(String goodsCoverImg) {
-		this.goodsCoverImg = goodsCoverImg;
-	}
-
-	public Integer getSellingPrice() {
-		return sellingPrice;
-	}
-
-	public void setSellingPrice(Integer sellingPrice) {
-		this.sellingPrice = sellingPrice;
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
 	}
 
 	public Long getLikeId() {
@@ -77,6 +63,14 @@ public class GoodsLikeVO {
 		this.userId = userId;
 	}
 
+	public Long getGoodsId() {
+		return goodsId;
+	}
+
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
+
 	public int getIsDeleted() {
 		return isDeleted;
 	}
@@ -93,12 +87,62 @@ public class GoodsLikeVO {
 		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "GoodsLike [goodsId=" + goodsId + ", goodsName=" + goodsName + ", goodsCoverImg=" + goodsCoverImg
-				+ ", sellingPrice=" + sellingPrice + ", likeId=" + likeId + ", userId=" + userId + ", isDeleted="
-				+ isDeleted + ", createTime=" + createTime + "]";
+	public String getGoodsName() {
+		return goodsName;
 	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
+
+	public String getGoodsCoverImg() {
+		return goodsCoverImg;
+	}
+
+	public void setGoodsCoverImg(String goodsCoverImg) {
+		this.goodsCoverImg = goodsCoverImg;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getMemory() {
+		return memory;
+	}
+
+	public void setMemory(String memory) {
+		this.memory = memory;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	} 
+
 
 
     

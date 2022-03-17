@@ -84,8 +84,6 @@ public interface NewBeeMallCategoryService {
     
     int setNewGoodsCam(GoodsCampaign goodsCampaign);
     
-    GoodsCampaign getGoodsCampaignByGoodsId(Long goodsId);
-    
     int insertNewGoodsCampaign(GoodsCampaign goodsCampaign);
     
     int deleteGoodsCam(GoodsCampaign goodsCampaign);
@@ -97,5 +95,7 @@ public interface NewBeeMallCategoryService {
     List<OrderCampaign> getOrderCam(Long userId);
     
     GoodsCampaign getGoodsCamByCamId (Long camId);
+
+	GoodsCampaign getGoodsCampaignByGoodsId(String skuId);
     
 }

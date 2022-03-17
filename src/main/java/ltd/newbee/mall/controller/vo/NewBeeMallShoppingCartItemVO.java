@@ -29,9 +29,48 @@ public class NewBeeMallShoppingCartItemVO implements Serializable {
     
     private String campaign;
     
+    private String skuId;
+    
+    private String color;
+	
+	private String size;
+	
+	private String memory;
     
 
-    public String getCampaign() {
+    public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getMemory() {
+		return memory;
+	}
+
+	public void setMemory(String memory) {
+		this.memory = memory;
+	}
+
+	public String getSkuId() {
+		return skuId;
+	}
+
+	public void setSkuId(String skuId) {
+		this.skuId = skuId;
+	}
+
+	public String getCampaign() {
 		return campaign;
 	}
 

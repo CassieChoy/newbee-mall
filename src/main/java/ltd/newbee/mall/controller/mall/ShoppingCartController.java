@@ -134,8 +134,8 @@ public class ShoppingCartController {
         } else {
             //总价
             for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
-            	Long goodsId = newBeeMallShoppingCartItemVO.getGoodsId();
-            	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId);
+            	String skuId = newBeeMallShoppingCartItemVO.getSkuId();
+            	GoodsCampaign cam = newBeeMallCategoryService.getGoodsCampaignByGoodsId(skuId);
             	if(cam!= null) {
             		newBeeMallShoppingCartItemVO.setCampaign(cam.getCamName());
             	}
@@ -171,7 +171,6 @@ public class ShoppingCartController {
     @ResponseBody
     public Result saveGoodsLike(@RequestBody GoodsLike goodsLike,HttpSession httpSession) {
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        Long goodsId = goodsLike.getGoodsId();
         Long likeId = newBeeMallShoppingCartService.getMaxLikeId();
         Long newLikeId = likeId + 1;
         Date createDate = new Date();
