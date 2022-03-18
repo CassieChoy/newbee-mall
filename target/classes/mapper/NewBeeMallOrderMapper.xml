@@ -286,16 +286,18 @@
   </update>
   
   <select id="getOrderCamList" parameterType="Map" resultType="ltd.newbee.mall.entity.OrderCampaign">
-      select a.user_id,a.order_id,a.cam_id,a.end_date,b.cam_kind,b.cam_name,b.cal1,c.order_no,
-		c.total_price,c.pay_time,c.order_status from point_table a left join cam_table b on
-		a.cam_id = b.cam_id left join tb_newbee_mall_order c on a.user_id = c.user_id 
-		and a.order_id = c.order_id
+      select a.user_id,a.order_item_id,a.cam_id,a.end_date,b.cam_kind,b.cam_name,b.cal1,
+		c.selling_price,c.create_time,d.order_status,d.order_no from point_table a left join cam_table b on
+		a.cam_id = b.cam_id left join tb_newbee_mall_order_item c on a.order_item_id = c.order_item_id 
+        left join tb_newbee_mall_order d on c.order_id = d.order_id and a.user_id = d.user_id 
+        where order_status=1
   </select>
   
   <select id="getTotalOrdersCam" parameterType="Map" resultType="int">
       select count(*) from point_table a left join cam_table b on
-		a.cam_id = b.cam_id left join tb_newbee_mall_order c on a.user_id = c.user_id 
-		and a.order_id = c.order_id;
+		a.cam_id = b.cam_id left join tb_newbee_mall_order_item c on a.order_item_id = c.order_item_id 
+        left join tb_newbee_mall_order d on c.order_id = d.order_id and a.user_id = d.user_id 
+        where order_status=1
   </select>
   
   <select id="getCouponList" parameterType="Map" resultType="ltd.newbee.mall.entity.userCoupon">

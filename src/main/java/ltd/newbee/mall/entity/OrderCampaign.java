@@ -15,7 +15,7 @@ import java.util.Date;
 public class OrderCampaign {
 	private long userId;
 	
-	private long orderId;
+	private long orderItemId;
 	
 	private long camId;
 	
@@ -27,9 +27,9 @@ public class OrderCampaign {
 	
 	private String cal1;
 	
-	private int totalPrice;
+	private int sellingPrice;
 	
-	private Date payTime;
+	private Date createTime;
 	
 	private String orderNo;
 	
@@ -37,32 +37,7 @@ public class OrderCampaign {
 	
 	private int totalPoint;
 	
-	
-	
-
-	public int getTotalPoint() {
-		return totalPoint;
-	}
-
-	public void setTotalPoint(int totalPoint) {
-		this.totalPoint = totalPoint;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
-	public String getOrderNo() {
-		return orderNo;
-	}
-
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
-	}
+	private int orderStatus;
 
 	public long getUserId() {
 		return userId;
@@ -72,12 +47,12 @@ public class OrderCampaign {
 		this.userId = userId;
 	}
 
-	public long getOrderId() {
-		return orderId;
+	public long getOrderItemId() {
+		return orderItemId;
 	}
 
-	public void setOrderId(long orderId) {
-		this.orderId = orderId;
+	public void setOrderItemId(long orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 
 	public long getCamId() {
@@ -120,28 +95,58 @@ public class OrderCampaign {
 		this.cal1 = cal1;
 	}
 
-	public int getTotalPrice() {
-		return totalPrice;
+	public int getSellingPrice() {
+		return sellingPrice;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
 
-	public Date getPayTime() {
-		return payTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setPayTime(Date payTime) {
-		this.payTime = payTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "OrderCampaign [userId=" + userId + ", orderId=" + orderId + ", camId=" + camId + ", endDate=" + endDate
-				+ ", camKind=" + camKind + ", camName=" + camName + ", cal1=" + cal1 + ", totalPrice=" + totalPrice
-				+ ", payTime=" + payTime + "]";
+	public String getOrderNo() {
+		return orderNo;
 	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public int getTotalPoint() {
+		return totalPoint;
+	}
+
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
+
+	public int getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(int orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+	
+	
+
+	
+
 	
 
     
