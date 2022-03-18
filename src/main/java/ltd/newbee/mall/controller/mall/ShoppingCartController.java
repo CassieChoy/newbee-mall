@@ -61,11 +61,6 @@ public class ShoppingCartController {
             //总价
             for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
             	Long goodsId = newBeeMallShoppingCartItemVO.getGoodsId();
-				/*
-				 * GoodsCampaign cam =
-				 * newBeeMallCategoryService.getGoodsCampaignByGoodsId(goodsId); if(cam!= null)
-				 * { newBeeMallShoppingCartItemVO.setCampaign(cam.getCamName()); }
-				 */
                 priceTotal += newBeeMallShoppingCartItemVO.getGoodsCount() * newBeeMallShoppingCartItemVO.getSellingPrice();
             }
             if (priceTotal < 1) {

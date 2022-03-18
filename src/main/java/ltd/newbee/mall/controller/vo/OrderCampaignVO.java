@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class OrderCampaignVO {
-	private long userId;
+private long userId;
 	
-	private long orderId;
+	private long orderItemId;
 	
 	private long camId;
 	
@@ -27,9 +27,9 @@ public class OrderCampaignVO {
 	
 	private String cal1;
 	
-	private int totalPrice;
+	private int sellingPrice;
 	
-	private String payTime;
+	private String createTime;
 	
 	private String orderNo;
 	
@@ -37,31 +37,7 @@ public class OrderCampaignVO {
 	
 	private int totalPoint;
 	
-	
-
-	public String getOrderNo() {
-		return orderNo;
-	}
-
-	public void setOrderNo(String orderNo) {
-		this.orderNo = orderNo;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
-	public int getTotalPoint() {
-		return totalPoint;
-	}
-
-	public void setTotalPoint(int totalPoint) {
-		this.totalPoint = totalPoint;
-	}
+	private int orderStatus;
 
 	public long getUserId() {
 		return userId;
@@ -71,12 +47,12 @@ public class OrderCampaignVO {
 		this.userId = userId;
 	}
 
-	public long getOrderId() {
-		return orderId;
+	public long getOrderItemId() {
+		return orderItemId;
 	}
 
-	public void setOrderId(long orderId) {
-		this.orderId = orderId;
+	public void setOrderItemId(long orderItemId) {
+		this.orderItemId = orderItemId;
 	}
 
 	public long getCamId() {
@@ -119,27 +95,52 @@ public class OrderCampaignVO {
 		this.cal1 = cal1;
 	}
 
-	public int getTotalPrice() {
-		return totalPrice;
+	public int getSellingPrice() {
+		return sellingPrice;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
 
-	public String getPayTime() {
-		return payTime;
+	public String getCreateTime() {
+		return createTime;
 	}
 
-	public void setPayTime(String payTime) {
-		this.payTime = payTime;
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 
-	@Override
-	public String toString() {
-		return "OrderCampaign [userId=" + userId + ", orderId=" + orderId + ", camId=" + camId + ", endDate=" + endDate
-				+ ", camKind=" + camKind + ", camName=" + camName + ", cal1=" + cal1 + ", totalPrice=" + totalPrice
-				+ ", payTime=" + payTime + "]";
+	public String getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+
+	public int getPoint() {
+		return point;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public int getTotalPoint() {
+		return totalPoint;
+	}
+
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
+
+	public int getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(int orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 	
 

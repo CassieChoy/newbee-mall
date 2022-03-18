@@ -150,11 +150,13 @@ public class GoodsController {
 		        		camPrice = (int)Math.ceil(price * camCount);
 		        		goodsInfoBySkuVO.setSellingPrice(camPrice);
 		        	}
-		        	if(camType == 2) {
+		        	else if(camType == 2) {
 		        		camCount = Double.parseDouble(cam);
 		        		camPrice = (int)(price - camCount);
 		        		goodsInfoBySkuVO.setSellingPrice(camPrice);
-		        	}    	
+		        	}else {
+		        		goodsInfoBySkuVO.setSellingPrice(price);
+		        	}
 		        }
 				if(colorInSku.equals(colorInVO)) {
 					tempList.add(goodsInfoBySkuVO);

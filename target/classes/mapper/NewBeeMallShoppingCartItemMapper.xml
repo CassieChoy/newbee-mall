@@ -189,12 +189,12 @@
    select a.*,b.cart_item_id,b.user_id,b.goods_count,b.is_deleted,
 		c.goods_name from sku_table a join tb_newbee_mall_shopping_cart_item b on a.sku_id=b.sku_id 
 		join tb_newbee_mall_goods_info c on a.goods_id=c.goods_id
-		where a.sku_id=#{skuId,jdbcType=VARCHAR} 
+		where a.sku_id=#{skuId,jdbcType=VARCHAR} and is_deleted = 0
   </select>
    <select id="getLikeBySku" parameterType="String" resultType="ltd.newbee.mall.entity.GoodsLike">
    select a.*,b.like_id,b.user_id,b.is_deleted,
 		c.goods_name from sku_table a join like_table b on a.sku_id=b.sku_id 
 		join tb_newbee_mall_goods_info c on a.goods_id=c.goods_id
-		where a.sku_id=#{skuId,jdbcType=VARCHAR} 
+		where a.sku_id=#{skuId,jdbcType=VARCHAR} and is_deleted = 0
   </select>
 </mapper>
