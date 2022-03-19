@@ -145,6 +145,8 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 					  int price = newBeeMallGoodsTemp.getPrice();
 					  GoodsCampaign goodsCam = goodsCategoryMapper.getGoodsCamById(newBeeMallShoppingCartItem.getSkuId());
 					  if(goodsCam != null) { 
+						  newBeeMallGoodsTemp.setCamId(goodsCam.getCamId());
+						  newBeeMallGoodsTemp.setCamKind(goodsCam.getCamKind());
 						  int camType = goodsCam.getCamKind(); 
 						  String cam = goodsCam.getCal1();
 						  Double camCount; 
@@ -155,11 +157,14 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 							  camPrice = (int)Math.ceil(price * camCount); 
 							  newBeeMallGoodsTemp.setPrice(camPrice);; 
 						  	  } 
-						  if(camType == 2) {
+						  else if(camType == 2) {
 							  camCount = Double.parseDouble(cam); 
 							  camPrice = (int)(price - camCount);
 							  newBeeMallGoodsTemp.setPrice(camPrice);
 							  }
+						  else {
+							  newBeeMallGoodsTemp.setPrice(price);
+						  }
 					  
 					  }
 					 
@@ -168,6 +173,10 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                         goodsName = goodsName.substring(0, 28) + "...";
                     }
                     newBeeMallShoppingCartItemVO.setGoodsName(goodsName);
+                    
+                    newBeeMallShoppingCartItemVO.setCamId(newBeeMallGoodsTemp.getCamId());
+                    
+                    newBeeMallShoppingCartItemVO.setCamKind(newBeeMallGoodsTemp.getCamKind());
 					
 					newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getPrice());
 					 

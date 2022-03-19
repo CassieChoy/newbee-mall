@@ -9,6 +9,8 @@
 package ltd.newbee.mall.dao;
 
 import ltd.newbee.mall.entity.NewBeeMallOrderItem;
+import ltd.newbee.mall.entity.OrderCampaign;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -49,4 +51,6 @@ public interface NewBeeMallOrderItemMapper {
     int updateByPrimaryKeySelective(NewBeeMallOrderItem record);
 
     int updateByPrimaryKey(NewBeeMallOrderItem record);
+    
+    int insertPointBatch(@Param("pointItems") List<OrderCampaign> pointItems);
 }
