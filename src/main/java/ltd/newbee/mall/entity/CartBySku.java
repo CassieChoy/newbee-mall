@@ -34,6 +34,27 @@ public class CartBySku {
 	private String size;
 	
 	private String memory;
+	
+	private long camId;
+	
+	private int camKind;
+	
+
+	public int getCamKind() {
+		return camKind;
+	}
+
+	public void setCamKind(int camKind) {
+		this.camKind = camKind;
+	}
+
+	public long getCamId() {
+		return camId;
+	}
+
+	public void setCamId(long camId) {
+		this.camId = camId;
+	}
 
 	public String getColor() {
 		return color;

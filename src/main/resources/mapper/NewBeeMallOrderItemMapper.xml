@@ -156,15 +156,12 @@
   </update>
   
   <insert id="insertPointBatch" parameterType="ltd.newbee.mall.entity.OrderCampaign">
-        insert into tb_newbee_mall_order_item (order_id, goods_id,
-        goods_name, goods_cover_img, selling_price,
-        goods_count)
+        insert into point_table (user_id,
+        cam_id, end_date)
         values
-        <foreach collection="orderItems" item="orderItem" separator=",">
-            (#{orderItem.orderId,jdbcType=BIGINT}, #{orderItem.goodsId,jdbcType=BIGINT},
-            #{orderItem.goodsName,jdbcType=VARCHAR}, #{orderItem.goodsCoverImg,jdbcType=VARCHAR},
-            #{orderItem.sellingPrice,jdbcType=INTEGER},
-            #{orderItem.goodsCount,jdbcType=INTEGER})
+        <foreach collection="pointItems" item="pointItem" separator=",">
+            (#{pointItem.userId,jdbcType=BIGINT}, 
+            #{pointItem.camId,jdbcType=BIGINT}, #{pointItem.endDate,jdbcType=TIMESTAMP})
         </foreach>
     </insert>
 </mapper>

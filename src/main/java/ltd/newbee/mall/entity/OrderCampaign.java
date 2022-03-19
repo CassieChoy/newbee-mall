@@ -38,6 +38,17 @@ public class OrderCampaign {
 	private int totalPoint;
 	
 	private int orderStatus;
+	
+	private int pointType;
+	
+
+	public int getPointType() {
+		return pointType;
+	}
+
+	public void setPointType(int pointType) {
+		this.pointType = pointType;
+	}
 
 	public long getUserId() {
 		return userId;
