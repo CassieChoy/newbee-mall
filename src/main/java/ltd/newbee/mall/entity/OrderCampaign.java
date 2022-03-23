@@ -37,10 +37,30 @@ public class OrderCampaign {
 	
 	private int totalPoint;
 	
+	private Date createDate;
+	
 	private int orderStatus;
 	
 	private int pointType;
 	
+	private long pointId;
+	
+	
+	public long getPointId() {
+		return pointId;
+	}
+
+	public void setPointId(long pointId) {
+		this.pointId = pointId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
 	public int getPointType() {
 		return pointType;

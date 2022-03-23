@@ -41,6 +41,26 @@ public class NewBeeMallShoppingCartItemVO implements Serializable {
 	
 	private int camKind;
 	
+	private String cal1;
+	
+	public String getCal1() {
+		return cal1;
+	}
+
+	public void setCal1(String cal1) {
+		this.cal1 = cal1;
+	}
+
+	public int getTotalPoint() {
+		return totalPoint;
+	}
+
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
+
+	private int totalPoint;
+	
 	
     
 

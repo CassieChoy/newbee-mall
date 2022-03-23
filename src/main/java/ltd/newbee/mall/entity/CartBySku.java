@@ -39,6 +39,36 @@ public class CartBySku {
 	
 	private int camKind;
 	
+	private String cal1;
+	
+	private int sellingPrice;
+	
+	private int totalPoint;
+	
+
+	public String getCal1() {
+		return cal1;
+	}
+
+	public void setCal1(String cal1) {
+		this.cal1 = cal1;
+	}
+
+	public int getSellingPrice() {
+		return sellingPrice;
+	}
+
+	public void setSellingPrice(int sellingPrice) {
+		this.sellingPrice = sellingPrice;
+	}
+
+	public int getTotalPoint() {
+		return totalPoint;
+	}
+
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
 
 	public int getCamKind() {
 		return camKind;

@@ -53,4 +53,10 @@ public interface NewBeeMallOrderItemMapper {
     int updateByPrimaryKey(NewBeeMallOrderItem record);
     
     int insertPointBatch(@Param("pointItems") List<OrderCampaign> pointItems);
+    
+    Long selectMaxOrderItemId(Long userId);
+    
+    int insertUserPointBatch(@Param("userPointItems") List<OrderCampaign> userPointItems);
+    
+    Long selectMaxPointId(Long userId);
 }

@@ -248,24 +248,45 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 					// 生成所有的订单项快照，并保存至数据库
 					List<NewBeeMallOrderItem> newBeeMallOrderItems = new ArrayList<>();
 					List<OrderCampaign> pointItems = new ArrayList<>();
+					List<OrderCampaign> userPointItems = new ArrayList<>();
 					for (NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO : myShoppingCartItems) {
 						NewBeeMallOrderItem newBeeMallOrderItem = new NewBeeMallOrderItem();
 						OrderCampaign pointItem = new OrderCampaign();
+						OrderCampaign userPointItem = new OrderCampaign();
 						// 使用BeanUtil工具类将newBeeMallShoppingCartItemVO中的属性复制到newBeeMallOrderItem对象中
 						BeanUtil.copyProperties(newBeeMallShoppingCartItemVO, newBeeMallOrderItem);
 						// NewBeeMallOrderMapper文件insert()方法中使用了useGeneratedKeys因此orderId可以获取到
 						newBeeMallOrderItem.setOrderId(newBeeMallOrder.getOrderId());
 						if (newBeeMallShoppingCartItemVO.getCamKind() == 1) {
+							int price = newBeeMallShoppingCartItemVO.getSellingPrice();
+							String cam = newBeeMallShoppingCartItemVO.getCal1();
+							Double camCount;
+							int point;
+							Long orderItemId = newBeeMallOrderItemMapper.selectMaxOrderItemId(user.getUserId());
+							Long pointId = newBeeMallOrderItemMapper.selectMaxPointId(user.getUserId());
+							String[] pieces = cam.split("%");
+			            	camCount = Double.parseDouble(pieces[0]) / 100;
+			            	point = (int)Math.ceil(price * camCount);
 							pointItem.setUserId(user.getUserId());
+							pointItem.setOrderItemId(orderItemId+1);
+							pointItem.setPointId(pointId+1);
 							pointItem.setCamId(newBeeMallShoppingCartItemVO.getCamId());
 							pointItem.setEndDate(new Date());
 							pointItem.setPointType(0);
+							pointItem.setPoint(point);
 							pointItems.add(pointItem);
+							userPointItem.setUserId(user.getUserId());
+							userPointItem.setPoint(point);
+							userPointItem.setCreateDate(newBeeMallOrder.getCreateTime());
+							userPointItem.setPointType(0);
+							userPointItem.setPointId(pointId+1);
+							userPointItems.add(userPointItem);
 						}
 						newBeeMallOrderItems.add(newBeeMallOrderItem);
 					}
 					// 保存至数据库
 					int row = newBeeMallOrderItemMapper.insertPointBatch(pointItems);
+					int row2 = newBeeMallOrderItemMapper.insertUserPointBatch(userPointItems);
 					if (newBeeMallOrderItemMapper.insertBatch(newBeeMallOrderItems) > 0) {
 						// 所有操作成功后，将订单号返回，以供Controller方法跳转到订单详情
 						return orderNo;
