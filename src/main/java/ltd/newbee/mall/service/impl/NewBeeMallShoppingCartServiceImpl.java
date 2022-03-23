@@ -147,6 +147,7 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
 					  if(goodsCam != null) { 
 						  newBeeMallGoodsTemp.setCamId(goodsCam.getCamId());
 						  newBeeMallGoodsTemp.setCamKind(goodsCam.getCamKind());
+						  newBeeMallGoodsTemp.setCal1(goodsCam.getCal1());
 						  int camType = goodsCam.getCamKind(); 
 						  String cam = goodsCam.getCal1();
 						  Double camCount; 
@@ -175,6 +176,8 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                     newBeeMallShoppingCartItemVO.setGoodsName(goodsName);
                     
                     newBeeMallShoppingCartItemVO.setCamId(newBeeMallGoodsTemp.getCamId());
+                    
+                    newBeeMallShoppingCartItemVO.setCal1(newBeeMallGoodsTemp.getCal1());
                     
                     newBeeMallShoppingCartItemVO.setCamKind(newBeeMallGoodsTemp.getCamKind());
 					

@@ -156,12 +156,30 @@
   </update>
   
   <insert id="insertPointBatch" parameterType="ltd.newbee.mall.entity.OrderCampaign">
-        insert into point_table (user_id,
-        cam_id, end_date)
+        insert into point_table (point_id,user_id,order_item_id,cam_id, end_date,point_type,point)
         values
         <foreach collection="pointItems" item="pointItem" separator=",">
-            (#{pointItem.userId,jdbcType=BIGINT}, 
-            #{pointItem.camId,jdbcType=BIGINT}, #{pointItem.endDate,jdbcType=TIMESTAMP})
+            (#{pointItem.point_id,jdbcType=BIGINT}, #{pointItem.userId,jdbcType=BIGINT}, #{pointItem.orderItemId,jdbcType=BIGINT},#{pointItem.camId,jdbcType=BIGINT},
+             #{pointItem.endDate,jdbcType=TIMESTAMP}, #{pointItem.pointType,jdbcType=INTEGER}, #{pointItem.point,jdbcType=INTEGER})
         </foreach>
     </insert>
+    
+      <insert id="insertUserPointBatch" parameterType="ltd.newbee.mall.entity.OrderCampaign">
+        insert into user_point (point_id,user_id,point, create_date,point_type)
+        values
+        <foreach collection="userPointItems" item="userPointItem" separator=",">
+            (#{pointItem.point_id,jdbcType=BIGINT}, #{userPointItem.userId,jdbcType=BIGINT}, #{userPointItem.point,jdbcType=INTEGER},
+             #{userPointItem.createDate,jdbcType=TIMESTAMP}, #{userPointItem.pointType,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    
+    <select id="selectMaxOrderItemId" parameterType="java.lang.Long" resultType="Long">
+        select max(order_item_id) from point_table
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectMaxPointId" parameterType="java.lang.Long" resultType="Long">
+        select max(point_id) from user_point
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>
