@@ -17,8 +17,10 @@ import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.service.NewBeeMallCategoryService;
 import ltd.newbee.mall.service.NewBeeMallGoodsService;
+import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
 import ltd.newbee.mall.util.Result;
 import ltd.newbee.mall.util.ResultGenerator;
@@ -45,6 +47,11 @@ public class ShoppingCartController {
 
     @Resource
     private NewBeeMallGoodsService newBeeMallGoodsService;
+
+    @Resource
+	private NewBeeMallOrderService newBeeMallOrderService;
+
+	
     @GetMapping("/shop-cart")
     public String cartListPage(HttpServletRequest request,
                                HttpSession httpSession) {
@@ -121,6 +128,7 @@ public class ShoppingCartController {
     public String settlePage(HttpServletRequest request,
                              HttpSession httpSession) {
         int priceTotal = 0;
+        int totalPoint = 0;
         NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
         List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService.getMyShoppingCartItems(user.getUserId());
         if (CollectionUtils.isEmpty(myShoppingCartItems)) {
@@ -139,7 +147,17 @@ public class ShoppingCartController {
             if (priceTotal < 1) {
                 return "error/error_5xx";
             }
+            List<OrderCampaign> userPointItems = newBeeMallOrderService.selectUserPoint(user.getUserId());
+            for(OrderCampaign userPointItem : userPointItems) {
+            	int point = userPointItem.getPoint();
+            	if(userPointItem.getPointType()==0) {
+            		totalPoint = totalPoint + point;
+            	}else {
+            		totalPoint = totalPoint - point;
+            	}
+            }
         }
+        request.setAttribute("totalPoint", totalPoint);
         request.setAttribute("priceTotal", priceTotal);
         request.setAttribute("myShoppingCartItems", myShoppingCartItems);
         return "mall/order-settle";

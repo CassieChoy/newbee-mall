@@ -33,9 +33,9 @@ private long userId;
 	
 	private String orderNo;
 	
-	private int point;
+	private String point;
 	
-	private int totalPoint;
+	private String totalPoint;
 	
 	private int orderStatus;
 
@@ -119,19 +119,19 @@ private long userId;
 		this.orderNo = orderNo;
 	}
 
-	public int getPoint() {
+	public String getPoint() {
 		return point;
 	}
 
-	public void setPoint(int point) {
+	public void setPoint(String point) {
 		this.point = point;
 	}
 
-	public int getTotalPoint() {
+	public String getTotalPoint() {
 		return totalPoint;
 	}
 
-	public void setTotalPoint(int totalPoint) {
+	public void setTotalPoint(String totalPoint) {
 		this.totalPoint = totalPoint;
 	}
 

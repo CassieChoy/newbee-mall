@@ -48,175 +48,187 @@ import java.util.Map;
 @Controller
 public class OrderController {
 
-    @Resource
-    private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
-    @Resource
-    private NewBeeMallOrderService newBeeMallOrderService;
-    
-    private NewBeeMallCategoryService newBeeMallCategoryService;
+	@Resource
+	private NewBeeMallShoppingCartService newBeeMallShoppingCartService;
+	@Resource
+	private NewBeeMallOrderService newBeeMallOrderService;
 
-    @GetMapping("/orders/{orderNo}")
-    public String orderDetailPage(HttpServletRequest request, @PathVariable("orderNo") String orderNo, HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        NewBeeMallOrderDetailVO orderDetailVO = newBeeMallOrderService.getOrderDetailByOrderNo(orderNo, user.getUserId());
-        if (orderDetailVO == null) {
-            return "error/error_5xx";
-        }
-        request.setAttribute("orderDetailVO", orderDetailVO);
-        return "mall/order-detail";
-    }
+	private NewBeeMallCategoryService newBeeMallCategoryService;
 
-    @GetMapping("/orders")
-    public String orderListPage(@RequestParam Map<String, Object> params, HttpServletRequest request, HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        params.put("userId", user.getUserId());
-        if (StringUtils.isEmpty(params.get("page"))) {
-            params.put("page", 1);
-        }
-        params.put("limit", Constants.ORDER_SEARCH_PAGE_LIMIT);
-        //封装我的订单数据
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        request.setAttribute("orderPageResult", newBeeMallOrderService.getMyOrders(pageUtil));
-        request.setAttribute("path", "orders");
-        return "mall/my-orders";
-    }
+	@GetMapping("/orders/{orderNo}")
+	public String orderDetailPage(HttpServletRequest request, @PathVariable("orderNo") String orderNo,
+			HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		NewBeeMallOrderDetailVO orderDetailVO = newBeeMallOrderService.getOrderDetailByOrderNo(orderNo,
+				user.getUserId());
+		if (orderDetailVO == null) {
+			return "error/error_5xx";
+		}
+		request.setAttribute("orderDetailVO", orderDetailVO);
+		return "mall/order-detail";
+	}
 
-    @GetMapping("/saveOrder")
-    public String saveOrder(HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService.getMyShoppingCartItems(user.getUserId());
-        if (StringUtils.isEmpty(user.getAddress().trim())) {
-            //无收货地址
-            NewBeeMallException.fail(ServiceResultEnum.NULL_ADDRESS_ERROR.getResult());
-        }
-        if (CollectionUtils.isEmpty(myShoppingCartItems)) {
-            //购物车中无数据则跳转至错误页
-            NewBeeMallException.fail(ServiceResultEnum.SHOPPING_ITEM_ERROR.getResult());
-        }
-        //保存订单并返回订单号
-        String saveOrderResult = newBeeMallOrderService.saveOrder(user, myShoppingCartItems);
-        //跳转到订单详情页
-        return "redirect:/orders/" + saveOrderResult;
-    }
+	@GetMapping("/orders")
+	public String orderListPage(@RequestParam Map<String, Object> params, HttpServletRequest request,
+			HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		params.put("userId", user.getUserId());
+		if (StringUtils.isEmpty(params.get("page"))) {
+			params.put("page", 1);
+		}
+		params.put("limit", Constants.ORDER_SEARCH_PAGE_LIMIT);
+		// 封装我的订单数据
+		PageQueryUtil pageUtil = new PageQueryUtil(params);
+		request.setAttribute("orderPageResult", newBeeMallOrderService.getMyOrders(pageUtil));
+		request.setAttribute("path", "orders");
+		return "mall/my-orders";
+	}
 
-    @PutMapping("/orders/{orderNo}/cancel")
-    @ResponseBody
-    public Result cancelOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        String cancelOrderResult = newBeeMallOrderService.cancelOrder(orderNo, user.getUserId());
-        if (ServiceResultEnum.SUCCESS.getResult().equals(cancelOrderResult)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult(cancelOrderResult);
-        }
-    }
+	@GetMapping("/saveOrder")
+	public String saveOrder(HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		List<NewBeeMallShoppingCartItemVO> myShoppingCartItems = newBeeMallShoppingCartService
+				.getMyShoppingCartItems(user.getUserId());
+		if (StringUtils.isEmpty(user.getAddress().trim())) {
+			// 无收货地址
+			NewBeeMallException.fail(ServiceResultEnum.NULL_ADDRESS_ERROR.getResult());
+		}
+		if (CollectionUtils.isEmpty(myShoppingCartItems)) {
+			// 购物车中无数据则跳转至错误页
+			NewBeeMallException.fail(ServiceResultEnum.SHOPPING_ITEM_ERROR.getResult());
+		}
+		// 保存订单并返回订单号
+		String saveOrderResult = newBeeMallOrderService.saveOrder(user, myShoppingCartItems);
+		// 跳转到订单详情页
+		return "redirect:/orders/" + saveOrderResult;
+	}
 
-    @PutMapping("/orders/{orderNo}/finish")
-    @ResponseBody
-    public Result finishOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        String finishOrderResult = newBeeMallOrderService.finishOrder(orderNo, user.getUserId());
-        if (ServiceResultEnum.SUCCESS.getResult().equals(finishOrderResult)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult(finishOrderResult);
-        }
-    }
+	@PutMapping("/orders/{orderNo}/cancel")
+	@ResponseBody
+	public Result cancelOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		String cancelOrderResult = newBeeMallOrderService.cancelOrder(orderNo, user.getUserId());
+		if (ServiceResultEnum.SUCCESS.getResult().equals(cancelOrderResult)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult(cancelOrderResult);
+		}
+	}
 
-    @GetMapping("/selectPayType")
-    public String selectPayType(HttpServletRequest request, @RequestParam("orderNo") String orderNo, HttpSession httpSession) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        NewBeeMallOrder newBeeMallOrder = newBeeMallOrderService.getNewBeeMallOrderByOrderNo(orderNo);
-        //判断订单userId
-        if (!user.getUserId().equals(newBeeMallOrder.getUserId())) {
-            NewBeeMallException.fail(ServiceResultEnum.NO_PERMISSION_ERROR.getResult());
-        }
-        //判断订单状态
-        if (newBeeMallOrder.getOrderStatus().intValue() != NewBeeMallOrderStatusEnum.ORDER_PRE_PAY.getOrderStatus()) {
-            NewBeeMallException.fail(ServiceResultEnum.ORDER_STATUS_ERROR.getResult());
-        }
-        request.setAttribute("orderNo", orderNo);
-        request.setAttribute("totalPrice", newBeeMallOrder.getTotalPrice());
-        return "mall/pay-select";
-    }
+	@PutMapping("/orders/{orderNo}/finish")
+	@ResponseBody
+	public Result finishOrder(@PathVariable("orderNo") String orderNo, HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		String finishOrderResult = newBeeMallOrderService.finishOrder(orderNo, user.getUserId());
+		if (ServiceResultEnum.SUCCESS.getResult().equals(finishOrderResult)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult(finishOrderResult);
+		}
+	}
 
-    @GetMapping("/payPage")
-    public String payOrder(HttpServletRequest request, @RequestParam("orderNo") String orderNo, HttpSession httpSession, @RequestParam("payType") int payType) {
-        NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-        NewBeeMallOrder newBeeMallOrder = newBeeMallOrderService.getNewBeeMallOrderByOrderNo(orderNo);
-        //判断订单userId
-        if (!user.getUserId().equals(newBeeMallOrder.getUserId())) {
-            NewBeeMallException.fail(ServiceResultEnum.NO_PERMISSION_ERROR.getResult());
-        }
-        //判断订单状态
-        if (newBeeMallOrder.getOrderStatus().intValue() != NewBeeMallOrderStatusEnum.ORDER_PRE_PAY.getOrderStatus()) {
-            NewBeeMallException.fail(ServiceResultEnum.ORDER_STATUS_ERROR.getResult());
-        }
-        request.setAttribute("orderNo", orderNo);
-        request.setAttribute("totalPrice", newBeeMallOrder.getTotalPrice());
-        if (payType == 1) {
-            return "mall/alipay";
-        } else {
-            return "mall/wxpay";
-        }
-    }
+	@GetMapping("/selectPayType")
+	public String selectPayType(HttpServletRequest request, @RequestParam("orderNo") String orderNo,
+			HttpSession httpSession) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		NewBeeMallOrder newBeeMallOrder = newBeeMallOrderService.getNewBeeMallOrderByOrderNo(orderNo);
+		// 判断订单userId
+		if (!user.getUserId().equals(newBeeMallOrder.getUserId())) {
+			NewBeeMallException.fail(ServiceResultEnum.NO_PERMISSION_ERROR.getResult());
+		}
+		// 判断订单状态
+		if (newBeeMallOrder.getOrderStatus().intValue() != NewBeeMallOrderStatusEnum.ORDER_PRE_PAY.getOrderStatus()) {
+			NewBeeMallException.fail(ServiceResultEnum.ORDER_STATUS_ERROR.getResult());
+		}
+		request.setAttribute("orderNo", orderNo);
+		request.setAttribute("totalPrice", newBeeMallOrder.getTotalPrice());
+		return "mall/pay-select";
+	}
 
-    @GetMapping("/paySuccess")
-    @ResponseBody
-    public Result paySuccess(@RequestParam("orderNo") String orderNo, @RequestParam("payType") int payType) {
-        String payResult = newBeeMallOrderService.paySuccess(orderNo, payType);
-        if (ServiceResultEnum.SUCCESS.getResult().equals(payResult)) {
-            return ResultGenerator.genSuccessResult();
-        } else {
-            return ResultGenerator.genFailResult(payResult);
-        }
-    }
-    
-    
-    @GetMapping("/point")
-    public String pointPage(@RequestParam Map<String, Object> params,HttpServletRequest request, HttpSession httpSession) throws ParseException {
-    	NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
-    	params.put("userId", user.getUserId());
-        if (StringUtils.isEmpty(params.get("page"))) {
-            params.put("page", 1);
-        }
-        params.put("limit", Constants.ORDER_SEARCH_PAGE_LIMIT);
-        PageQueryUtil pageUtil = new PageQueryUtil(params);
-        PageResult orderCamsPage = newBeeMallOrderService.getOrderCamPage(pageUtil);
-        List<OrderCampaign> orderCamsList = (List<OrderCampaign>) orderCamsPage.getList();
-        List<OrderCampaignVO> orderCams = new ArrayList<OrderCampaignVO>();
-        int totalPoint = 0;
-        for(OrderCampaign orderCampaign : orderCamsList) {
-        	if(orderCampaign.getCamKind()==1) {
-        		int price = orderCampaign.getSellingPrice();
-            	String orderNo = orderCampaign.getOrderNo();
-            	String cam = orderCampaign.getCal1();
-            	int point;
-            	Double camCount;
-            	Date payTime;
-                String payTimeStr;
-            	String[] pieces = cam.split("%");
-            	camCount = Double.parseDouble(pieces[0]) / 100;
-            	point = (int)Math.ceil(price * camCount);
-            	totalPoint = totalPoint + point;
-            	payTime = orderCampaign.getCreateTime();
-            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            	payTimeStr = formatter.format(payTime);
-            	
-            	OrderCampaignVO orderCamVO = new OrderCampaignVO();
-            	orderCamVO.setCreateTime(payTimeStr);
-            	orderCamVO.setPoint(point);
-            	orderCamVO.setTotalPoint(totalPoint);
-            	orderCamVO.setOrderNo(orderNo);
-            	orderCams.add(orderCamVO);
-        	}
-        	
-        	
-        }
-        orderCamsPage.setList(orderCams);
-        request.setAttribute("orderCam", orderCamsPage);
-        request.setAttribute("path", "point");
-        return "mall/point";
-    }
+	@GetMapping("/payPage")
+	public String payOrder(HttpServletRequest request, @RequestParam("orderNo") String orderNo, HttpSession httpSession,
+			@RequestParam("payType") int payType) {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		NewBeeMallOrder newBeeMallOrder = newBeeMallOrderService.getNewBeeMallOrderByOrderNo(orderNo);
+		// 判断订单userId
+		if (!user.getUserId().equals(newBeeMallOrder.getUserId())) {
+			NewBeeMallException.fail(ServiceResultEnum.NO_PERMISSION_ERROR.getResult());
+		}
+		// 判断订单状态
+		if (newBeeMallOrder.getOrderStatus().intValue() != NewBeeMallOrderStatusEnum.ORDER_PRE_PAY.getOrderStatus()) {
+			NewBeeMallException.fail(ServiceResultEnum.ORDER_STATUS_ERROR.getResult());
+		}
+		request.setAttribute("orderNo", orderNo);
+		request.setAttribute("totalPrice", newBeeMallOrder.getTotalPrice());
+		if (payType == 1) {
+			return "mall/alipay";
+		} else {
+			return "mall/wxpay";
+		}
+	}
+
+	@GetMapping("/paySuccess")
+	@ResponseBody
+	public Result paySuccess(@RequestParam("orderNo") String orderNo, @RequestParam("payType") int payType) {
+		String payResult = newBeeMallOrderService.paySuccess(orderNo, payType);
+		if (ServiceResultEnum.SUCCESS.getResult().equals(payResult)) {
+			return ResultGenerator.genSuccessResult();
+		} else {
+			return ResultGenerator.genFailResult(payResult);
+		}
+	}
+
+	@GetMapping("/point")
+	public String pointPage(@RequestParam Map<String, Object> params, HttpServletRequest request,
+			HttpSession httpSession) throws ParseException {
+		NewBeeMallUserVO user = (NewBeeMallUserVO) httpSession.getAttribute(Constants.MALL_USER_SESSION_KEY);
+		params.put("userId", user.getUserId());
+		if (StringUtils.isEmpty(params.get("page"))) {
+			params.put("page", 1);
+		}
+		params.put("limit", Constants.ORDER_SEARCH_PAGE_LIMIT);
+		PageQueryUtil pageUtil = new PageQueryUtil(params);
+		PageResult orderCamsPage = newBeeMallOrderService.getOrderCamPage(pageUtil);
+		List<OrderCampaign> orderCamsList = (List<OrderCampaign>) orderCamsPage.getList();
+		List<OrderCampaignVO> orderCams = new ArrayList<OrderCampaignVO>();
+		int totalPoint = 0;
+		String totalPointStr = "0";
+		for (OrderCampaign orderCampaign : orderCamsList) {
+			int point;
+			String pointStr = "0";
+			Date payTime = orderCampaign.getCreateDate();
+			String payTimeStr = "0";
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+			payTimeStr = formatter.format(payTime);
+			String orderNo = orderCampaign.getOrderNo();
+			int pointType = orderCampaign.getPointType();
+			if (pointType == 0) {
+				if (orderCampaign.getCamKind() == 1) {
+					point = orderCampaign.getPoint();
+					pointStr = Integer.toString(point);
+					totalPoint = totalPoint + point;
+					totalPointStr = Integer.toString(totalPoint);
+				}
+			}
+			else {
+				point = orderCampaign.getPoint();
+				pointStr = "-" + Integer.toString(point);
+				totalPoint = totalPoint - point;
+				totalPointStr = Integer.toString(totalPoint);
+			}
+
+			OrderCampaignVO orderCamVO = new OrderCampaignVO();
+			orderCamVO.setCreateTime(payTimeStr);
+			orderCamVO.setPoint(pointStr);
+			orderCamVO.setTotalPoint(totalPointStr);
+			orderCamVO.setOrderNo(orderNo);
+			orderCams.add(orderCamVO);
+
+		}
+		orderCamsPage.setList(orderCams);
+		request.setAttribute("orderCam", orderCamsPage);
+		request.setAttribute("path", "point");
+		return "mall/point";
+	}
 
 }

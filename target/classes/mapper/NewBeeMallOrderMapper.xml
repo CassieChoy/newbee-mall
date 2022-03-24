@@ -286,11 +286,11 @@
   </update>
   
   <select id="getOrderCamList" parameterType="Map" resultType="ltd.newbee.mall.entity.OrderCampaign">
-      select a.user_id,a.order_item_id,a.cam_id,a.end_date,a.point_type,b.cam_kind,b.cam_name,b.cal1,
-		c.selling_price,c.create_time,d.order_status,d.order_no from point_table a left join cam_table b on
+      select e.point_id,e.user_id,a.order_item_id,a.cam_id,a.end_date,e.point_type,b.cam_kind,b.cam_name,b.cal1,
+		c.selling_price,e.create_date,d.order_status,e.order_no,d.pay_time,e.point from point_table a left join cam_table b on
 		a.cam_id = b.cam_id left join tb_newbee_mall_order_item c on a.order_item_id = c.order_item_id 
         left join tb_newbee_mall_order d on c.order_id
-        = d.order_id and a.user_id = d.user_id where order_status=1 and point_type = 0
+        = d.order_id and a.user_id = d.user_id right join user_point e on a.point_id = e.point_id and d.order_no = e.order_no
 
   </select>
   
