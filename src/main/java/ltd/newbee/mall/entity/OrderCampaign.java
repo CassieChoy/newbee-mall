@@ -45,7 +45,17 @@ public class OrderCampaign {
 	
 	private long pointId;
 	
+	private Date payTime;
 	
+	
+	public Date getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
+
 	public long getPointId() {
 		return pointId;
 	}

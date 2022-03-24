@@ -43,6 +43,8 @@ public class NewBeeMallShoppingCartItemVO implements Serializable {
 	
 	private String cal1;
 	
+	private int totalPoint;
+	
 	public String getCal1() {
 		return cal1;
 	}
@@ -58,11 +60,6 @@ public class NewBeeMallShoppingCartItemVO implements Serializable {
 	public void setTotalPoint(int totalPoint) {
 		this.totalPoint = totalPoint;
 	}
-
-	private int totalPoint;
-	
-	
-    
 
     public int getCamKind() {
 		return camKind;

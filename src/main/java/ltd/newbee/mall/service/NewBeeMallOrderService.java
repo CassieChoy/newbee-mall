@@ -13,6 +13,7 @@ import ltd.newbee.mall.controller.vo.NewBeeMallOrderItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
 import ltd.newbee.mall.entity.NewBeeMallOrder;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.util.PageQueryUtil;
 import ltd.newbee.mall.util.PageResult;
 
@@ -118,4 +119,6 @@ public interface NewBeeMallOrderService {
     PageResult getOrderCamPage(PageQueryUtil pageUtil);
     
     PageResult getCouponPage(PageQueryUtil pageUtil);
+    
+    List<OrderCampaign> selectUserPoint (Long userId);
 }

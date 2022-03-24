@@ -14,12 +14,14 @@ import ltd.newbee.mall.controller.vo.GoodsLikeVO;
 import ltd.newbee.mall.controller.vo.NewBeeMallShoppingCartItemVO;
 import ltd.newbee.mall.dao.GoodsCategoryMapper;
 import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
+import ltd.newbee.mall.dao.NewBeeMallOrderItemMapper;
 import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
 import ltd.newbee.mall.entity.CartBySku;
 import ltd.newbee.mall.entity.GoodsCampaign;
 import ltd.newbee.mall.entity.GoodsLike;
 import ltd.newbee.mall.entity.NewBeeMallGoods;
 import ltd.newbee.mall.entity.NewBeeMallShoppingCartItem;
+import ltd.newbee.mall.entity.OrderCampaign;
 import ltd.newbee.mall.service.NewBeeMallShoppingCartService;
 import ltd.newbee.mall.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
     
     @Autowired
     private GoodsCategoryMapper goodsCategoryMapper;
+    
+    @Autowired
+    private NewBeeMallOrderItemMapper newBeeMallOrderItemMapper;
 
     @Override
     public String saveNewBeeMallCartItem(NewBeeMallShoppingCartItem newBeeMallShoppingCartItem) {
@@ -128,9 +133,12 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
             if (!CollectionUtils.isEmpty(newBeeMallGoods)) {
                 newBeeMallGoodsMap = newBeeMallGoods.stream().collect(Collectors.toMap(NewBeeMallGoods::getGoodsId, Function.identity(), (entity1, entity2) -> entity1));
             }
+            
+            
             for (NewBeeMallShoppingCartItem newBeeMallShoppingCartItem : newBeeMallShoppingCartItems) {
                 NewBeeMallShoppingCartItemVO newBeeMallShoppingCartItemVO = new NewBeeMallShoppingCartItemVO();
                 BeanUtil.copyProperties(newBeeMallShoppingCartItem, newBeeMallShoppingCartItemVO);
+                
                 
                 
                 if (newBeeMallGoodsMap.containsKey(newBeeMallShoppingCartItem.getGoodsId())) {
@@ -182,7 +190,7 @@ public class NewBeeMallShoppingCartServiceImpl implements NewBeeMallShoppingCart
                     newBeeMallShoppingCartItemVO.setCamKind(newBeeMallGoodsTemp.getCamKind());
 					
 					newBeeMallShoppingCartItemVO.setSellingPrice(newBeeMallGoodsTemp.getPrice());
-					 
+					
                     newBeeMallShoppingCartItemVOS.add(newBeeMallShoppingCartItemVO);
                 }
             }

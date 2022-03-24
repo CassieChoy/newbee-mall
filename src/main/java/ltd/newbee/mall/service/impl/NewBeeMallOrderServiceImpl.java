@@ -265,11 +265,11 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 							Long orderItemId = newBeeMallOrderItemMapper.selectMaxOrderItemId(user.getUserId());
 							Long pointId = newBeeMallOrderItemMapper.selectMaxPointId(user.getUserId());
 							String[] pieces = cam.split("%");
-			            	camCount = Double.parseDouble(pieces[0]) / 100;
-			            	point = (int)Math.ceil(price * camCount);
+							camCount = Double.parseDouble(pieces[0]) / 100;
+							point = (int) Math.ceil(price * camCount);
 							pointItem.setUserId(user.getUserId());
-							pointItem.setOrderItemId(orderItemId+1);
-							pointItem.setPointId(pointId+1);
+							pointItem.setOrderItemId(orderItemId + 1);
+							pointItem.setPointId(pointId + 1);
 							pointItem.setCamId(newBeeMallShoppingCartItemVO.getCamId());
 							pointItem.setEndDate(new Date());
 							pointItem.setPointType(0);
@@ -279,14 +279,19 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 							userPointItem.setPoint(point);
 							userPointItem.setCreateDate(newBeeMallOrder.getCreateTime());
 							userPointItem.setPointType(0);
-							userPointItem.setPointId(pointId+1);
+							userPointItem.setPointId(pointId + 1);
+							userPointItem.setOrderNo(orderNo);
 							userPointItems.add(userPointItem);
+
 						}
 						newBeeMallOrderItems.add(newBeeMallOrderItem);
 					}
 					// 保存至数据库
-					int row = newBeeMallOrderItemMapper.insertPointBatch(pointItems);
-					int row2 = newBeeMallOrderItemMapper.insertUserPointBatch(userPointItems);
+					if (pointItems != null) {
+						int row = newBeeMallOrderItemMapper.insertPointBatch(pointItems);
+						int row2 = newBeeMallOrderItemMapper.insertUserPointBatch(userPointItems);
+					}
+
 					if (newBeeMallOrderItemMapper.insertBatch(newBeeMallOrderItems) > 0) {
 						// 所有操作成功后，将订单号返回，以供Controller方法跳转到订单详情
 						return orderNo;
@@ -472,5 +477,11 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
 	public PageResult getCouponPage(PageQueryUtil pageUtil) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<OrderCampaign> selectUserPoint(Long userId) {
+
+		return newBeeMallOrderItemMapper.selectUserPoint(userId);
 	}
 }
